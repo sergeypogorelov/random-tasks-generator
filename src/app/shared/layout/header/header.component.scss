@@ -1,0 +1,9 @@
+@import '../../../../styles/bootstrap/bootstrap-required.scss';
+
+@include media-breakpoint-up(xs) {
+  .header {
+    &-navigation {
+      width: 100%;
+    }
+  }
+}
