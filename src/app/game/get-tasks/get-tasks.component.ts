@@ -6,10 +6,10 @@ import { urlFragments } from '../../core/constants/url-fragments';
 import { BreadcrumbService } from '../../core/services/breadcrumb/breadcrumb.service';
 
 @Component({
-  selector: 'rtg-select-person',
-  templateUrl: './select-person.component.html'
+  selector: 'rtg-get-tasks',
+  templateUrl: './get-tasks.component.html'
 })
-export class SelectPersonComponent implements OnInit {
+export class GetTasksComponent implements OnInit {
   constructor(private breadcrumbService: BreadcrumbService) {}
 
   ngOnInit() {
@@ -19,7 +19,11 @@ export class SelectPersonComponent implements OnInit {
         routerLink: [`/${urlFragments.home}`]
       },
       {
-        label: linkLabels.gameChilds.selectPerson
+        label: linkLabels.gameChilds.selectPerson,
+        routerLink: [`/${urlFragments.game}`, urlFragments.gameChilds.selectPerson]
+      },
+      {
+        label: linkLabels.gameChilds.getTasks
       }
     ]);
   }

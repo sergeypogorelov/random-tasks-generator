@@ -5,6 +5,7 @@ import { urlFragments } from '../core/constants/url-fragments';
 
 import { GameComponent } from './game.component';
 import { SelectPersonComponent } from './select-person/select-person.component';
+import { GetTasksComponent } from './get-tasks/get-tasks.component';
 
 const routes: Routes = [
   {
@@ -14,6 +15,10 @@ const routes: Routes = [
   {
     path: urlFragments.gameChilds.selectPerson,
     component: SelectPersonComponent
+  },
+  {
+    path: urlFragments.gameChilds.getTasks,
+    component: GetTasksComponent
   }
 ];
 
