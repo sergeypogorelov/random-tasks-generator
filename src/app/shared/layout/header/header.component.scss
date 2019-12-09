@@ -3,7 +3,21 @@
 @include media-breakpoint-up(xs) {
   .header {
     &-navigation {
+      &.hidden {
+        display: none;
+      }
       width: 100%;
+    }
+  }
+}
+
+@include media-breakpoint-up(sm) {
+  .header {
+    &-navigation {
+      &.hidden {
+        display: initial;
+      }
+      width: auto;
     }
   }
 }

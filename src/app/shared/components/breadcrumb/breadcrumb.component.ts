@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { BreadcrumbItem } from './breadcrumb-item.interface';
+import { LinkItem } from '../link/link-item.interface';
 import { BreadcrumbService } from '../../../core/services/breadcrumb/breadcrumb.service';
 
 @Component({
@@ -9,11 +9,11 @@ import { BreadcrumbService } from '../../../core/services/breadcrumb/breadcrumb.
   templateUrl: './breadcrumb.component.html'
 })
 export class BreadcrumbComponent implements OnInit, OnDestroy {
-  get items(): BreadcrumbItem[] {
+  get items(): LinkItem[] {
     return this.currentItems;
   }
 
-  private currentItems: BreadcrumbItem[];
+  private currentItems: LinkItem[];
 
   private subscription: Subscription;
 

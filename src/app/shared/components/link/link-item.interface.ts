@@ -1,4 +1,4 @@
-export interface BreadcrumbItem {
+export interface LinkItem {
   label: string;
   routerLink?: any[];
 }

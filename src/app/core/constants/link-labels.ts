@@ -5,5 +5,10 @@ export const linkLabels = {
     selectPerson: 'Select Person',
     getTasks: 'Get Tasks',
     completeTasks: 'Complete Tasks'
-  }
+  },
+  management: 'Management',
+  statistics: 'Statistics',
+  importAndExport: 'Import/Export',
+  about: 'About',
+  exit: 'Exit'
 };

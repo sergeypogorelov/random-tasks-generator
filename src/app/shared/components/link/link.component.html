@@ -1,0 +1,2 @@
+<a *ngIf="item.routerLink" [class]="classNames" [routerLink]="item.routerLink">{{ item.label }}</a>
+<ng-container *ngIf="!item.routerLink">{{ item.label }}</ng-container>

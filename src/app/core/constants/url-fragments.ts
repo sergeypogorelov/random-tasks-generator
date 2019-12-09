@@ -5,5 +5,10 @@ export const urlFragments = {
     selectPerson: 'select-person',
     getTasks: 'get-tasks',
     completeTasks: 'complete-tasks'
-  }
+  },
+  management: 'management',
+  statistics: 'statistics',
+  importAndExport: 'import-and-export',
+  about: 'about',
+  exit: 'exit'
 };

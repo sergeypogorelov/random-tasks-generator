@@ -1,9 +1,9 @@
-<header class="header d-flex flex-wrap align-items-center p-2 border-bottom shadow-sm">
+<header class="header d-flex flex-wrap align-items-center flex-sm-nowrap p-2 border-bottom shadow-sm">
   <h1 class="h5 font-weight-normal">Random Tasks Generator</h1>
-  <div class="flex-grow-1 text-right">
+  <div class="flex-grow-1 d-sm-none text-right">
     <rtg-menu-button (userClick)="menuButtonClickHandler($event)"></rtg-menu-button>
   </div>
-  <div class="header-navigation" [class.d-none]="!primaryNavigationShown">
+  <div class="header-navigation ml-sm-auto mr-sm-2" [class.hidden]="!primaryNavigationShown">
     <rtg-primary-navigation></rtg-primary-navigation>
   </div>
 </header>

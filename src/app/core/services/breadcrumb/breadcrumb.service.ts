@@ -1,25 +1,25 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 
-import { Utils } from '../../helpers/utils.class';
+import { LinkItem } from '../../../shared/components/link/link-item.interface';
 
-import { BreadcrumbItem } from '../../../shared/components/breadcrumb/breadcrumb-item.interface';
+import { Utils } from '../../helpers/utils.class';
 
 @Injectable()
 export class BreadcrumbService {
-  get observable(): Observable<BreadcrumbItem[]> {
+  get observable(): Observable<LinkItem[]> {
     return this.subject.asObservable();
   }
 
-  private items: BreadcrumbItem[] = [];
+  private items: LinkItem[] = [];
 
-  private subject = new Subject<BreadcrumbItem[]>();
+  private subject = new Subject<LinkItem[]>();
 
-  getItems(): BreadcrumbItem[] {
+  getItems(): LinkItem[] {
     return this.items;
   }
 
-  setItems(items: BreadcrumbItem[]) {
+  setItems(items: LinkItem[]) {
     if (!items) {
       throw new Error('Breadcrumb items are not specified.');
     }
