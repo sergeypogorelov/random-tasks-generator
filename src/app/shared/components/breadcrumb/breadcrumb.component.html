@@ -1,0 +1,8 @@
+<nav *ngIf="items && items.length > 0">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item" *ngFor="let item of items; let i = index" [class.active]="i === items.length - 1">
+      <a *ngIf="item.routerLink" [routerLink]="item.routerLink">{{ item.label }}</a>
+      <ng-container *ngIf="!item.routerLink">{{ item.label }}</ng-container>
+    </li>
+  </ol>
+</nav>

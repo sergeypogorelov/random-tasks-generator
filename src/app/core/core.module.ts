@@ -1,4 +1,10 @@
 import { NgModule } from '@angular/core';
 
-@NgModule()
+import { BreadcrumbService } from './services/breadcrumb/breadcrumb.service';
+
+const componentServices = [BreadcrumbService];
+
+@NgModule({
+  providers: [...componentServices]
+})
 export class CoreModule {}

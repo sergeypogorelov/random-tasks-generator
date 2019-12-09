@@ -14,6 +14,10 @@ const routes: Routes = [
     loadChildren: './home/home.module#HomeModule'
   },
   {
+    path: urlFragments.game,
+    loadChildren: './game/game.module#GameModule'
+  },
+  {
     path: '**',
     loadChildren: './not-found/not-found.module#NotFoundModule'
   }

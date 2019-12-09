@@ -8,6 +8,7 @@ import { MenuButtonComponent } from './layout/header/menu-button/menu-button.com
 import { PrimaryNavigationComponent } from './layout/primary-navigation/primary-navigation.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { PageComponent } from './layout/page.component';
+import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 
 const angularModules = [CommonModule, FormsModule, ReactiveFormsModule, RouterModule];
 
@@ -16,7 +17,8 @@ const declarationsAndExports = [
   MenuButtonComponent,
   PrimaryNavigationComponent,
   FooterComponent,
-  PageComponent
+  PageComponent,
+  BreadcrumbComponent
 ];
 
 @NgModule({

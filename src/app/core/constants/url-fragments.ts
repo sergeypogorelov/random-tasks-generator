@@ -1,3 +1,4 @@
 export const urlFragments = {
-  home: 'home'
+  home: 'home',
+  game: 'game'
 };
