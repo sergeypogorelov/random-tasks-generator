@@ -2,12 +2,6 @@
 
 .subtasks {
   .subtask {
-    &:first-child {
-      margin-left: 0;
-    }
-    &:last-child {
-      margin-right: 0;
-    }
     &-img {
       max-height: 32px;
     }
