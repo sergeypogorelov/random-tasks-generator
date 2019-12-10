@@ -7,6 +7,7 @@ import { BreadcrumbService } from '../../core/services/breadcrumb/breadcrumb.ser
 
 @Component({
   selector: 'rtg-get-tasks',
+  styleUrls: ['./get-tasks.component.scss'],
   templateUrl: './get-tasks.component.html'
 })
 export class GetTasksComponent implements OnInit {

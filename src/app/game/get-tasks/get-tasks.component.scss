@@ -1,0 +1,35 @@
+@import '../../../styles/bootstrap/bootstrap-required.scss';
+
+.subtasks {
+  .subtask {
+    &:first-child {
+      margin-left: 0;
+    }
+    &:last-child {
+      margin-right: 0;
+    }
+    &-img {
+      max-height: 32px;
+    }
+    &-title {
+      margin-left: 15px;
+    }
+    display: flex;
+    margin: 5px;
+    align-items: center;
+  }
+  display: flex;
+  padding: 5px 0;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+@include media-breakpoint-up(sm) {
+  .subtasks {
+    .subtask {
+      &-img {
+        max-height: 48px;
+      }
+    }
+  }
+}
