@@ -7,9 +7,10 @@ import { GameRoutingModule } from './game-routing.module';
 import { GameComponent } from './game.component';
 import { SelectPersonComponent } from './select-person/select-person.component';
 import { GetTasksComponent } from './get-tasks/get-tasks.component';
+import { CompleteTasksComponent } from './complete-tasks/complete-tasks.component';
 
 @NgModule({
-  declarations: [GameComponent, SelectPersonComponent, GetTasksComponent],
+  declarations: [GameComponent, SelectPersonComponent, GetTasksComponent, CompleteTasksComponent],
   imports: [CommonModule, SharedModule, GameRoutingModule]
 })
 export class GameModule {}
