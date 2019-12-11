@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { linkLabels } from '../../core/constants/link-labels';
 import { urlFragments } from '../../core/constants/url-fragments';
@@ -11,7 +12,7 @@ import { BreadcrumbService } from '../../core/services/breadcrumb/breadcrumb.ser
   templateUrl: './get-tasks.component.html'
 })
 export class GetTasksComponent implements OnInit {
-  constructor(private breadcrumbService: BreadcrumbService) {}
+  constructor(private router: Router, private breadcrumbService: BreadcrumbService) {}
 
   ngOnInit() {
     this.breadcrumbService.setItems([
@@ -27,5 +28,9 @@ export class GetTasksComponent implements OnInit {
         label: linkLabels.gameChilds.getTasks
       }
     ]);
+  }
+
+  finishButtonClickHandler() {
+    this.router.navigate([`${urlFragments.game}`, urlFragments.gameChilds.completeTasks]);
   }
 }

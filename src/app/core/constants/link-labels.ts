@@ -7,6 +7,12 @@ export const linkLabels = {
     completeTasks: 'Complete Tasks'
   },
   management: 'Management',
+  managementChilds: {
+    persons: 'Persons',
+    tasks: 'Tasks',
+    subtasks: 'Subtasks',
+    tags: 'Tags'
+  },
   statistics: 'Statistics',
   importAndExport: 'Import/Export',
   about: 'About',

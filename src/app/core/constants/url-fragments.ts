@@ -7,6 +7,12 @@ export const urlFragments = {
     completeTasks: 'complete-tasks'
   },
   management: 'management',
+  managementChilds: {
+    persons: 'persons',
+    tasks: 'tasks',
+    subtasks: 'subtasks',
+    tags: 'tags'
+  },
   statistics: 'statistics',
   importAndExport: 'import-and-export',
   about: 'about',
