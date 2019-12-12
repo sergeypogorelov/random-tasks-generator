@@ -6,6 +6,7 @@ import { urlFragments } from '../core/constants/url-fragments';
 import { ManagementComponent } from './management.component';
 import { PersonsComponent } from './persons/persons.component';
 import { TagsComponent } from './tags/tags.component';
+import { TagDetailsComponent } from './tags/tag-details/tag-details.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,10 @@ const routes: Routes = [
   {
     path: urlFragments.managementChilds.tags,
     component: TagsComponent
+  },
+  {
+    path: `${urlFragments.managementChilds.tags}/:id`,
+    component: TagDetailsComponent
   }
 ];
 
