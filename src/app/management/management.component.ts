@@ -36,10 +36,6 @@ export class ManagementComponent implements OnInit {
   ngOnInit() {
     this.breadcrumbService.setItems([
       {
-        label: linkLabels.home,
-        routerLink: [`/${urlFragments.home}`]
-      },
-      {
         label: linkLabels.management
       }
     ]);

@@ -6,9 +6,10 @@ import { ManagementRoutingModule } from './management-routing.module';
 
 import { ManagementComponent } from './management.component';
 import { PersonsComponent } from './persons/persons.component';
+import { TagsComponent } from './tags/tags.component';
 
 @NgModule({
-  declarations: [ManagementComponent, PersonsComponent],
+  declarations: [ManagementComponent, PersonsComponent, TagsComponent],
   imports: [CommonModule, SharedModule, ManagementRoutingModule]
 })
 export class ManagementModule {}

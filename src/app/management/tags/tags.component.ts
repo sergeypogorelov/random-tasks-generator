@@ -5,10 +5,10 @@ import { urlFragments } from '../../core/constants/url-fragments';
 import { BreadcrumbService } from '../../core/services/breadcrumb/breadcrumb.service';
 
 @Component({
-  selector: 'rtg-persons',
-  templateUrl: './persons.component.html'
+  selector: 'rtg-tags',
+  templateUrl: './tags.component.html'
 })
-export class PersonsComponent implements OnInit {
+export class TagsComponent implements OnInit {
   constructor(private breadcrumbService: BreadcrumbService) {}
 
   ngOnInit() {
@@ -18,7 +18,7 @@ export class PersonsComponent implements OnInit {
         routerLink: [`/${urlFragments.management}`]
       },
       {
-        label: linkLabels.managementChilds.persons
+        label: linkLabels.managementChilds.tags
       }
     ]);
   }

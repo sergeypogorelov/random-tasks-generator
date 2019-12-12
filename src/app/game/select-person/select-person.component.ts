@@ -16,10 +16,6 @@ export class SelectPersonComponent implements OnInit {
   ngOnInit() {
     this.breadcrumbService.setItems([
       {
-        label: linkLabels.home,
-        routerLink: [`/${urlFragments.home}`]
-      },
-      {
         label: linkLabels.gameChilds.selectPerson
       }
     ]);

@@ -17,10 +17,6 @@ export class CompleteTasksComponent implements OnInit {
   ngOnInit() {
     this.breadcrumbService.setItems([
       {
-        label: linkLabels.home,
-        routerLink: [`/${urlFragments.home}`]
-      },
-      {
         label: linkLabels.gameChilds.selectPerson,
         routerLink: [`/${urlFragments.game}`, urlFragments.gameChilds.selectPerson]
       },
