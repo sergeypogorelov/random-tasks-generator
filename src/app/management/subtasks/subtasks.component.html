@@ -1,0 +1,48 @@
+<rtg-breadcrumb></rtg-breadcrumb>
+<div class="container p-2">
+  <div class="mb-2 text-right">
+    <button class="btn btn-primary" (click)="newButtonClickHandler()">New</button>
+  </div>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th class="d-none d-sm-table-cell">Thumbnail</th>
+        <th>Name</th>
+        <th class="d-none d-sm-table-cell">Description</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="d-none d-sm-table-cell text-center">
+          <img class="image-sm img-thumbnail" src="/assets/img/thumbnail.png" />
+        </td>
+        <td>Swimming</td>
+        <td class="d-none d-sm-table-cell">
+          This subtask is about swimming.
+        </td>
+        <td>
+          <div class="btn-group d-flex">
+            <button class="btn btn-secondary">Edit</button>
+            <button class="btn btn-warning">Remove</button>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="d-none d-sm-table-cell text-center">
+          <img class="image-sm img-thumbnail" src="/assets/img/thumbnail.png" />
+        </td>
+        <td>Driving</td>
+        <td class="d-none d-sm-table-cell">
+          This subtask is about driving.
+        </td>
+        <td>
+          <div class="btn-group d-flex">
+            <button class="btn btn-secondary">Edit</button>
+            <button class="btn btn-warning">Remove</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

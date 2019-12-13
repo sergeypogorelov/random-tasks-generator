@@ -1,0 +1,40 @@
+@import '../../../../styles/bootstrap/bootstrap-required.scss';
+
+.tags-selector {
+  &.focus {
+    color: $input-focus-color;
+    background-color: $input-focus-bg;
+    border-color: $input-focus-border-color;
+    outline: 0;
+    // Avoid using mixin so we can pass custom focus shadow properly
+    @if $enable-shadows {
+      box-shadow: $input-box-shadow, $input-focus-box-shadow;
+    } @else {
+      box-shadow: $input-focus-box-shadow;
+    }
+  }
+  &-top {
+    position: relative;
+  }
+  &-suggestions {
+    max-height: 100px;
+    position: absolute;
+    right: 0;
+    left: 0;
+    background-color: #fff;
+    overflow: scroll;
+  }
+  &-result {
+    &-item {
+    }
+    &-label {
+    }
+  }
+  &-button-remove {
+    display: inline-block;
+    padding-left: 10px;
+    cursor: pointer;
+  }
+  height: auto;
+  // min-height: 45px;
+}

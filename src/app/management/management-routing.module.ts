@@ -5,6 +5,8 @@ import { urlFragments } from '../core/constants/url-fragments';
 
 import { ManagementComponent } from './management.component';
 import { PersonsComponent } from './persons/persons.component';
+import { SubtasksComponent } from './subtasks/subtasks.component';
+import { SubtaskDetailsComponent } from './subtasks/subtask-details/subtask-details.component';
 import { TagsComponent } from './tags/tags.component';
 import { TagDetailsComponent } from './tags/tag-details/tag-details.component';
 
@@ -17,6 +19,14 @@ const routes: Routes = [
   {
     path: urlFragments.managementChilds.persons,
     component: PersonsComponent
+  },
+  {
+    path: urlFragments.managementChilds.subtasks,
+    component: SubtasksComponent
+  },
+  {
+    path: `${urlFragments.managementChilds.subtasks}/:id`,
+    component: SubtaskDetailsComponent
   },
   {
     path: urlFragments.managementChilds.tags,

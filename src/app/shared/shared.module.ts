@@ -11,17 +11,19 @@ import { PageComponent } from './layout/page.component';
 import { MenuButtonComponent } from './components/menu-button/menu-button.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { LinkComponent } from './components/link/link.component';
+import { TagsSelectorComponent } from './components/tags-selector/tags-selector.component';
 
 const angularModules = [CommonModule, FormsModule, ReactiveFormsModule, RouterModule];
 
 const declarationsAndExports = [
   HeaderComponent,
-  MenuButtonComponent,
   PrimaryNavigationComponent,
   FooterComponent,
   PageComponent,
+  MenuButtonComponent,
   BreadcrumbComponent,
-  LinkComponent
+  LinkComponent,
+  TagsSelectorComponent
 ];
 
 @NgModule({
