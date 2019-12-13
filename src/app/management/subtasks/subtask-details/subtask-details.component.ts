@@ -15,6 +15,8 @@ export const labelOfNewSubtask = 'New Subtask';
   templateUrl: './subtask-details.component.html'
 })
 export class SubtaskDetailsComponent implements OnInit, OnDestroy {
+  tags: string[] = ['beach', 'car', 'sport', 'shopping'];
+
   private subscription: Subscription;
 
   constructor(private activatedRoute: ActivatedRoute, private breadcrumbService: BreadcrumbService) {}

@@ -12,6 +12,7 @@ import { MenuButtonComponent } from './components/menu-button/menu-button.compon
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { LinkComponent } from './components/link/link.component';
 import { TagsSelectorComponent } from './components/tags-selector/tags-selector.component';
+import { ClickOutsideDirective } from './directives/click-outside/click-outside.directive';
 
 const angularModules = [CommonModule, FormsModule, ReactiveFormsModule, RouterModule];
 
@@ -23,7 +24,8 @@ const declarationsAndExports = [
   MenuButtonComponent,
   BreadcrumbComponent,
   LinkComponent,
-  TagsSelectorComponent
+  TagsSelectorComponent,
+  ClickOutsideDirective
 ];
 
 @NgModule({
