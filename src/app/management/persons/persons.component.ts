@@ -22,4 +22,6 @@ export class PersonsComponent implements OnInit {
       }
     ]);
   }
+
+  newButtonClickHandler() {}
 }
