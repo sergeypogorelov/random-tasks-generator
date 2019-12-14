@@ -6,8 +6,6 @@ import { Component, Input } from '@angular/core';
   templateUrl: './tags-selector.component.html'
 })
 export class TagsSelectorComponent {
-  controlFocus: boolean;
-
   textboxValue: string;
 
   suggestedDataItems: string[] = [];

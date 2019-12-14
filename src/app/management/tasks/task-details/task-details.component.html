@@ -1,0 +1,24 @@
+<rtg-breadcrumb></rtg-breadcrumb>
+<div class="container p-2">
+  <div>
+    <div class="form-group">
+      <label for="subtaskTitle">Title</label>
+      <input id="subtaskTitle" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label for="subtaskDescription">Description</label>
+      <textarea id="subtaskDescription" class="form-control" rows="3"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="subtaskThumbnail">Thumbnail</label>
+      <input type="file" class="form-control-file" id="subtaskThumbnail" />
+    </div>
+    <div class="form-group">
+      <label>Tags</label>
+      <rtg-tags-selector [dataItems]="tags"></rtg-tags-selector>
+    </div>
+  </div>
+  <div class="text-right">
+    <button class="btn btn-primary">Save</button>
+  </div>
+</div>
