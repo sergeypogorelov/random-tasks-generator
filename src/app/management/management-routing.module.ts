@@ -5,6 +5,7 @@ import { urlFragments } from '../core/constants/url-fragments';
 
 import { ManagementComponent } from './management.component';
 import { PersonsComponent } from './persons/persons.component';
+import { PersonDetailsComponent } from './persons/person-details/person-details.component';
 import { TasksComponent } from './tasks/tasks.component';
 import { TaskDetailsComponent } from './tasks/task-details/task-details.component';
 import { SubtasksComponent } from './subtasks/subtasks.component';
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: urlFragments.managementChilds.persons,
     component: PersonsComponent
+  },
+  {
+    path: `${urlFragments.managementChilds.persons}/:id`,
+    component: PersonDetailsComponent
   },
   {
     path: urlFragments.managementChilds.tasks,

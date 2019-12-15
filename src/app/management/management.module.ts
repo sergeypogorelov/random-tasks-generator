@@ -6,6 +6,7 @@ import { ManagementRoutingModule } from './management-routing.module';
 
 import { ManagementComponent } from './management.component';
 import { PersonsComponent } from './persons/persons.component';
+import { PersonDetailsComponent } from './persons/person-details/person-details.component';
 import { TasksComponent } from './tasks/tasks.component';
 import { TaskDetailsComponent } from './tasks/task-details/task-details.component';
 import { SubtasksComponent } from './subtasks/subtasks.component';
@@ -16,6 +17,7 @@ import { TagDetailsComponent } from './tags/tag-details/tag-details.component';
 const declarations = [
   ManagementComponent,
   PersonsComponent,
+  PersonDetailsComponent,
   TasksComponent,
   TaskDetailsComponent,
   SubtasksComponent,
