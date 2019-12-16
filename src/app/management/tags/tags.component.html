@@ -12,22 +12,10 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>Beach</td>
+      <tr *ngFor="let tag of tags">
+        <td>{{ tag.name }}</td>
         <td class="d-none d-sm-table-cell">
-          This tag describes tasks related to having rest on the beach. Swimming in the sea and so on.
-        </td>
-        <td>
-          <div class="btn-group d-flex">
-            <button class="btn btn-secondary">Edit</button>
-            <button class="btn btn-warning">Remove</button>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>Driving</td>
-        <td class="d-none d-sm-table-cell">
-          This tag describes tasks related to driving.
+          {{ tag.description }}
         </td>
         <td>
           <div class="btn-group d-flex">

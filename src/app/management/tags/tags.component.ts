@@ -1,8 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 import { linkLabels } from '../../core/constants/link-labels';
 import { urlFragments } from '../../core/constants/url-fragments';
+
+import { Tag } from 'src/app/core/interfaces/tag/tag.interface';
+
+import { TagService } from 'src/app/core/services/tag/tag.service';
 import { BreadcrumbService } from '../../core/services/breadcrumb/breadcrumb.service';
 
 import { idOfNewTag } from './tag-details/tag-details.component';
@@ -11,8 +16,12 @@ import { idOfNewTag } from './tag-details/tag-details.component';
   selector: 'rtg-tags',
   templateUrl: './tags.component.html'
 })
-export class TagsComponent implements OnInit {
-  constructor(private router: Router, private breadcrumbService: BreadcrumbService) {}
+export class TagsComponent implements OnInit, OnDestroy {
+  tags: Tag[] = [];
+
+  private subscription: Subscription;
+
+  constructor(private router: Router, private tagService: TagService, private breadcrumbService: BreadcrumbService) {}
 
   ngOnInit() {
     this.breadcrumbService.setItems([
@@ -24,6 +33,12 @@ export class TagsComponent implements OnInit {
         label: linkLabels.managementChilds.tags
       }
     ]);
+
+    this.subscription = this.tagService.getAll().subscribe(tags => (this.tags = tags));
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   newButtonClickHandler() {

@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 
 import { linkLabels } from '../../../core/constants/link-labels';
 import { urlFragments } from '../../../core/constants/url-fragments';
+
+import { TagService } from '../../../core/services/tag/tag.service';
 import { BreadcrumbService } from '../../../core/services/breadcrumb/breadcrumb.service';
 
 export const idOfNewTag = 'new';
@@ -17,10 +19,16 @@ export const labelOfNewTag = 'New';
 export class TagDetailsComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
-  constructor(private activatedRoute: ActivatedRoute, private breadcrumbService: BreadcrumbService) {}
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private tagService: TagService,
+    private breadcrumbService: BreadcrumbService
+  ) {}
 
   ngOnInit() {
     this.subscription = this.activatedRoute.params.subscribe(params => this.routeParamsHandler(params));
+
+    // this.tagService.add({ name: 'Tag 3', description: 'Description 3' }).subscribe();
   }
 
   ngOnDestroy() {
