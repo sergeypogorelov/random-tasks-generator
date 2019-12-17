@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
 import { ManagementRoutingModule } from './management-routing.module';
 
+import { TagDetailsService } from './tags/tag-details/tag-details.service';
+
 import { ManagementComponent } from './management.component';
 import { PersonsComponent } from './persons/persons.component';
 import { PersonDetailsComponent } from './persons/person-details/person-details.component';
@@ -26,8 +28,11 @@ const declarations = [
   TagDetailsComponent
 ];
 
+const services = [TagDetailsService];
+
 @NgModule({
   declarations: [...declarations],
+  providers: [...services],
   imports: [CommonModule, SharedModule, ManagementRoutingModule]
 })
 export class ManagementModule {}

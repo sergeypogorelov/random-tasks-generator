@@ -1,16 +1,28 @@
 <rtg-breadcrumb></rtg-breadcrumb>
 <div class="container p-2">
-  <div>
+  <form *ngIf="form" [formGroup]="form" (ngSubmit)="formSubmitHandler()">
     <div class="form-group">
       <label for="tagTitle">Title</label>
-      <input id="tagTitle" class="form-control" />
+      <input
+        id="tagTitle"
+        class="form-control"
+        formControlName="title"
+        [class.is-valid]="formTitle.valid"
+        [class.is-invalid]="formTitle.touched && formTitle.invalid"
+      />
+      <div class="invalid-feedback" *ngIf="formTitle.hasError('required')">
+        Please specify a title.
+      </div>
+      <div class="invalid-feedback" *ngIf="formTitle.hasError('nameExists')">
+        Please specify another title. Title '{{ formTitle.value }}' is already in use.
+      </div>
     </div>
     <div class="form-group">
       <label for="tagDescription">Description</label>
-      <textarea id="tagDescription" class="form-control" rows="3"></textarea>
+      <textarea id="tagDescription" class="form-control" rows="3" formControlName="description"></textarea>
     </div>
     <div class="text-right">
-      <button class="btn btn-primary">Save</button>
+      <button class="btn btn-primary" type="submit" [disabled]="form.pending || form.invalid">Save</button>
     </div>
-  </div>
+  </form>
 </div>

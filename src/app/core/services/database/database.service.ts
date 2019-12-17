@@ -16,12 +16,18 @@ export class DatabaseService {
     this.dbService.currentStore = value;
   }
 
-  constructor(private dbService: NgxIndexedDBService) {
-    this.dbService.getAll;
-  }
+  constructor(private dbService: NgxIndexedDBService) {}
 
   getAll<T>(): Observable<T[]> {
     return from(this.dbService.getAll<T>());
+  }
+
+  getByKey<T>(key: any): Observable<T> {
+    return from(this.dbService.getByKey(key));
+  }
+
+  getByIndex<T>(indexName: string, key: any): Observable<T> {
+    return from(this.dbService.getByIndex(indexName, key));
   }
 
   add<T>(value: T, key?: any): Observable<number> {
