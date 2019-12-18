@@ -9,6 +9,7 @@ import { Tag } from 'src/app/core/interfaces/tag/tag.interface';
 
 import { TagService } from 'src/app/core/services/tag/tag.service';
 import { BreadcrumbService } from '../../core/services/breadcrumb/breadcrumb.service';
+import { ModalConfirmService } from 'src/app/core/services/modal-confirm/modal-confirm.service';
 
 import { idOfNewTag } from './tag-details/tag-details.component';
 
@@ -21,7 +22,12 @@ export class TagsComponent implements OnInit, OnDestroy {
 
   private subs: Subscription[] = [];
 
-  constructor(private router: Router, private tagService: TagService, private breadcrumbService: BreadcrumbService) {}
+  constructor(
+    private router: Router,
+    private tagService: TagService,
+    private breadcrumbService: BreadcrumbService,
+    private modalConfirmService: ModalConfirmService
+  ) {}
 
   ngOnInit() {
     this.setBreadcrumb();
@@ -41,7 +47,11 @@ export class TagsComponent implements OnInit, OnDestroy {
   }
 
   removeButtonClickHandler(tag: Tag) {
-    this.tagService.deleteTag(tag.id).subscribe(() => this.updateGrid());
+    this.modalConfirmService.createAndShowConfirmModal('remove-tag', {
+      confirm: () => {
+        this.subs.push(this.tagService.deleteTag(tag.id).subscribe(() => this.updateGrid()));
+      }
+    });
   }
 
   private setBreadcrumb() {

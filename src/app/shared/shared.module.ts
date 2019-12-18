@@ -8,11 +8,16 @@ import { PrimaryNavigationComponent } from './layout/primary-navigation/primary-
 import { FooterComponent } from './layout/footer/footer.component';
 import { PageComponent } from './layout/page.component';
 
+import { ModalGeneratorComponent } from './components/modal-generator/modal-generator.component';
 import { MenuButtonComponent } from './components/menu-button/menu-button.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { LinkComponent } from './components/link/link.component';
 import { TagsSelectorComponent } from './components/tags-selector/tags-selector.component';
+
+import { ModalConfirmComponent } from './components/modal-confirm/modal-confirm.component';
+
 import { ClickOutsideDirective } from './directives/click-outside/click-outside.directive';
+import { ModalGeneratorHostDirective } from './components/modal-generator/modal-generator-host.directive';
 
 const angularModules = [CommonModule, FormsModule, ReactiveFormsModule, RouterModule];
 
@@ -21,16 +26,21 @@ const declarationsAndExports = [
   PrimaryNavigationComponent,
   FooterComponent,
   PageComponent,
+  ModalGeneratorComponent,
   MenuButtonComponent,
   BreadcrumbComponent,
   LinkComponent,
   TagsSelectorComponent,
-  ClickOutsideDirective
+  ClickOutsideDirective,
+  ModalGeneratorHostDirective
 ];
+
+const entryComponents = [ModalConfirmComponent];
 
 @NgModule({
   imports: [...angularModules],
-  declarations: [...declarationsAndExports],
+  declarations: [...declarationsAndExports, ...entryComponents],
+  entryComponents: [...entryComponents],
   exports: [...angularModules, ...declarationsAndExports]
 })
 export class SharedModule {}
