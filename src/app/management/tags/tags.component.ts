@@ -41,7 +41,7 @@ export class TagsComponent implements OnInit, OnDestroy {
   }
 
   removeButtonClickHandler(tag: Tag) {
-    this.tagService.delete(tag.id).subscribe(() => this.updateGrid());
+    this.tagService.deleteTag(tag.id).subscribe(() => this.updateGrid());
   }
 
   private setBreadcrumb() {
@@ -57,6 +57,6 @@ export class TagsComponent implements OnInit, OnDestroy {
   }
 
   private updateGrid() {
-    this.subs.push(this.tagService.getAll().subscribe(tags => (this.tags = tags)));
+    this.subs.push(this.tagService.getAllTags().subscribe(tags => (this.tags = tags)));
   }
 }

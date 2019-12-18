@@ -60,7 +60,7 @@ export class TagDetailsComponent implements OnInit, OnDestroy {
       this.setForm();
     } else {
       this.subs.push(
-        this.tagService.getById(+params.id).subscribe(tag => {
+        this.tagService.getTagById(+params.id).subscribe(tag => {
           this.currentEntity = tag;
 
           this.setBreadcrumb(tag.name);
@@ -78,10 +78,10 @@ export class TagDetailsComponent implements OnInit, OnDestroy {
 
       if (this.currentEntity) {
         const dto = this.tagDetailsService.overrideDtoByFormModel(this.currentEntity, formRawValue);
-        action = this.tagService.update(dto);
+        action = this.tagService.updateTag(dto);
       } else {
         const dto = this.tagDetailsService.castFormModelToDto(formRawValue);
-        action = this.tagService.add(dto);
+        action = this.tagService.addTag(dto);
       }
 
       this.subs.push(

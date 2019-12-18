@@ -1,44 +1,57 @@
 import { Injectable } from '@angular/core';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
 import { Observable, from } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 
 @Injectable()
 export class DatabaseService {
-  get currentStore(): string {
-    return this.dbService.currentStore;
-  }
-
-  set currentStore(value: string) {
-    if (!value) {
-      throw new Error('Current store is not specified.');
-    }
-
-    this.dbService.currentStore = value;
-  }
+  protected currentStoreName: string;
 
   constructor(private dbService: NgxIndexedDBService) {}
 
-  getAll<T>(): Observable<T[]> {
+  protected getAll<T>(): Observable<T[]> {
+    this.setCurrentStoreName();
+
     return from(this.dbService.getAll<T>());
   }
 
-  getById<T>(id: string | number): Observable<T> {
+  protected getById<T>(id: string | number): Observable<T> {
+    this.setCurrentStoreName();
+
     return from(this.dbService.getByID<T>(id));
   }
 
-  getByIndex<T>(indexName: string, key: any): Observable<T> {
+  protected getByIndex(indexName: string, key: any): Observable<any> {
+    this.setCurrentStoreName();
+
     return from(this.dbService.getByIndex(indexName, key));
   }
 
-  add<T>(value: T, key?: any): Observable<number> {
-    return from(this.dbService.add(value, key));
+  protected getByKey(key: any): Observable<any> {
+    this.setCurrentStoreName();
+
+    return from(this.dbService.getByKey(key));
   }
 
-  update<T>(value: T, key?: any): Observable<any> {
+  protected add<T, R>(value: T, key?: any): Observable<R> {
+    this.setCurrentStoreName();
+
+    return from(this.dbService.add(value, key)).pipe(mergeMap(id => this.getById<R>(id)));
+  }
+
+  protected update<T>(value: T, key?: any): Observable<any> {
+    this.setCurrentStoreName();
+
     return from(this.dbService.update(value, key));
   }
 
-  delete(id: string | number): Observable<any> {
+  protected delete(id: string | number): Observable<any> {
+    this.setCurrentStoreName();
+
     return from(this.dbService.deleteRecord(id));
+  }
+
+  protected setCurrentStoreName() {
+    this.dbService.currentStore = this.currentStoreName;
   }
 }

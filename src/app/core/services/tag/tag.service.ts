@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { NgxIndexedDBService } from 'ngx-indexed-db';
 
 import { dbStoreNames } from '../../constants/db-store-names';
 import { dbIndexNames } from '../../constants/db-index-names';
@@ -11,52 +12,62 @@ import { Tag } from '../../interfaces/tag/tag.interface';
 import { DatabaseService } from '../database/database.service';
 
 @Injectable()
-export class TagService {
-  constructor(private dbService: DatabaseService) {
-    this.setStoreName();
+export class TagService extends DatabaseService {
+  constructor(dbService: NgxIndexedDBService) {
+    super(dbService);
+
+    this.currentStoreName = dbStoreNames.tag;
   }
 
   checkIfNameUnused(name: string, originName: string = null): Observable<boolean> {
-    return this.getByName(name).pipe(map(tag => (tag ? tag.name === originName : true)));
-  }
-
-  getById(id: number): Observable<Tag> {
-    return this.dbService.getById(id);
-  }
-
-  getByName(name: string): Observable<Tag> {
-    return this.dbService.getByIndex<Tag>(dbIndexNames.tag.name, name);
-  }
-
-  getAll(): Observable<Tag[]> {
-    return this.dbService.getAll<Tag>();
-  }
-
-  add(tagShort: TagShort): Observable<number> {
-    if (!tagShort) {
-      throw new Error('Tag short is not specified.');
+    if (!name) {
+      throw new Error('Name is not specified.');
     }
 
-    return this.dbService.add(tagShort);
+    return this.getTagByName(name).pipe(map(tag => (tag ? tag.name === originName : true)));
   }
 
-  update(tag: Tag): Observable<any> {
-    if (!tag) {
-      throw new Error('Tag is not specified.');
-    }
-
-    return this.dbService.update(tag);
-  }
-
-  delete(id: number): Observable<any> {
+  getTagById(id: number): Observable<Tag> {
     if (!id) {
       throw new Error('Id is not specified.');
     }
 
-    return this.dbService.delete(id);
+    return this.getById(id);
   }
 
-  setStoreName() {
-    this.dbService.currentStore = dbStoreNames.tag;
+  getTagByName(name: string): Observable<Tag> {
+    if (!name) {
+      throw new Error('Name is not specified.');
+    }
+
+    return this.getByIndex(dbIndexNames.tag.name, name);
+  }
+
+  getAllTags(): Observable<Tag[]> {
+    return this.getAll<Tag>();
+  }
+
+  addTag(tagShort: TagShort): Observable<Tag> {
+    if (!tagShort) {
+      throw new Error('Tag short is not specified.');
+    }
+
+    return this.add(tagShort);
+  }
+
+  updateTag(tag: Tag): Observable<any> {
+    if (!tag) {
+      throw new Error('Tag is not specified.');
+    }
+
+    return this.update(tag);
+  }
+
+  deleteTag(id: number): Observable<any> {
+    if (!id) {
+      throw new Error('Id is not specified.');
+    }
+
+    return this.delete(id);
   }
 }
