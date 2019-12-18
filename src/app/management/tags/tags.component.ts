@@ -19,11 +19,32 @@ import { idOfNewTag } from './tag-details/tag-details.component';
 export class TagsComponent implements OnInit, OnDestroy {
   tags: Tag[] = [];
 
-  private subscription: Subscription;
+  private subs: Subscription[] = [];
 
   constructor(private router: Router, private tagService: TagService, private breadcrumbService: BreadcrumbService) {}
 
   ngOnInit() {
+    this.setBreadcrumb();
+    this.updateGrid();
+  }
+
+  ngOnDestroy() {
+    this.subs.forEach(i => i.unsubscribe());
+  }
+
+  newButtonClickHandler() {
+    this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.tags, idOfNewTag]);
+  }
+
+  editButtonClickHandler(tag: Tag) {
+    this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.tags, tag.id]);
+  }
+
+  removeButtonClickHandler(tag: Tag) {
+    this.tagService.delete(tag.id).subscribe(() => this.updateGrid());
+  }
+
+  private setBreadcrumb() {
     this.breadcrumbService.setItems([
       {
         label: linkLabels.management,
@@ -33,19 +54,9 @@ export class TagsComponent implements OnInit, OnDestroy {
         label: linkLabels.managementChilds.tags
       }
     ]);
-
-    this.subscription = this.tagService.getAll().subscribe(tags => (this.tags = tags));
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
-
-  newButtonClickHandler() {
-    this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.tags, idOfNewTag]);
-  }
-
-  editButtonClickHandler(tag: Tag) {
-    this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.tags, tag.id]);
+  private updateGrid() {
+    this.subs.push(this.tagService.getAll().subscribe(tags => (this.tags = tags)));
   }
 }

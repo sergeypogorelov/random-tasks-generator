@@ -48,6 +48,14 @@ export class TagService {
     return this.dbService.update(tag);
   }
 
+  delete(id: number): Observable<any> {
+    if (!id) {
+      throw new Error('Id is not specified.');
+    }
+
+    return this.dbService.delete(id);
+  }
+
   setStoreName() {
     this.dbService.currentStore = dbStoreNames.tag;
   }

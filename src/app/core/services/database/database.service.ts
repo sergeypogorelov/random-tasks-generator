@@ -16,9 +16,7 @@ export class DatabaseService {
     this.dbService.currentStore = value;
   }
 
-  constructor(private dbService: NgxIndexedDBService) {
-    this.dbService.update;
-  }
+  constructor(private dbService: NgxIndexedDBService) {}
 
   getAll<T>(): Observable<T[]> {
     return from(this.dbService.getAll<T>());
@@ -26,10 +24,6 @@ export class DatabaseService {
 
   getById<T>(id: string | number): Observable<T> {
     return from(this.dbService.getByID<T>(id));
-  }
-
-  getByKey<T>(key: any): Observable<T> {
-    return from(this.dbService.getByKey(key));
   }
 
   getByIndex<T>(indexName: string, key: any): Observable<T> {
@@ -42,5 +36,9 @@ export class DatabaseService {
 
   update<T>(value: T, key?: any): Observable<any> {
     return from(this.dbService.update(value, key));
+  }
+
+  delete(id: string | number): Observable<any> {
+    return from(this.dbService.deleteRecord(id));
   }
 }
