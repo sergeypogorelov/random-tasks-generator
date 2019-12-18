@@ -16,8 +16,12 @@ export class TagService {
     this.setStoreName();
   }
 
-  checkIfNameUnused(name: string): Observable<boolean> {
-    return this.getByName(name).pipe(map(tag => !tag));
+  checkIfNameUnused(name: string, originName: string = null): Observable<boolean> {
+    return this.getByName(name).pipe(map(tag => (tag ? tag.name === originName : true)));
+  }
+
+  getById(id: number): Observable<Tag> {
+    return this.dbService.getById(id);
   }
 
   getByName(name: string): Observable<Tag> {
@@ -29,7 +33,19 @@ export class TagService {
   }
 
   add(tagShort: TagShort): Observable<number> {
+    if (!tagShort) {
+      throw new Error('Tag short is not specified.');
+    }
+
     return this.dbService.add(tagShort);
+  }
+
+  update(tag: Tag): Observable<any> {
+    if (!tag) {
+      throw new Error('Tag is not specified.');
+    }
+
+    return this.dbService.update(tag);
   }
 
   setStoreName() {

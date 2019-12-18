@@ -44,4 +44,8 @@ export class TagsComponent implements OnInit, OnDestroy {
   newButtonClickHandler() {
     this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.tags, idOfNewTag]);
   }
+
+  editButtonClickHandler(tag: Tag) {
+    this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.tags, tag.id]);
+  }
 }

@@ -16,10 +16,16 @@ export class DatabaseService {
     this.dbService.currentStore = value;
   }
 
-  constructor(private dbService: NgxIndexedDBService) {}
+  constructor(private dbService: NgxIndexedDBService) {
+    this.dbService.update;
+  }
 
   getAll<T>(): Observable<T[]> {
     return from(this.dbService.getAll<T>());
+  }
+
+  getById<T>(id: string | number): Observable<T> {
+    return from(this.dbService.getByID<T>(id));
   }
 
   getByKey<T>(key: any): Observable<T> {
@@ -32,5 +38,9 @@ export class DatabaseService {
 
   add<T>(value: T, key?: any): Observable<number> {
     return from(this.dbService.add(value, key));
+  }
+
+  update<T>(value: T, key?: any): Observable<any> {
+    return from(this.dbService.update(value, key));
   }
 }
