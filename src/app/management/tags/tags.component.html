@@ -3,27 +3,21 @@
   <div class="mb-2 text-right">
     <button class="btn btn-primary" (click)="newButtonClickHandler()">New</button>
   </div>
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th class="d-none d-sm-table-cell">Description</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let tag of tags">
-        <td>{{ tag.name }}</td>
-        <td class="d-none d-sm-table-cell">
-          {{ tag.description }}
-        </td>
-        <td>
-          <div class="btn-group d-flex">
-            <button class="btn btn-secondary" (click)="editButtonClickHandler(tag)">Edit</button>
-            <button class="btn btn-warning" (click)="removeButtonClickHandler(tag)">Remove</button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <rtg-grid [data]="tags">
+    <rtg-grid-column title="Name" field="name"></rtg-grid-column>
+    <rtg-grid-column
+      title="Description"
+      field="description"
+      headClassNames="d-none d-sm-table-cell"
+      classNames="d-none d-sm-table-cell"
+    ></rtg-grid-column>
+    <rtg-grid-column title="Action">
+      <ng-template rtgGridCellTemplate let-dataItem="dataItem">
+        <div class="btn-group d-flex">
+          <button class="btn btn-secondary" (click)="editButtonClickHandler(dataItem)">Edit</button>
+          <button class="btn btn-warning" (click)="removeButtonClickHandler(dataItem)">Remove</button>
+        </div>
+      </ng-template>
+    </rtg-grid-column>
+  </rtg-grid>
 </div>

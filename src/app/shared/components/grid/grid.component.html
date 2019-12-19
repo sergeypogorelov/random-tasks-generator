@@ -1,0 +1,21 @@
+<table class="table table-bordered" *ngIf="columns && data">
+  <thead>
+    <tr>
+      <th *ngFor="let column of columns" [class]="column.headClassNames">{{ column.title }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let dataItem of data">
+      <td *ngFor="let column of columns" [class]="column.classNames">
+        <ng-container
+          *ngIf="column.gridCellTemplate; else defaultCell"
+          [ngTemplateOutlet]="column.gridCellTemplate"
+          [ngTemplateOutletContext]="{ dataItem: dataItem }"
+        ></ng-container>
+        <ng-template #defaultCell>
+          {{ dataItem[column.field] }}
+        </ng-template>
+      </td>
+    </tr>
+  </tbody>
+</table>
