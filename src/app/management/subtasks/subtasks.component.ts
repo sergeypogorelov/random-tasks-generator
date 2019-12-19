@@ -9,7 +9,6 @@ import { idOfNewSubtask } from './subtask-details/subtask-details.component';
 
 @Component({
   selector: 'rtg-subtasks',
-  styleUrls: ['./subtasks.component.scss'],
   templateUrl: './subtasks.component.html'
 })
 export class SubtasksComponent implements OnInit {

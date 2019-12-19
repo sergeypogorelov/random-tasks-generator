@@ -15,6 +15,7 @@ import { LinkComponent } from './components/link/link.component';
 import { TagsSelectorComponent } from './components/tags-selector/tags-selector.component';
 import { GridColumnComponent } from './components/grid/grid-column/grid-column.component';
 import { GridComponent } from './components/grid/grid.component';
+import { ImageUploaderComponent } from './components/image-uploader/image-uploader.component';
 
 import { ModalConfirmComponent } from './components/modal-confirm/modal-confirm.component';
 
@@ -36,6 +37,7 @@ const declarationsAndExports = [
   TagsSelectorComponent,
   GridColumnComponent,
   GridComponent,
+  ImageUploaderComponent,
   ClickOutsideDirective,
   ModalGeneratorHostDirective,
   GridCellTemplateDirective
