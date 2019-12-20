@@ -1,4 +1,25 @@
 <div class="image-uploader">
-  <div class="image-uploader-label" (click)="labelClickHandler()">Click to upload</div>
-  <input #control class="d-none" type="file" (change)="controlChangeHandler($event)" />
+  <div class="progress mb-2" [class.d-none]="!loading || error">
+    <div #progressBar class="progress-bar progress-bar-striped progress-bar-animated"></div>
+  </div>
+  <div class="d-flex justify-content-between align-items-center" *ngIf="loading && !error">
+    <p class="m-0">{{ fileName }}</p>
+    <button class="btn btn-outline-warning" (click)="buttonCancelClickHandler()">Cancel</button>
+  </div>
+  <div class="d-flex align-items-center" *ngIf="value && !loading && !error">
+    <div class="image-uploader-thumbnail mr-2">
+      <img class="img img-fluid img-thumbnail" [src]="value" />
+      <div class="overlay" (click)="buttonUploadClickHandler()">
+        Replace
+      </div>
+    </div>
+  </div>
+  <button class="btn btn-outline-secondary" *ngIf="!value && !loading && !error" (click)="buttonUploadClickHandler()">
+    Click to upload an image
+  </button>
+  <div class="alert alert-danger d-flex align-items-center justify-content-between" *ngIf="error">
+    <p class="m-0">Something went wrong while uploading</p>
+    <button class="btn btn-link pl-1 pr-0 py-0" (click)="errorButtonClickHandler()">X</button>
+  </div>
+  <input #control class="d-none" type="file" (change)="controlChangeHandler()" />
 </div>

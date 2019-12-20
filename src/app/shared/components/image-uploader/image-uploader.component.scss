@@ -1,0 +1,27 @@
+@import '../../../../styles/variables';
+@import '../../../../styles/functions';
+
+.image-uploader {
+  &-thumbnail {
+    &:hover {
+      .overlay {
+        display: flex;
+      }
+    }
+    .overlay {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      color: $white-color;
+      background-color: blackColor(0.7);
+      cursor: pointer;
+    }
+    width: 128px;
+    position: relative;
+  }
+}

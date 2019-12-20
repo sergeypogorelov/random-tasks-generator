@@ -1,8 +1,8 @@
 import { Observable, Subject, throwError, merge } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
-import { LoadMessage } from './interfaces/load-message.intreface';
 
 import { LoadMessageTypes } from './load-message-types.enum';
+import { LoadMessage } from './interfaces/load-message.intreface';
 
 export enum FileTypes {
   Any,
@@ -19,6 +19,8 @@ export class FileReaderHelper {
   }
 
   private isLoading: boolean;
+
+  private fileReader: FileReader;
 
   private generalObservable: Observable<LoadMessage>;
 
@@ -94,12 +96,24 @@ export class FileReaderHelper {
     this.setSubjects();
     this.setGeneralObservable();
 
-    const reader = new FileReader();
-    this.addEventListeners(reader);
+    this.fileReader = new FileReader();
+    this.addEventListeners(this.fileReader);
 
-    reader.readAsDataURL(file);
+    this.fileReader.readAsDataURL(file);
 
     return this.generalObservable;
+  }
+
+  abort() {
+    if (!this.isLoading) {
+      throw new Error('Loading is not in progress.');
+    }
+
+    if (!this.fileReader) {
+      throw new Error('File reader is not specified.');
+    }
+
+    this.fileReader.abort();
   }
 
   private addEventListeners(reader: FileReader) {
@@ -154,6 +168,7 @@ export class FileReaderHelper {
 
   private clear(fileReader: FileReader) {
     this.isLoading = false;
+    this.fileReader = null;
 
     this.loadStartSubject = null;
     this.loadProgressSubject = null;
