@@ -1,4 +1,5 @@
-import { Component, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnDestroy, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { LoadMessageTypes } from '../../../core/helpers/filer-reader/load-message-types.enum';
@@ -7,20 +8,30 @@ import { LoadMessage } from '../../..//core/helpers/filer-reader/interfaces/load
 import { LoadProgressMessage } from '../../../core/helpers/filer-reader/interfaces/load-progress-message.interface';
 
 import { FileReaderHelper, FileTypes } from '../../../core/helpers/filer-reader/file-reader-helper.class';
+import { Utils } from '../../../core/helpers/utils.class';
 
 @Component({
   selector: 'rtg-image-uploader',
   styleUrls: ['./image-uploader.component.scss'],
-  templateUrl: './image-uploader.component.html'
+  templateUrl: './image-uploader.component.html',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => ImageUploaderComponent),
+      multi: true
+    }
+  ]
 })
-export class ImageUploaderComponent implements OnDestroy {
+export class ImageUploaderComponent implements ControlValueAccessor, OnDestroy {
   loading: boolean;
-
-  error: boolean;
 
   value: string;
 
+  error: boolean;
+
   fileName: string;
+
+  fileSize: number;
 
   @ViewChild('progressBar', { static: true })
   progressBarElementRef: ElementRef<HTMLDivElement>;
@@ -30,7 +41,9 @@ export class ImageUploaderComponent implements OnDestroy {
 
   private fileReader: FileReaderHelper;
 
-  private fileSize: number;
+  private onChangeHandler: any;
+
+  private onTouchedHandler: any;
 
   private subs: Subscription[] = [];
 
@@ -40,16 +53,36 @@ export class ImageUploaderComponent implements OnDestroy {
     this.setLoadMessageHandlers();
   }
 
+  writeValue(obj: any) {
+    this.value = obj || null;
+  }
+
+  registerOnChange(fn: any) {
+    this.onChangeHandler = fn;
+  }
+
+  registerOnTouched(fn: any) {
+    this.onTouchedHandler = fn;
+  }
+
   ngOnDestroy() {
     this.subs.forEach(i => i.unsubscribe());
   }
 
   buttonUploadClickHandler() {
     this.controlElementRef.nativeElement.click();
+
+    if (this.onTouchedHandler) {
+      this.onTouchedHandler();
+    }
   }
 
   buttonCancelClickHandler() {
     this.fileReader.abort();
+
+    if (this.onTouchedHandler) {
+      this.onTouchedHandler();
+    }
   }
 
   errorButtonClickHandler() {
@@ -89,7 +122,6 @@ export class ImageUploaderComponent implements OnDestroy {
 
   private errorMessageHandler(error: any) {
     this.error = true;
-
     console.error(error);
   }
 
@@ -116,6 +148,10 @@ export class ImageUploaderComponent implements OnDestroy {
 
     this.loadMessageHandlers[LoadMessageTypes.Success] = loadMessage => {
       this.value = loadMessage.fileReader.result as string;
+
+      if (this.onChangeHandler) {
+        this.onChangeHandler(Utils.jsonCopy(this.value));
+      }
     };
   }
 

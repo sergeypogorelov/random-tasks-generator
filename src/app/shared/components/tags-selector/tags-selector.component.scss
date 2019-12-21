@@ -1,3 +1,5 @@
+@import '../../../../styles/bootstrap/bootstrap-required.scss';
+
 .tags-selector {
   &-top {
     position: relative;
@@ -11,13 +13,14 @@
     overflow-y: auto;
   }
   &-suggestion {
+    &:hover {
+      background-color: $table-hover-bg;
+    }
+    &:last-child {
+      border: none;
+    }
+    border-bottom: 1px solid $secondary;
     cursor: pointer;
-  }
-  &-result {
-    &-item {
-    }
-    &-label {
-    }
   }
   &-button-remove {
     display: inline-block;

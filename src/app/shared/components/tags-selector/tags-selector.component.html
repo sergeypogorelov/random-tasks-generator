@@ -4,11 +4,12 @@
       class="tags-selector-textbox form-control form-control-sm"
       [(ngModel)]="textboxValue"
       (ngModelChange)="textboxChangeHandler($event)"
+      (blur)="textboxBlurHandler()"
       (focus)="textboxFocusHandler()"
     />
     <div class="tags-selector-suggestions border" *ngIf="suggestedDataItems && suggestedDataItems.length">
       <div
-        class="tags-selector-suggestion"
+        class="tags-selector-suggestion p-1"
         *ngFor="let item of suggestedDataItems"
         (click)="suggestionClickHandler(item)"
       >
@@ -24,5 +25,8 @@
       <span class="tags-selector-result-label">{{ item }}</span>
       <span class="tags-selector-button-remove" (click)="buttonRemoveClickHandler(item)">X</span>
     </div>
+  </div>
+  <div class="text-center" *ngIf="selectedDataItems.length === 0">
+    <p class="mb-2">No tags selected</p>
   </div>
 </div>
