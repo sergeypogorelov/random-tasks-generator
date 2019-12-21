@@ -1,4 +1,4 @@
-import { Component, Input, forwardRef } from '@angular/core';
+import { Component, Input, forwardRef, HostBinding } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { Utils } from '../../../core/helpers/utils.class';
@@ -24,6 +24,14 @@ export class TagsSelectorComponent implements ControlValueAccessor {
 
   @Input()
   dataItems: string[] = [];
+
+  @Input()
+  @HostBinding('class.is-valid')
+  valid: boolean;
+
+  @Input()
+  @HostBinding('class.is-invalid')
+  invalid: boolean;
 
   private onChangeHandler: any;
 

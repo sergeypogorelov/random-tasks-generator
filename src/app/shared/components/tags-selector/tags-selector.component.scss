@@ -1,6 +1,10 @@
 @import '../../../../styles/bootstrap/bootstrap-required.scss';
 
 .tags-selector {
+  &.is-invalid {
+    padding-right: 0.75rem;
+    background-image: none;
+  }
   &-top {
     position: relative;
   }

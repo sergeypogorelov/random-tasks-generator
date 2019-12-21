@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, OnDestroy, forwardRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnDestroy, forwardRef, Input, HostBinding } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
@@ -32,6 +32,14 @@ export class ImageUploaderComponent implements ControlValueAccessor, OnDestroy {
   fileName: string;
 
   fileSize: number;
+
+  @Input()
+  @HostBinding('class.is-valid')
+  valid: boolean;
+
+  @Input()
+  @HostBinding('class.is-invalid')
+  invalid: boolean;
 
   @ViewChild('progressBar', { static: true })
   progressBarElementRef: ElementRef<HTMLDivElement>;

@@ -1,36 +1,102 @@
 <rtg-breadcrumb></rtg-breadcrumb>
 <div class="container p-2">
-  <div>
+  <form *ngIf="form" [formGroup]="form" (ngSubmit)="formSubmitHandler()">
     <div class="form-group">
       <label for="subtaskTitle">Title</label>
-      <input id="subtaskTitle" class="form-control" />
+      <input
+        id="subtaskTitle"
+        class="form-control"
+        formControlName="title"
+        [class.is-valid]="formTitle.valid"
+        [class.is-invalid]="formTitle.touched && formTitle.invalid"
+      />
+      <div class="invalid-feedback" *ngIf="formTitle.hasError('required')">
+        Please specify a title.
+      </div>
+      <div class="invalid-feedback" *ngIf="formTitle.hasError('nameExists')">
+        Please specify another title. Title '{{ formTitle.value }}' is already in use.
+      </div>
     </div>
     <div class="form-group">
       <label for="subtaskDescription">Description</label>
-      <textarea id="subtaskDescription" class="form-control" rows="3"></textarea>
+      <textarea id="subtaskDescription" class="form-control" rows="3" formControlName="description"></textarea>
     </div>
     <div class="form-group">
       <label for="subtaskThumbnail">Thumbnail</label>
-      <rtg-image-uploader></rtg-image-uploader>
+      <rtg-image-uploader
+        formControlName="thumbnail"
+        [valid]="formThumbnail.valid"
+        [invalid]="formThumbnail.touched && formThumbnail.invalid"
+      ></rtg-image-uploader>
+      <div class="invalid-feedback" *ngIf="formThumbnail.hasError('required')">
+        Please select thumbnail.
+      </div>
     </div>
     <div class="form-group">
       <label for="subtaskLowProbabilityScore">Low Probability Score</label>
-      <input id="subtaskLowProbabilityScore" class="form-control" type="number" min="1" />
+      <input
+        id="subtaskLowProbabilityScore"
+        class="form-control"
+        type="number"
+        formControlName="lowProbabilityScore"
+        [class.is-valid]="formLowProbabilityScore.valid"
+        [class.is-invalid]="formLowProbabilityScore.touched && formLowProbabilityScore.invalid"
+      />
+      <div class="invalid-feedback" *ngIf="formLowProbabilityScore.hasError('required')">
+        Please specifiy low probability score.
+      </div>
+      <div class="invalid-feedback" *ngIf="formLowProbabilityScore.hasError('min')">
+        Low probability score cannot be less than {{ formLowProbabilityScore.errors['min'].min }}.
+      </div>
     </div>
     <div class="form-group">
       <label for="subtaskAverageProbabilityScore">Average Probability Score</label>
-      <input id="subtaskAverageProbabilityScore" class="form-control" type="number" min="1" />
+      <input
+        id="subtaskAverageProbabilityScore"
+        class="form-control"
+        type="number"
+        formControlName="averageProbabilityScore"
+        [class.is-valid]="formAverageProbabilityScore.valid"
+        [class.is-invalid]="formAverageProbabilityScore.touched && formAverageProbabilityScore.invalid"
+      />
+      <div class="invalid-feedback" *ngIf="formAverageProbabilityScore.hasError('required')">
+        Please specifiy average probability score.
+      </div>
+      <div class="invalid-feedback" *ngIf="formAverageProbabilityScore.hasError('min')">
+        Average probability score cannot be less than {{ formAverageProbabilityScore.errors['min'].min }}.
+      </div>
     </div>
     <div class="form-group">
       <label for="subtaskHighProbabilityScore">High Probability Score</label>
-      <input id="subtaskHighProbabilityScore" class="form-control" type="number" min="1" />
+      <input
+        id="subtaskHighProbabilityScore"
+        class="form-control"
+        type="number"
+        formControlName="highProbabilityScore"
+        [class.is-valid]="formHighProbabilityScore.valid"
+        [class.is-invalid]="formHighProbabilityScore.touched && formHighProbabilityScore.invalid"
+      />
+      <div class="invalid-feedback" *ngIf="formHighProbabilityScore.hasError('required')">
+        Please specifiy high probability score.
+      </div>
+      <div class="invalid-feedback" *ngIf="formHighProbabilityScore.hasError('min')">
+        High probability score cannot be less than {{ formHighProbabilityScore.errors['min'].min }}.
+      </div>
     </div>
     <div class="form-group">
       <label>Tags</label>
-      <rtg-tags-selector [dataItems]="tags"></rtg-tags-selector>
+      <rtg-tags-selector
+        formControlName="tagNames"
+        [dataItems]="tagNames"
+        [valid]="formTagNames.valid"
+        [invalid]="formTagNames.touched && formTagNames.invalid"
+      ></rtg-tags-selector>
+      <div class="invalid-feedback" *ngIf="formTagNames.hasError('arrayNotEmpty')">
+        Please select at least one tag.
+      </div>
     </div>
-  </div>
-  <div class="text-right">
-    <button class="btn btn-primary">Save</button>
-  </div>
+    <div class="text-right">
+      <button class="btn btn-primary" type="submit" [disabled]="form.pending || form.invalid">Save</button>
+    </div>
+  </form>
 </div>

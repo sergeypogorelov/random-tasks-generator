@@ -5,6 +5,7 @@ import { SharedModule } from '../shared/shared.module';
 import { ManagementRoutingModule } from './management-routing.module';
 
 import { TagDetailsService } from './tags/tag-details/tag-details.service';
+import { SubtaskDetailsService } from './subtasks/subtask-details/subtask-details.service';
 
 import { ManagementComponent } from './management.component';
 import { PersonsComponent } from './persons/persons.component';
@@ -28,7 +29,7 @@ const declarations = [
   TagDetailsComponent
 ];
 
-const services = [TagDetailsService];
+const services = [TagDetailsService, SubtaskDetailsService];
 
 @NgModule({
   declarations: [...declarations],

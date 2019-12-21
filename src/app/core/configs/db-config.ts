@@ -10,10 +10,12 @@ export const dbConfig: DBConfig = {
     {
       store: dbStoreNames.tag,
       storeConfig: { keyPath: 'id', autoIncrement: true },
-      storeSchema: [
-        { name: 'name', keypath: 'name', options: { unique: true } },
-        { name: 'description', keypath: 'description', options: { unique: false } }
-      ]
+      storeSchema: [{ name: 'name', keypath: 'name', options: { unique: true } }]
+    },
+    {
+      store: dbStoreNames.subTasks,
+      storeConfig: { keyPath: 'id', autoIncrement: true },
+      storeSchema: [{ name: 'name', keypath: 'name', options: { unique: true } }]
     }
   ],
   migrationFactory: dbMigrationFactory
