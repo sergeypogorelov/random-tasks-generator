@@ -47,6 +47,8 @@ export class ImageUploaderComponent implements ControlValueAccessor, OnDestroy {
   @ViewChild('control', { static: true })
   controlElementRef: ElementRef<HTMLInputElement>;
 
+  private touched: boolean;
+
   private fileReader: FileReaderHelper;
 
   private onChangeHandler: any;
@@ -77,20 +79,22 @@ export class ImageUploaderComponent implements ControlValueAccessor, OnDestroy {
     this.subs.forEach(i => i.unsubscribe());
   }
 
+  rootClickOutsideHandler() {
+    if (this.touched && this.onTouchedHandler) {
+      this.onTouchedHandler();
+    }
+  }
+
   buttonUploadClickHandler() {
     this.controlElementRef.nativeElement.click();
 
-    if (this.onTouchedHandler) {
-      this.onTouchedHandler();
+    if (!this.touched) {
+      this.touched = true;
     }
   }
 
   buttonCancelClickHandler() {
     this.fileReader.abort();
-
-    if (this.onTouchedHandler) {
-      this.onTouchedHandler();
-    }
   }
 
   errorButtonClickHandler() {

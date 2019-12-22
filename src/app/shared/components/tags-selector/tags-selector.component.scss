@@ -1,6 +1,7 @@
 @import '../../../../styles/bootstrap/bootstrap-required.scss';
 
 .tags-selector {
+  &.is-valid,
   &.is-invalid {
     padding-right: 0.75rem;
     background-image: none;
