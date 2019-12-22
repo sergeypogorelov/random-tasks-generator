@@ -8,7 +8,7 @@
   </div>
   <div class="d-flex align-items-center" *ngIf="value && !loading && !error">
     <div class="image-uploader-thumbnail mr-2">
-      <img class="img img-fluid img-thumbnail" [src]="value" />
+      <img class="img img-fluid img-thumbnail" *ngIf="imgDataUrl" [src]="imgDataUrl" (load)="imgLoadHandler()" />
       <div class="overlay" (click)="buttonUploadClickHandler()">
         Replace
       </div>

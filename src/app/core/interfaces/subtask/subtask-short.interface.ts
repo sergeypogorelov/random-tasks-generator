@@ -1,7 +1,9 @@
+import { FileInfo } from '../common/file-info.interface';
+
 export interface SubtaskShort {
   name: string;
   description: string;
-  thumbnail: string;
+  thumbnail: FileInfo;
   lowProbabilityScore: number;
   averageProbabilityScore: number;
   highProbabilityScore: number;

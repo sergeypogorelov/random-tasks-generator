@@ -68,6 +68,11 @@ export class FileReaderHelper {
     }
   };
 
+  static arrayBufferToDataUrl(arrayBuffer: ArrayBuffer, type: string): string {
+    const blob = new Blob([arrayBuffer], { type });
+    return URL.createObjectURL(blob);
+  }
+
   checkType(file: File, fileType: FileTypes = FileTypes.Any): boolean {
     if (!file) {
       throw new Error('File is not specified.');
@@ -99,7 +104,7 @@ export class FileReaderHelper {
     this.fileReader = new FileReader();
     this.addEventListeners(this.fileReader);
 
-    this.fileReader.readAsDataURL(file);
+    this.fileReader.readAsArrayBuffer(file);
 
     return this.generalObservable;
   }

@@ -4,5 +4,9 @@ export const dbIndexNames = {
   },
   subTasks: {
     name: 'nameIdx'
+  },
+  tagsToSubTasks: {
+    tagId: 'tagIdIdx',
+    subTaskId: 'subTaskIdIdx'
   }
 };

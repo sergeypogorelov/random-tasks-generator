@@ -1,4 +1,5 @@
 export const dbStoreNames = {
   tag: 'tag',
-  subTasks: 'sub-tasks'
+  subTasks: 'sub-tasks',
+  tagsToSubTasks: 'tags_sub-tasks'
 };

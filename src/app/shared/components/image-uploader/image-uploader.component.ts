@@ -1,14 +1,15 @@
 import { Component, ViewChild, ElementRef, OnDestroy, forwardRef, Input, HostBinding } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 
 import { LoadMessageTypes } from '../../../core/helpers/filer-reader/load-message-types.enum';
 
+import { FileInfo } from 'src/app/core/interfaces/common/file-info.interface';
 import { LoadMessage } from '../../..//core/helpers/filer-reader/interfaces/load-message.intreface';
 import { LoadProgressMessage } from '../../../core/helpers/filer-reader/interfaces/load-progress-message.interface';
 
 import { FileReaderHelper, FileTypes } from '../../../core/helpers/filer-reader/file-reader-helper.class';
-import { Utils } from '../../../core/helpers/utils.class';
 
 @Component({
   selector: 'rtg-image-uploader',
@@ -25,13 +26,19 @@ import { Utils } from '../../../core/helpers/utils.class';
 export class ImageUploaderComponent implements ControlValueAccessor, OnDestroy {
   loading: boolean;
 
-  value: string;
-
   error: boolean;
+
+  value: FileInfo;
 
   fileName: string;
 
+  fileType: string;
+
   fileSize: number;
+
+  imgDataUrl: SafeUrl;
+
+  imgDataUrlOrigin: string;
 
   @Input()
   @HostBinding('class.is-valid')
@@ -59,12 +66,12 @@ export class ImageUploaderComponent implements ControlValueAccessor, OnDestroy {
 
   private loadMessageHandlers: { [loadMessageType: number]: (loadMessage: LoadMessage) => void } = {};
 
-  constructor() {
+  constructor(private domSanitizer: DomSanitizer) {
     this.setLoadMessageHandlers();
   }
 
   writeValue(obj: any) {
-    this.value = obj || null;
+    this.setValue(obj);
   }
 
   registerOnChange(fn: any) {
@@ -82,6 +89,12 @@ export class ImageUploaderComponent implements ControlValueAccessor, OnDestroy {
   rootClickOutsideHandler() {
     if (this.touched && this.onTouchedHandler) {
       this.onTouchedHandler();
+    }
+  }
+
+  imgLoadHandler() {
+    if (this.imgDataUrlOrigin) {
+      URL.revokeObjectURL(this.imgDataUrlOrigin);
     }
   }
 
@@ -115,6 +128,7 @@ export class ImageUploaderComponent implements ControlValueAccessor, OnDestroy {
     }
 
     this.fileName = file.name;
+    this.fileType = file.type;
     this.fileSize = file.size;
 
     this.subs.push(
@@ -137,6 +151,20 @@ export class ImageUploaderComponent implements ControlValueAccessor, OnDestroy {
     console.error(error);
   }
 
+  private setValue(fileInfo: FileInfo) {
+    if (!fileInfo) {
+      this.value = null;
+      this.imgDataUrl = null;
+      this.imgDataUrlOrigin = null;
+
+      return;
+    }
+
+    this.value = fileInfo;
+    this.imgDataUrlOrigin = FileReaderHelper.arrayBufferToDataUrl(fileInfo.arrayBuffer, fileInfo.type);
+    this.imgDataUrl = this.domSanitizer.bypassSecurityTrustUrl(this.imgDataUrlOrigin);
+  }
+
   private setLoadMessageHandlers() {
     this.loadMessageHandlers[LoadMessageTypes.Start] = () => {
       this.loading = true;
@@ -150,7 +178,7 @@ export class ImageUploaderComponent implements ControlValueAccessor, OnDestroy {
     };
 
     this.loadMessageHandlers[LoadMessageTypes.Abort] = () => {
-      this.value = null;
+      this.setValue(null);
     };
 
     this.loadMessageHandlers[LoadMessageTypes.End] = () => {
@@ -159,10 +187,17 @@ export class ImageUploaderComponent implements ControlValueAccessor, OnDestroy {
     };
 
     this.loadMessageHandlers[LoadMessageTypes.Success] = loadMessage => {
-      this.value = loadMessage.fileReader.result as string;
+      const arrayBuffer = loadMessage.fileReader.result as ArrayBuffer;
+
+      const value: FileInfo = {
+        arrayBuffer,
+        type: this.fileType
+      };
+
+      this.setValue(value);
 
       if (this.onChangeHandler) {
-        this.onChangeHandler(Utils.jsonCopy(this.value));
+        this.onChangeHandler(this.value);
       }
     };
   }
