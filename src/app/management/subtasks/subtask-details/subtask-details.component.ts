@@ -14,6 +14,7 @@ import { SubtaskService } from 'src/app/core/services/subtask/subtask.service';
 import { SubtaskDetailsService } from './subtask-details.service';
 import { TagService } from 'src/app/core/services/tag/tag.service';
 import { SubtaskDetails } from './subtask-details.interface';
+import { tap } from 'rxjs/operators';
 
 export const idOfNewSubtask = 'new-subtask';
 
@@ -28,9 +29,7 @@ export class SubtaskDetailsComponent implements OnInit, OnDestroy {
 
   subtask: Subtask;
 
-  tags: Tag[];
-
-  tagNames: string[];
+  tags: Tag[] = [];
 
   get formTitle(): AbstractControl {
     return this.form.get('title');
@@ -52,8 +51,8 @@ export class SubtaskDetailsComponent implements OnInit, OnDestroy {
     return this.form.get('highProbabilityScore');
   }
 
-  get formTagNames(): AbstractControl {
-    return this.form.get('tagNames');
+  get formTags(): AbstractControl {
+    return this.form.get('tags');
   }
 
   private subs: Subscription[] = [];
@@ -68,7 +67,6 @@ export class SubtaskDetailsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.loadAndSetTags();
     this.subs.push(this.activatedRoute.params.subscribe(params => this.routeParamsHandler(params)));
   }
 
@@ -81,14 +79,14 @@ export class SubtaskDetailsComponent implements OnInit, OnDestroy {
 
     if (isNew) {
       this.setBreadcrumb(labelOfNewSubtask);
-      this.setForm();
+      this.loadAndSetTags().subscribe(() => this.setForm());
     } else {
       this.subs.push(
         this.subtaskService.getSubtaskById(+params.id).subscribe(subtask => {
           this.subtask = subtask;
 
           this.setBreadcrumb(subtask.name);
-          this.setForm(subtask);
+          this.loadAndSetTags().subscribe(() => this.setForm(subtask));
         })
       );
     }
@@ -101,10 +99,10 @@ export class SubtaskDetailsComponent implements OnInit, OnDestroy {
       let action: Observable<any>;
 
       if (this.subtask) {
-        const dto = this.subtaskDetailsService.overrideDtoByFormModel(this.subtask, formRawValue, []);
+        const dto = this.subtaskDetailsService.overrideDtoByFormModel(this.subtask, formRawValue);
         action = this.subtaskService.updateSubtask(dto);
       } else {
-        const dto = this.subtaskDetailsService.castFormModelToDto(formRawValue, []);
+        const dto = this.subtaskDetailsService.castFormModelToDto(formRawValue);
         action = this.subtaskService.addSubtask(dto);
       }
 
@@ -134,7 +132,7 @@ export class SubtaskDetailsComponent implements OnInit, OnDestroy {
 
   private setForm(subtask?: Subtask) {
     if (subtask) {
-      const subtaskDetails = this.subtaskDetailsService.castDtoToFormModel(subtask, []);
+      const subtaskDetails = this.subtaskDetailsService.castDtoToFormModel(subtask, this.tags);
       this.form = this.subtaskDetailsService.generateFormGroup(subtaskDetails);
     } else {
       this.form = this.subtaskDetailsService.generateFormGroup();
@@ -143,12 +141,7 @@ export class SubtaskDetailsComponent implements OnInit, OnDestroy {
     this.form.valueChanges.subscribe(() => console.log(this.form));
   }
 
-  private loadAndSetTags() {
-    this.subs.push(
-      this.tagService.getAllTags().subscribe(tags => {
-        this.tags = tags;
-        this.tagNames = tags.map(i => i.name);
-      })
-    );
+  private loadAndSetTags(): Observable<Tag[]> {
+    return this.tagService.getAllTags().pipe(tap(tags => (this.tags = tags)));
   }
 }

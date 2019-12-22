@@ -2,6 +2,7 @@ import { Component, Input, forwardRef, HostBinding } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { Utils } from '../../../core/helpers/utils.class';
+import { Tag } from 'src/app/core/interfaces/tag/tag.interface';
 
 @Component({
   selector: 'rtg-tags-selector',
@@ -18,12 +19,18 @@ import { Utils } from '../../../core/helpers/utils.class';
 export class TagsSelectorComponent implements ControlValueAccessor {
   textboxValue: string;
 
-  suggestedDataItems: string[] = [];
+  suggestedDataItems: Tag[] = [];
 
-  selectedDataItems: string[] = [];
+  selectedDataItems: Tag[] = [];
 
   @Input()
-  dataItems: string[] = [];
+  labelKey: string;
+
+  @Input()
+  valueKey: string;
+
+  @Input()
+  dataItems: Tag[] = [];
 
   @Input()
   @HostBinding('class.is-valid')
@@ -71,16 +78,16 @@ export class TagsSelectorComponent implements ControlValueAccessor {
     this.filterSuggestedDataItems(value);
   }
 
-  suggestionClickHandler(value: string) {
-    if (!this.selectedDataItems.includes(value)) {
-      this.selectedDataItems.push(value);
+  suggestionClickHandler(item: Tag) {
+    if (this.selectedDataItems.findIndex(i => i[this.valueKey] === item[this.valueKey]) === -1) {
+      this.selectedDataItems.push(item);
 
       if (this.onChangeHandler) {
-        this.onChangeHandler(Utils.jsonCopy(this.selectedDataItems));
+        this.onChangeHandler(this.selectedDataItems);
       }
     }
 
-    const foundIndex = this.suggestedDataItems.indexOf(value);
+    const foundIndex = this.suggestedDataItems.findIndex(i => i[this.valueKey] === item[this.valueKey]);
     if (foundIndex !== -1) {
       this.suggestedDataItems.splice(foundIndex, 1);
     }
@@ -90,13 +97,13 @@ export class TagsSelectorComponent implements ControlValueAccessor {
     }
   }
 
-  buttonRemoveClickHandler(value: string) {
-    const foundIndex = this.selectedDataItems.indexOf(value);
+  buttonRemoveClickHandler(item: Tag) {
+    const foundIndex = this.selectedDataItems.findIndex(i => i[this.valueKey] === item[this.valueKey]);
     if (foundIndex !== -1) {
       this.selectedDataItems.splice(foundIndex, 1);
 
       if (this.onChangeHandler) {
-        this.onChangeHandler(Utils.jsonCopy(this.selectedDataItems));
+        this.onChangeHandler(this.selectedDataItems);
       }
     }
 
@@ -110,8 +117,8 @@ export class TagsSelectorComponent implements ControlValueAccessor {
 
     if (value) {
       this.suggestedDataItems = this.dataItems
-        .filter(i => !this.selectedDataItems.includes(i))
-        .filter(i => i.includes(value));
+        .filter(item => this.selectedDataItems.findIndex(i => i[this.valueKey] === item[this.valueKey]) === -1)
+        .filter(item => item[this.labelKey].includes(value));
     } else {
       this.suggestedDataItems = [];
     }

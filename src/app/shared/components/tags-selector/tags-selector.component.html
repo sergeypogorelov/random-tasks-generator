@@ -13,7 +13,7 @@
         *ngFor="let item of suggestedDataItems"
         (click)="suggestionClickHandler(item)"
       >
-        {{ item }}
+        {{ item[labelKey] }}
       </div>
     </div>
   </div>
@@ -22,11 +22,11 @@
       class="tags-selector-result-item p-1 mr-2 mb-2 border border-secondary rounded"
       *ngFor="let item of selectedDataItems"
     >
-      <span class="tags-selector-result-label">{{ item }}</span>
+      <span class="tags-selector-result-label">{{ item[labelKey] }}</span>
       <span class="tags-selector-button-remove" (click)="buttonRemoveClickHandler(item)">X</span>
     </div>
   </div>
   <div class="text-center" *ngIf="selectedDataItems.length === 0">
-    <p class="mb-2">No tags selected</p>
+    <p class="mb-2">No items selected</p>
   </div>
 </div>

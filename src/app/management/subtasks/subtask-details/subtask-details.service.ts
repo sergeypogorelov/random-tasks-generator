@@ -8,12 +8,13 @@ import { SubtaskDetails } from './subtask-details.interface';
 import { SubtaskShort } from 'src/app/core/interfaces/subtask/subtask-short.interface';
 import { nameUnusedValidator } from 'src/app/shared/validators/name-unused/name-unused.validator';
 import { arrayNotEmptyValidator } from 'src/app/shared/validators/array-not-empty/array-not-empty.validator';
+import { Tag } from 'src/app/core/interfaces/tag/tag.interface';
 
 @Injectable()
 export class SubtaskDetailsService {
   constructor(private fb: FormBuilder, private subtaskService: SubtaskService) {}
 
-  castDtoToFormModel(subtask: Subtask, tagNames: string[]): SubtaskDetails {
+  castDtoToFormModel(subtask: Subtask, allTags: Tag[]): SubtaskDetails {
     if (!subtask) {
       throw new Error('Subtask is not specified.');
     }
@@ -25,11 +26,11 @@ export class SubtaskDetailsService {
       lowProbabilityScore: `${subtask.lowProbabilityScore}`,
       averageProbabilityScore: `${subtask.averageProbabilityScore}`,
       highProbabilityScore: `${subtask.highProbabilityScore}`,
-      tagNames
+      tags: subtask.tagIds.map(id => allTags.find(i => i.id === id))
     };
   }
 
-  castFormModelToDto(subtaskDetails: SubtaskDetails, tagIds: number[]): SubtaskShort {
+  castFormModelToDto(subtaskDetails: SubtaskDetails): SubtaskShort {
     if (!subtaskDetails) {
       throw new Error('Subtask details are not specified.');
     }
@@ -41,11 +42,11 @@ export class SubtaskDetailsService {
       lowProbabilityScore: +subtaskDetails.lowProbabilityScore,
       averageProbabilityScore: +subtaskDetails.averageProbabilityScore,
       highProbabilityScore: +subtaskDetails.highProbabilityScore,
-      tagIds
+      tagIds: subtaskDetails.tags.map(i => i.id)
     };
   }
 
-  overrideDtoByFormModel(subtask: Subtask, subtaskDetails: SubtaskDetails, tagIds: number[]): Subtask {
+  overrideDtoByFormModel(subtask: Subtask, subtaskDetails: SubtaskDetails): Subtask {
     if (!subtask) {
       throw new Error('Subtask is not specified.');
     }
@@ -54,7 +55,9 @@ export class SubtaskDetailsService {
       throw new Error('Subtask details are not specified.');
     }
 
-    const result = Utils.jsonCopy(subtask);
+    const result = {
+      ...subtask
+    };
 
     result.name = subtaskDetails.title;
     result.description = subtaskDetails.description;
@@ -62,7 +65,7 @@ export class SubtaskDetailsService {
     result.lowProbabilityScore = +subtaskDetails.lowProbabilityScore;
     result.averageProbabilityScore = +subtaskDetails.averageProbabilityScore;
     result.highProbabilityScore = +subtaskDetails.highProbabilityScore;
-    result.tagIds = tagIds;
+    result.tagIds = subtaskDetails.tags.map(i => i.id);
 
     return result;
   }
@@ -96,7 +99,7 @@ export class SubtaskDetailsService {
       lowProbabilityScore: [formValue.lowProbabilityScore, [Validators.required, Validators.min(1)]],
       averageProbabilityScore: [formValue.averageProbabilityScore, [Validators.required, Validators.min(1)]],
       highProbabilityScore: [formValue.highProbabilityScore, [Validators.required, Validators.min(1)]],
-      tagNames: [formValue.tagNames, [arrayNotEmptyValidator()]]
+      tags: [formValue.tags, [arrayNotEmptyValidator()]]
     });
   }
 
@@ -108,7 +111,7 @@ export class SubtaskDetailsService {
       lowProbabilityScore: '',
       averageProbabilityScore: '',
       highProbabilityScore: '',
-      tagNames: []
+      tags: []
     };
   }
 }

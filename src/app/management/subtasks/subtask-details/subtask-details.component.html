@@ -86,12 +86,14 @@
     <div class="form-group">
       <label>Tags</label>
       <rtg-tags-selector
-        formControlName="tagNames"
-        [dataItems]="tagNames"
-        [valid]="formTagNames.valid"
-        [invalid]="formTagNames.touched && formTagNames.invalid"
+        formControlName="tags"
+        labelKey="name"
+        valueKey="id"
+        [dataItems]="tags"
+        [valid]="formTags.valid"
+        [invalid]="formTags.touched && formTags.invalid"
       ></rtg-tags-selector>
-      <div class="invalid-feedback" *ngIf="formTagNames.hasError('arrayNotEmpty')">
+      <div class="invalid-feedback" *ngIf="formTags.hasError('arrayNotEmpty')">
         Please select at least one tag.
       </div>
     </div>

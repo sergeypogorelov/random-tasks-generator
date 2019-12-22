@@ -3,12 +3,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { TagDetails } from './tag-details.interface';
 import { TagShort } from '../../../core/interfaces/tag/tag-short.interface';
-import { Tag } from 'src/app/core/interfaces/tag/tag.interface';
+import { Tag } from '../../../core/interfaces/tag/tag.interface';
 
-import { Utils } from 'src/app/core/helpers/utils.class';
+import { Utils } from '../../../core/helpers/utils.class';
 
 import { tagNameUnusedValidator } from './tag-name-unused.validator';
-import { TagService } from 'src/app/core/services/tag/tag.service';
+import { TagService } from '../../../core/services/tag/tag.service';
 
 @Injectable()
 export class TagDetailsService {

@@ -1,4 +1,5 @@
 import { FileInfo } from 'src/app/core/interfaces/common/file-info.interface';
+import { Tag } from 'src/app/core/interfaces/tag/tag.interface';
 
 export interface SubtaskDetails {
   title: string;
@@ -7,5 +8,5 @@ export interface SubtaskDetails {
   lowProbabilityScore: string;
   averageProbabilityScore: string;
   highProbabilityScore: string;
-  tagNames: string[];
+  tags: Tag[];
 }
