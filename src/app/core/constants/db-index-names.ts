@@ -3,10 +3,7 @@ export const dbIndexNames = {
     name: 'nameIdx'
   },
   subTasks: {
-    name: 'nameIdx'
-  },
-  tagsToSubTasks: {
-    tagId: 'tagIdIdx',
-    subTaskId: 'subTaskIdIdx'
+    name: 'nameIdx',
+    tagIds: 'tagIdsIdx'
   }
 };

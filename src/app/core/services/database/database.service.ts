@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NgxIndexedDBService } from 'ngx-indexed-db';
+import { NgxIndexedDBService, DBConfig } from 'ngx-indexed-db';
 import { Observable, from } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 

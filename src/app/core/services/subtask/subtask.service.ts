@@ -43,6 +43,10 @@ export class SubtaskService extends DatabaseService {
     return this.getByIndex(dbIndexNames.subTasks.name, name);
   }
 
+  getAllSubtasks(): Observable<Subtask[]> {
+    return this.getAll<Subtask>();
+  }
+
   addSubtask(subTask: SubtaskShort): Observable<Subtask> {
     if (!subTask) {
       throw new Error('Subtask is not specified.');

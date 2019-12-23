@@ -9,6 +9,7 @@ export function dbMigrationFactory() {
 
       store = transaction.objectStore(dbStoreNames.subTasks);
       store.createIndex(dbIndexNames.subTasks.name, 'name', { unique: true });
+      store.createIndex(dbIndexNames.subTasks.tagIds, 'tagIds', { unique: false, multiEntry: true });
     }
   };
 }
