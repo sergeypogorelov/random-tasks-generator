@@ -1,22 +1,8 @@
-import { DBConfig } from 'ngx-indexed-db';
-
 import { dbMigrationFactory } from './db-migration-factory';
-import { dbStoreNames } from '../constants/db-store-names';
+import { IdbCfg } from '../../idb/idb-cfg.interface';
 
-export const dbConfig: DBConfig = {
+export const dbConfig: IdbCfg = {
   name: 'random-tasks-generator-db',
   version: 1,
-  objectStoresMeta: [
-    {
-      store: dbStoreNames.tag,
-      storeConfig: { keyPath: 'id', autoIncrement: true },
-      storeSchema: [{ name: 'name', keypath: 'name', options: { unique: true } }]
-    },
-    {
-      store: dbStoreNames.subTasks,
-      storeConfig: { keyPath: 'id', autoIncrement: true },
-      storeSchema: [{ name: 'name', keypath: 'name', options: { unique: true } }]
-    }
-  ],
   migrationFactory: dbMigrationFactory
 };

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { NgxIndexedDBService } from 'ngx-indexed-db';
 
 import { dbStoreNames } from '../../constants/db-store-names';
 import { dbIndexNames } from '../../constants/db-index-names';
@@ -9,12 +8,13 @@ import { dbIndexNames } from '../../constants/db-index-names';
 import { Subtask } from '../../interfaces/subtask/subtask.interface';
 import { SubtaskShort } from '../../interfaces/subtask/subtask-short.interface';
 
+import { IdbService } from '../../../idb/services/idb/idb.service';
 import { DatabaseService } from '../database/database.service';
 
 @Injectable()
 export class SubtaskService extends DatabaseService {
-  constructor(dbService: NgxIndexedDBService) {
-    super(dbService);
+  constructor(idbService: IdbService) {
+    super(idbService);
 
     this.currentStoreName = dbStoreNames.subTasks;
   }

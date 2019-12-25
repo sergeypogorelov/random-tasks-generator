@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 
-import { IndexedDBModule } from './indexed-db.module';
+import { dbConfig } from './configs/db-config';
+
+import { IdbModule } from '../idb/idb.module';
 
 import { DatabaseService } from './services/database/database.service';
 import { TagService } from './services/tag/tag.service';
@@ -18,8 +20,7 @@ const modalServices = [ModalService, ModalConfirmService];
 const componentServices = [BreadcrumbService];
 
 @NgModule({
-  imports: [IndexedDBModule],
-  providers: [...dbServices, ...modalServices, ...componentServices],
-  exports: [IndexedDBModule]
+  imports: [IdbModule.forRoot(dbConfig)],
+  providers: [...dbServices, ...modalServices, ...componentServices]
 })
 export class CoreModule {}

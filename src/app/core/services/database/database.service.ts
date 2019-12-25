@@ -1,57 +1,39 @@
 import { Injectable } from '@angular/core';
-import { NgxIndexedDBService, DBConfig } from 'ngx-indexed-db';
-import { Observable, from } from 'rxjs';
+import { Observable } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
+
+import { IdbService } from '../../../idb/services/idb/idb.service';
 
 @Injectable()
 export class DatabaseService {
   protected currentStoreName: string;
 
-  constructor(private dbService: NgxIndexedDBService) {}
+  constructor(private idbService: IdbService) {}
 
-  protected getAll<T>(): Observable<T[]> {
-    this.setCurrentStoreName();
-
-    return from(this.dbService.getAll<T>());
+  protected getAll<T>(query?: any, count?: number): Observable<T[]> {
+    return this.idbService.openDB().pipe(mergeMap(db => db.getAll(this.currentStoreName, query, count)));
   }
 
-  protected getById<T>(id: string | number): Observable<T> {
-    this.setCurrentStoreName();
-
-    return from(this.dbService.getByID<T>(id));
+  protected getById<T>(query: any): Observable<T> {
+    return this.idbService.openDB().pipe(mergeMap(db => db.get(this.currentStoreName, query)));
   }
 
-  protected getByIndex(indexName: string, key: any): Observable<any> {
-    this.setCurrentStoreName();
-
-    return from(this.dbService.getByIndex(indexName, key));
-  }
-
-  protected getByKey(key: any): Observable<any> {
-    this.setCurrentStoreName();
-
-    return from(this.dbService.getByKey(key));
+  protected getByIndex(indexName: string, query: any): Observable<any> {
+    return this.idbService.openDB().pipe(mergeMap(db => db.getFromIndex(this.currentStoreName, indexName, query)));
   }
 
   protected add<T, R>(value: T, key?: any): Observable<R> {
-    this.setCurrentStoreName();
-
-    return from(this.dbService.add(value, key)).pipe(mergeMap(id => this.getById<R>(id)));
+    return this.idbService
+      .openDB()
+      .pipe(mergeMap(db => db.add(this.currentStoreName, value, key)))
+      .pipe(mergeMap(id => this.getById<R>(id as any)));
   }
 
   protected update<T>(value: T, key?: any): Observable<any> {
-    this.setCurrentStoreName();
-
-    return from(this.dbService.update(value, key));
+    return this.idbService.openDB().pipe(mergeMap(db => db.put(this.currentStoreName, value, key)));
   }
 
-  protected delete(id: string | number): Observable<any> {
-    this.setCurrentStoreName();
-
-    return from(this.dbService.deleteRecord(id));
-  }
-
-  protected setCurrentStoreName() {
-    this.dbService.currentStore = this.currentStoreName;
+  protected delete(key: any): Observable<any> {
+    return this.idbService.openDB().pipe(mergeMap(db => db.delete(this.currentStoreName, key)));
   }
 }
