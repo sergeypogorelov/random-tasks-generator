@@ -6,13 +6,14 @@ import { IdbModule } from '../idb/idb.module';
 
 import { TagService } from './services/tag/tag.service';
 import { SubtaskService } from './services/subtask/subtask.service';
+import { TaskService } from './services/task/task.service';
 
 import { ModalService } from './services/modal/modal.service';
 import { ModalConfirmService } from './services/modal-confirm/modal-confirm.service';
 
 import { BreadcrumbService } from './services/breadcrumb/breadcrumb.service';
 
-const dbServices = [TagService, SubtaskService];
+const dbServices = [TagService, SubtaskService, TaskService];
 
 const modalServices = [ModalService, ModalConfirmService];
 

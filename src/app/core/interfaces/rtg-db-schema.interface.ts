@@ -2,6 +2,7 @@ import { DBSchema } from 'idb';
 
 import { Tag } from './tag/tag.interface';
 import { Subtask } from './subtask/subtask.interface';
+import { Task } from './task/task.interface';
 
 export interface RtgDbSchema extends DBSchema {
   tag: {
@@ -12,6 +13,11 @@ export interface RtgDbSchema extends DBSchema {
   subtask: {
     key: number;
     value: Subtask;
+    indexes: { nameIdx: string; tagIdsIdx: number[] };
+  };
+  task: {
+    key: number;
+    value: Task;
     indexes: { nameIdx: string; tagIdsIdx: number[] };
   };
 }

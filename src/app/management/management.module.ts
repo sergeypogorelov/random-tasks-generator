@@ -7,6 +7,7 @@ import { ManagementRoutingModule } from './management-routing.module';
 import { TagDetailsService } from './tags/tag-details/tag-details.service';
 import { SubtaskDetailsService } from './subtasks/subtask-details/subtask-details.service';
 import { SubtasksService } from './subtasks/subtasks.service';
+import { TaskDetailsService } from './tasks/task-details/task-details.service';
 
 import { ManagementComponent } from './management.component';
 import { PersonsComponent } from './persons/persons.component';
@@ -30,7 +31,7 @@ const declarations = [
   TagDetailsComponent
 ];
 
-const services = [TagDetailsService, SubtaskDetailsService, SubtasksService];
+const services = [TagDetailsService, SubtaskDetailsService, SubtasksService, TaskDetailsService];
 
 @NgModule({
   declarations: [...declarations],
