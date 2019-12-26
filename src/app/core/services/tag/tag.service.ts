@@ -1,23 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, mergeMap } from 'rxjs/operators';
 
-import { dbStoreNames } from '../../constants/db-store-names';
-import { dbIndexNames } from '../../constants/db-index-names';
-
-import { TagShort } from '../../interfaces/tag/tag-short.interface';
+import { RtgDbSchema } from '../../interfaces/rtg-db-schema.interface';
 import { Tag } from '../../interfaces/tag/tag.interface';
 
 import { IdbService } from '../../../idb/services/idb/idb.service';
-import { DatabaseService } from '../database/database.service';
 
 @Injectable()
-export class TagService extends DatabaseService {
-  constructor(idbService: IdbService) {
-    super(idbService);
-
-    this.currentStoreName = dbStoreNames.tag;
-  }
+export class TagService {
+  constructor(private idbService: IdbService) {}
 
   checkIfNameUnused(name: string, originName: string = null): Observable<boolean> {
     if (!name) {
@@ -32,7 +24,7 @@ export class TagService extends DatabaseService {
       throw new Error('Id is not specified.');
     }
 
-    return this.getById(id);
+    return this.idbService.openDB<RtgDbSchema>().pipe(mergeMap(db => db.get('tag', id)));
   }
 
   getTagByName(name: string): Observable<Tag> {
@@ -40,27 +32,33 @@ export class TagService extends DatabaseService {
       throw new Error('Name is not specified.');
     }
 
-    return this.getByIndex(dbIndexNames.tag.name, name);
+    return this.idbService.openDB<RtgDbSchema>().pipe(mergeMap(db => db.getFromIndex('tag', 'nameIdx', name)));
   }
 
   getAllTags(): Observable<Tag[]> {
-    return this.getAll<Tag>();
+    return this.idbService.openDB<RtgDbSchema>().pipe(mergeMap(db => db.getAll('tag')));
   }
 
-  addTag(tagShort: TagShort): Observable<Tag> {
-    if (!tagShort) {
-      throw new Error('Tag short is not specified.');
-    }
-
-    return this.add(tagShort);
-  }
-
-  updateTag(tag: Tag): Observable<any> {
+  addTag(tag: Tag): Observable<Tag> {
     if (!tag) {
       throw new Error('Tag is not specified.');
     }
 
-    return this.update(tag);
+    return this.idbService
+      .openDB<RtgDbSchema>()
+      .pipe(mergeMap(db => db.add('tag', tag)))
+      .pipe(mergeMap(id => this.getTagById(id)));
+  }
+
+  updateTag(tag: Tag): Observable<Tag> {
+    if (!tag) {
+      throw new Error('Tag is not specified.');
+    }
+
+    return this.idbService
+      .openDB<RtgDbSchema>()
+      .pipe(mergeMap(db => db.put('tag', tag)))
+      .pipe(mergeMap(id => this.getTagById(id)));
   }
 
   deleteTag(id: number): Observable<any> {
@@ -68,6 +66,6 @@ export class TagService extends DatabaseService {
       throw new Error('Id is not specified.');
     }
 
-    return this.delete(id);
+    return this.idbService.openDB<RtgDbSchema>().pipe(mergeMap(db => db.delete('tag', id)));
   }
 }

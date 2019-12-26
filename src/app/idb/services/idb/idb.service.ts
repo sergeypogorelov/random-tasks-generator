@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { Observable, of, from } from 'rxjs';
 import { share, tap, mergeMap } from 'rxjs/operators';
-import { IDBPDatabase, openDB, OpenDBCallbacks, unwrap, IDBPTransaction } from 'idb';
+import { IDBPDatabase, openDB, OpenDBCallbacks } from 'idb';
 
 import { IdbCfg } from '../../idb-cfg.interface';
 import { idbCfgToken } from './idb-cfg-token';

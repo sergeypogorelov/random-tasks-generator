@@ -1,23 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, mergeMap } from 'rxjs/operators';
 
-import { dbStoreNames } from '../../constants/db-store-names';
-import { dbIndexNames } from '../../constants/db-index-names';
-
+import { RtgDbSchema } from '../../interfaces/rtg-db-schema.interface';
 import { Subtask } from '../../interfaces/subtask/subtask.interface';
-import { SubtaskShort } from '../../interfaces/subtask/subtask-short.interface';
 
 import { IdbService } from '../../../idb/services/idb/idb.service';
-import { DatabaseService } from '../database/database.service';
 
 @Injectable()
-export class SubtaskService extends DatabaseService {
-  constructor(idbService: IdbService) {
-    super(idbService);
-
-    this.currentStoreName = dbStoreNames.subTasks;
-  }
+export class SubtaskService {
+  constructor(private idbService: IdbService) {}
 
   checkIfNameUnused(name: string, originName: string = null): Observable<boolean> {
     if (!name) {
@@ -32,7 +24,7 @@ export class SubtaskService extends DatabaseService {
       throw new Error('Id is not specified.');
     }
 
-    return this.getById(id);
+    return this.idbService.openDB<RtgDbSchema>().pipe(mergeMap(db => db.get('subtask', id)));
   }
 
   getSubtaskByName(name: string): Observable<Subtask> {
@@ -40,27 +32,33 @@ export class SubtaskService extends DatabaseService {
       throw new Error('Name is not specified.');
     }
 
-    return this.getByIndex(dbIndexNames.subTasks.name, name);
+    return this.idbService.openDB<RtgDbSchema>().pipe(mergeMap(db => db.getFromIndex('subtask', 'nameIdx', name)));
   }
 
   getAllSubtasks(): Observable<Subtask[]> {
-    return this.getAll<Subtask>();
+    return this.idbService.openDB<RtgDbSchema>().pipe(mergeMap(db => db.getAll('subtask')));
   }
 
-  addSubtask(subTask: SubtaskShort): Observable<Subtask> {
+  addSubtask(subTask: Subtask): Observable<Subtask> {
     if (!subTask) {
       throw new Error('Subtask is not specified.');
     }
 
-    return this.add(subTask);
+    return this.idbService
+      .openDB<RtgDbSchema>()
+      .pipe(mergeMap(db => db.add('subtask', subTask)))
+      .pipe(mergeMap(id => this.getSubtaskById(id)));
   }
 
-  updateSubtask(subtask: Subtask): Observable<any> {
+  updateSubtask(subtask: Subtask): Observable<Subtask> {
     if (!subtask) {
       throw new Error('Subtask is not specified.');
     }
 
-    return this.update(subtask);
+    return this.idbService
+      .openDB<RtgDbSchema>()
+      .pipe(mergeMap(db => db.put('subtask', subtask)))
+      .pipe(mergeMap(id => this.getSubtaskById(id)));
   }
 
   deleteSubtask(id: number): Observable<any> {
@@ -68,6 +66,6 @@ export class SubtaskService extends DatabaseService {
       throw new Error('Id is not specified.');
     }
 
-    return this.delete(id);
+    return this.idbService.openDB<RtgDbSchema>().pipe(mergeMap(db => db.delete('subtask', id)));
   }
 }

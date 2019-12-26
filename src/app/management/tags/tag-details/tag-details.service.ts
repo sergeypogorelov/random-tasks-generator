@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { TagDetails } from './tag-details.interface';
-import { TagShort } from '../../../core/interfaces/tag/tag-short.interface';
 import { Tag } from '../../../core/interfaces/tag/tag.interface';
 
 import { Utils } from '../../../core/helpers/utils.class';
@@ -25,7 +24,7 @@ export class TagDetailsService {
     };
   }
 
-  castFormModelToDto(tagDetails: TagDetails): TagShort {
+  castFormModelToDto(tagDetails: TagDetails): Tag {
     if (!tagDetails) {
       throw new Error('Tag details are not specified.');
     }

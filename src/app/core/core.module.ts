@@ -4,7 +4,6 @@ import { dbConfig } from './configs/db-config';
 
 import { IdbModule } from '../idb/idb.module';
 
-import { DatabaseService } from './services/database/database.service';
 import { TagService } from './services/tag/tag.service';
 import { SubtaskService } from './services/subtask/subtask.service';
 
@@ -13,7 +12,7 @@ import { ModalConfirmService } from './services/modal-confirm/modal-confirm.serv
 
 import { BreadcrumbService } from './services/breadcrumb/breadcrumb.service';
 
-const dbServices = [DatabaseService, TagService, SubtaskService];
+const dbServices = [TagService, SubtaskService];
 
 const modalServices = [ModalService, ModalConfirmService];
 

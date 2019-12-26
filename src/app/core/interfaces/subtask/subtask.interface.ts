@@ -1,7 +1,7 @@
 import { FileInfo } from '../common/file-info.interface';
 
 export interface Subtask {
-  id: number;
+  id?: number;
   name: string;
   description: string;
   thumbnail: FileInfo;

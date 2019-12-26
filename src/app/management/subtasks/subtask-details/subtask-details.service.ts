@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Utils } from 'src/app/core/helpers/utils.class';
-import { SubtaskService } from 'src/app/core/services/subtask/subtask.service';
-import { Subtask } from 'src/app/core/interfaces/subtask/subtask.interface';
+import { Tag } from '../../../core/interfaces/tag/tag.interface';
+import { Subtask } from '../../../core/interfaces/subtask/subtask.interface';
 import { SubtaskDetails } from './subtask-details.interface';
-import { SubtaskShort } from 'src/app/core/interfaces/subtask/subtask-short.interface';
-import { nameUnusedValidator } from 'src/app/shared/validators/name-unused/name-unused.validator';
-import { arrayNotEmptyValidator } from 'src/app/shared/validators/array-not-empty/array-not-empty.validator';
-import { Tag } from 'src/app/core/interfaces/tag/tag.interface';
+
+import { nameUnusedValidator } from '../../../shared/validators/name-unused/name-unused.validator';
+import { arrayNotEmptyValidator } from '../../../shared/validators/array-not-empty/array-not-empty.validator';
+
+import { SubtaskService } from '../../../core/services/subtask/subtask.service';
 
 @Injectable()
 export class SubtaskDetailsService {
@@ -30,7 +30,7 @@ export class SubtaskDetailsService {
     };
   }
 
-  castFormModelToDto(subtaskDetails: SubtaskDetails): SubtaskShort {
+  castFormModelToDto(subtaskDetails: SubtaskDetails): Subtask {
     if (!subtaskDetails) {
       throw new Error('Subtask details are not specified.');
     }
