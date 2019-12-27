@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { TagService } from 'src/app/core/services/tag/tag.service';
-import { Task } from 'src/app/core/interfaces/task/task.interface';
+
+import { Tag } from '../../core/interfaces/tag/tag.interface';
+import { Task } from '../../core/interfaces/task/task.interface';
 import { TaskModel } from './task-model.interface';
-import { Observable } from 'rxjs';
-import { FileReaderHelper } from 'src/app/core/helpers/filer-reader/file-reader-helper.class';
-import { Tag } from 'src/app/core/interfaces/tag/tag.interface';
+
+import { FileReaderHelper } from '../../core/helpers/filer-reader/file-reader-helper.class';
 
 @Injectable()
 export class TasksService {
