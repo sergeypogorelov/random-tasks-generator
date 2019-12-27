@@ -13,66 +13,66 @@ import { TaskService } from '../../../core/services/task/task.service';
 export class TaskDetailsService {
   constructor(private fb: FormBuilder, private taskService: TaskService) {}
 
-  castDtoToFormModel(subtask: Task, allTags: Tag[]): TaskDetails {
-    if (!subtask) {
+  castDtoToFormModel(task: Task, allTags: Tag[]): TaskDetails {
+    if (!task) {
       throw new Error('Task is not specified.');
     }
 
     return {
-      title: subtask.name,
-      description: subtask.description,
-      thumbnail: subtask.thumbnail,
-      tags: subtask.tagIds.map(id => allTags.find(i => i.id === id))
+      title: task.name,
+      description: task.description,
+      thumbnail: task.thumbnail,
+      tags: task.tagIds.map(id => allTags.find(i => i.id === id))
     };
   }
 
-  castFormModelToDto(subtaskDetails: TaskDetails): Task {
-    if (!subtaskDetails) {
+  castFormModelToDto(taskDetails: TaskDetails): Task {
+    if (!taskDetails) {
       throw new Error('Task details are not specified.');
     }
 
     return {
-      name: subtaskDetails.title,
-      description: subtaskDetails.description,
-      thumbnail: subtaskDetails.thumbnail,
-      tagIds: subtaskDetails.tags.map(i => i.id)
+      name: taskDetails.title,
+      description: taskDetails.description,
+      thumbnail: taskDetails.thumbnail,
+      tagIds: taskDetails.tags.map(i => i.id)
     };
   }
 
-  overrideDtoByFormModel(subtask: Task, subtaskDetails: TaskDetails): Task {
-    if (!subtask) {
+  overrideDtoByFormModel(task: Task, taskDetails: TaskDetails): Task {
+    if (!task) {
       throw new Error('Task is not specified.');
     }
 
-    if (!subtaskDetails) {
+    if (!taskDetails) {
       throw new Error('Task details are not specified.');
     }
 
     const result = {
-      ...subtask
+      ...task
     };
 
-    result.name = subtaskDetails.title;
-    result.description = subtaskDetails.description;
-    result.thumbnail = subtaskDetails.thumbnail;
-    result.tagIds = subtaskDetails.tags.map(i => i.id);
+    result.name = taskDetails.title;
+    result.description = taskDetails.description;
+    result.thumbnail = taskDetails.thumbnail;
+    result.tagIds = taskDetails.tags.map(i => i.id);
 
     return result;
   }
 
-  generateFormGroup(subtaskDetails: TaskDetails = null): FormGroup {
+  generateFormGroup(taskDetails: TaskDetails = null): FormGroup {
     let formValue = this.generateDefaultFormValue();
 
-    if (subtaskDetails) {
+    if (taskDetails) {
       formValue = {
         ...formValue,
-        ...subtaskDetails
+        ...taskDetails
       };
     }
 
-    let originSubtaskName: string = null;
-    if (subtaskDetails) {
-      originSubtaskName = subtaskDetails.title;
+    let originTaskName: string = null;
+    if (taskDetails) {
+      originTaskName = taskDetails.title;
     }
 
     return this.fb.group({
@@ -81,7 +81,7 @@ export class TaskDetailsService {
         {
           updateOn: 'blur',
           validators: [Validators.required],
-          asyncValidators: [nameUnusedValidator(this.taskService, originSubtaskName)]
+          asyncValidators: [nameUnusedValidator(this.taskService, originTaskName)]
         }
       ],
       description: [formValue.description],

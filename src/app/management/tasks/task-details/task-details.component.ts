@@ -1,10 +1,20 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { FormGroup, AbstractControl } from '@angular/forms';
+import { Subscription, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 import { linkLabels } from '../../../core/constants/link-labels';
 import { urlFragments } from '../../../core/constants/url-fragments';
+
+import { Task } from '../../../core/interfaces/task/task.interface';
+import { Tag } from '../../../core/interfaces/tag/tag.interface';
+import { TaskDetails } from './task-details.interface';
+
+import { TagService } from '../../../core/services/tag/tag.service';
+import { TaskService } from '../../../core/services/task/task.service';
 import { BreadcrumbService } from '../../../core/services/breadcrumb/breadcrumb.service';
+import { TaskDetailsService } from './task-details.service';
 
 export const idOfNewTask = 'new-task';
 
@@ -15,27 +25,84 @@ export const labelOfNewTask = 'New Task';
   templateUrl: './task-details.component.html'
 })
 export class TaskDetailsComponent implements OnInit, OnDestroy {
-  tags: string[] = ['beach', 'car', 'sport', 'shopping'];
+  task: Task;
 
-  private subscription: Subscription;
+  tags: Tag[] = [];
 
-  constructor(private activatedRoute: ActivatedRoute, private breadcrumbService: BreadcrumbService) {}
+  form: FormGroup;
+
+  get formTitle(): AbstractControl {
+    return this.form.get('title');
+  }
+
+  get formThumbnail(): AbstractControl {
+    return this.form.get('thumbnail');
+  }
+
+  get formTags(): AbstractControl {
+    return this.form.get('tags');
+  }
+
+  private subs: Subscription[] = [];
+
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private tagService: TagService,
+    private taskService: TaskService,
+    private breadcrumbService: BreadcrumbService,
+    private taskDetailsService: TaskDetailsService
+  ) {}
 
   ngOnInit() {
-    this.subscription = this.activatedRoute.params.subscribe(params => this.routeParamsHandler(params));
+    this.subs.push(this.activatedRoute.params.subscribe(params => this.routeParamsHandler(params)));
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.subs.forEach(i => i.unsubscribe());
   }
 
   routeParamsHandler(params: Params) {
-    this.setBreadcrumb(params);
+    const isNew = params.id === idOfNewTask;
+
+    if (isNew) {
+      this.setBreadcrumb(idOfNewTask);
+      this.loadAndSetTags().subscribe(() => this.setForm());
+    } else {
+      this.subs.push(
+        this.taskService.getById(+params.id).subscribe(task => {
+          this.task = task;
+
+          this.setBreadcrumb(task.name);
+          this.loadAndSetTags().subscribe(() => this.setForm(task));
+        })
+      );
+    }
   }
 
-  setBreadcrumb(params: Params) {
-    const taskLabel = params.id === idOfNewTask ? labelOfNewTask : params.id;
+  formSubmitHandler() {
+    if (this.form.valid) {
+      const formRawValue = this.form.getRawValue() as TaskDetails;
 
+      let action: Observable<any>;
+
+      if (this.task) {
+        const dto = this.taskDetailsService.overrideDtoByFormModel(this.task, formRawValue);
+        action = this.taskService.update(dto);
+      } else {
+        const dto = this.taskDetailsService.castFormModelToDto(formRawValue);
+        action = this.taskService.add(dto);
+      }
+
+      this.subs.push(
+        action.subscribe(() =>
+          this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.tasks])
+        )
+      );
+    }
+  }
+
+  private setBreadcrumb(taskLabel: string) {
     this.breadcrumbService.setItems([
       {
         label: linkLabels.management,
@@ -49,5 +116,18 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
         label: taskLabel
       }
     ]);
+  }
+
+  private setForm(task?: Task) {
+    if (task) {
+      const taskDetails = this.taskDetailsService.castDtoToFormModel(task, this.tags);
+      this.form = this.taskDetailsService.generateFormGroup(taskDetails);
+    } else {
+      this.form = this.taskDetailsService.generateFormGroup();
+    }
+  }
+
+  private loadAndSetTags(): Observable<Tag[]> {
+    return this.tagService.getAllTags().pipe(tap(tags => (this.tags = tags)));
   }
 }

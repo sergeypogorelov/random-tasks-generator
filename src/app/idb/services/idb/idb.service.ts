@@ -38,20 +38,16 @@ export class IdbService {
         const versions = Object.keys(migrations)
           .map(i => +i)
           .filter(i => i)
-          .sort((a: number, b: number) => b - a);
+          .sort((a: number, b: number) => a - b);
 
         if (versions.length === 0) {
           return;
         }
 
-        let oldIndex = versions.indexOf(oldVersion);
+        const oldIndex = versions.indexOf(oldVersion);
         const newIndex = versions.indexOf(newVersion);
 
-        if (oldIndex === -1) {
-          oldIndex = 0;
-        }
-
-        for (let i = oldIndex; i <= newIndex; i++) {
+        for (let i = oldIndex + 1; i <= newIndex; i++) {
           migrations[versions[i]](database as any, transaction as any);
         }
       }

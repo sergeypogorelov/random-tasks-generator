@@ -1,9 +1,6 @@
 import { Component, Input, forwardRef, HostBinding } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { Utils } from '../../../core/helpers/utils.class';
-import { Tag } from 'src/app/core/interfaces/tag/tag.interface';
-
 @Component({
   selector: 'rtg-tags-selector',
   styleUrls: ['./tags-selector.component.scss'],
@@ -19,9 +16,9 @@ import { Tag } from 'src/app/core/interfaces/tag/tag.interface';
 export class TagsSelectorComponent implements ControlValueAccessor {
   textboxValue: string;
 
-  suggestedDataItems: Tag[] = [];
+  suggestedDataItems: any[] = [];
 
-  selectedDataItems: Tag[] = [];
+  selectedDataItems: any[] = [];
 
   @Input()
   labelKey: string;
@@ -30,7 +27,7 @@ export class TagsSelectorComponent implements ControlValueAccessor {
   valueKey: string;
 
   @Input()
-  dataItems: Tag[] = [];
+  dataItems: any[] = [];
 
   @Input()
   @HostBinding('class.is-valid')
@@ -78,7 +75,7 @@ export class TagsSelectorComponent implements ControlValueAccessor {
     this.filterSuggestedDataItems(value);
   }
 
-  suggestionClickHandler(item: Tag) {
+  suggestionClickHandler(item: any) {
     if (this.selectedDataItems.findIndex(i => i[this.valueKey] === item[this.valueKey]) === -1) {
       this.selectedDataItems.push(item);
 
@@ -97,7 +94,7 @@ export class TagsSelectorComponent implements ControlValueAccessor {
     }
   }
 
-  buttonRemoveClickHandler(item: Tag) {
+  buttonRemoveClickHandler(item: any) {
     const foundIndex = this.selectedDataItems.findIndex(i => i[this.valueKey] === item[this.valueKey]);
     if (foundIndex !== -1) {
       this.selectedDataItems.splice(foundIndex, 1);

@@ -1,24 +1,53 @@
 <rtg-breadcrumb></rtg-breadcrumb>
 <div class="container p-2">
-  <div>
+  <form *ngIf="form" [formGroup]="form" (ngSubmit)="formSubmitHandler()">
     <div class="form-group">
       <label for="subtaskTitle">Title</label>
-      <input id="subtaskTitle" class="form-control" />
+      <input
+        id="subtaskTitle"
+        class="form-control"
+        formControlName="title"
+        [class.is-valid]="formTitle.valid"
+        [class.is-invalid]="formTitle.touched && formTitle.invalid"
+      />
+      <div class="invalid-feedback" *ngIf="formTitle.hasError('required')">
+        Please specify a title.
+      </div>
+      <div class="invalid-feedback" *ngIf="formTitle.hasError('nameExists')">
+        Please specify another title. Title '{{ formTitle.value }}' is already in use.
+      </div>
     </div>
     <div class="form-group">
       <label for="subtaskDescription">Description</label>
-      <textarea id="subtaskDescription" class="form-control" rows="3"></textarea>
+      <textarea id="subtaskDescription" class="form-control" rows="3" formControlName="description"></textarea>
     </div>
     <div class="form-group">
-      <label for="subtaskThumbnail">Thumbnail</label>
-      <input type="file" class="form-control-file" id="subtaskThumbnail" />
+      <label>Thumbnail</label>
+      <rtg-image-uploader
+        formControlName="thumbnail"
+        [valid]="formThumbnail.valid"
+        [invalid]="formThumbnail.touched && formThumbnail.invalid"
+      ></rtg-image-uploader>
+      <div class="invalid-feedback" *ngIf="formThumbnail.hasError('required')">
+        Please upload thumbnail.
+      </div>
     </div>
     <div class="form-group">
       <label>Tags</label>
-      <rtg-tags-selector [dataItems]="tags"></rtg-tags-selector>
+      <rtg-tags-selector
+        formControlName="tags"
+        labelKey="name"
+        valueKey="id"
+        [dataItems]="tags"
+        [valid]="formTags.valid"
+        [invalid]="formTags.touched && formTags.invalid"
+      ></rtg-tags-selector>
+      <div class="invalid-feedback" *ngIf="formTags.hasError('arrayNotEmpty')">
+        Please select at least one tag.
+      </div>
     </div>
-  </div>
-  <div class="text-right">
-    <button class="btn btn-primary">Save</button>
-  </div>
+    <div class="text-right">
+      <button class="btn btn-primary" type="submit" [disabled]="form.pending || form.invalid">Save</button>
+    </div>
+  </form>
 </div>

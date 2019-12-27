@@ -8,6 +8,7 @@ import { TagDetailsService } from './tags/tag-details/tag-details.service';
 import { SubtaskDetailsService } from './subtasks/subtask-details/subtask-details.service';
 import { SubtasksService } from './subtasks/subtasks.service';
 import { TaskDetailsService } from './tasks/task-details/task-details.service';
+import { TasksService } from './tasks/tasks.service';
 
 import { ManagementComponent } from './management.component';
 import { PersonsComponent } from './persons/persons.component';
@@ -31,7 +32,7 @@ const declarations = [
   TagDetailsComponent
 ];
 
-const services = [TagDetailsService, SubtaskDetailsService, SubtasksService, TaskDetailsService];
+const services = [TagDetailsService, SubtaskDetailsService, SubtasksService, TaskDetailsService, TasksService];
 
 @NgModule({
   declarations: [...declarations],

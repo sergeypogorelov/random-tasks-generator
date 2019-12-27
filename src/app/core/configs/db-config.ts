@@ -3,6 +3,6 @@ import { IdbCfg } from '../../idb/idb-cfg.interface';
 
 export const dbConfig: IdbCfg = {
   name: 'random-tasks-generator-db',
-  version: 1,
+  version: 2,
   migrationFactory: dbMigrationFactory
 };

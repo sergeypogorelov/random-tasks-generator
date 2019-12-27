@@ -3,35 +3,37 @@
   <div class="mb-2 text-right">
     <button class="btn btn-primary" (click)="newButtonClickHandler()">New</button>
   </div>
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th class="d-none d-sm-table-cell">Thumbnail</th>
-        <th>Name</th>
-        <th class="d-none d-sm-table-cell">Description</th>
-        <th class="d-none d-sm-table-cell">Tags</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="d-none d-sm-table-cell text-center">
-          <img class="image-sm img-thumbnail" src="/assets/img/thumbnail.png" />
-        </td>
-        <td>Resting</td>
-        <td class="d-none d-sm-table-cell">
-          This task is about resting.
-        </td>
-        <td class="d-none d-sm-table-cell">
-          Swimming, Traveling
-        </td>
-        <td>
-          <div class="btn-group d-flex">
-            <button class="btn btn-secondary">Edit</button>
-            <button class="btn btn-warning">Remove</button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <rtg-grid [data]="models">
+    <rtg-grid-column
+      title="Thumbnail"
+      headClassNames="d-none d-sm-table-cell"
+      classNames="d-none d-sm-table-cell text-center"
+    >
+      <ng-template rtgGridCellTemplate let-dataItem="dataItem">
+        <img class="image-sm img-thumbnail" [src]="dataItem.thumbnailSafeUrl" (load)="imgLoadHandler(dataItem)" />
+      </ng-template>
+    </rtg-grid-column>
+    <rtg-grid-column title="Name" field="name"></rtg-grid-column>
+    <rtg-grid-column
+      title="Description"
+      field="description"
+      headClassNames="d-none d-sm-table-cell"
+      classNames="d-none d-sm-table-cell"
+    ></rtg-grid-column>
+    <rtg-grid-column title="Tags" headClassNames="d-none d-sm-table-cell" classNames="d-none d-sm-table-cell">
+      <ng-template rtgGridCellTemplate let-dataItem="dataItem">
+        <ng-container *ngFor="let tag of dataItem.tags; let i = index">
+          {{ tag.name }}<ng-container *ngIf="i !== dataItem.tags.length - 1">,</ng-container>
+        </ng-container>
+      </ng-template>
+    </rtg-grid-column>
+    <rtg-grid-column title="Action">
+      <ng-template rtgGridCellTemplate let-dataItem="dataItem">
+        <div class="btn-group d-flex">
+          <button class="btn btn-secondary" (click)="editButtonClickHandler(dataItem)">Edit</button>
+          <button class="btn btn-warning" (click)="removeButtonClickHandler(dataItem)">Remove</button>
+        </div>
+      </ng-template>
+    </rtg-grid-column>
+  </rtg-grid>
 </div>
