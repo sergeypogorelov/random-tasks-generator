@@ -1,6 +1,6 @@
 <rtg-breadcrumb></rtg-breadcrumb>
 <div class="container p-2">
-  <div>
+  <form *ngIf="form" [formGroup]="form">
     <div class="form-group">
       <label for="personName">Name</label>
       <input id="personName" class="form-control" />
@@ -14,61 +14,80 @@
       <input id="personThumbnail" class="form-control-file" type="file" />
     </div>
     <h3 class="font-weight-normal">Iterations</h3>
-    <div class="iterations container-fluid">
-      <div class="iteration row p-2 border border-secondary rounded">
-        <div class="form-group col-12 col-md-8">
-          <label>Iteration Name</label>
-          <input class="form-control" value="Iteration 1" />
-        </div>
-        <div class="form-group col-12 col-md-4">
-          <label>Duration</label>
-          <input class="form-control" type="number" min="1" />
-        </div>
-        <div class="col-12">
-          <div class="tasks container-fluid">
-            <div class="task row p-2 border border-info rounded">
-              <div class="form-group col-12 col-md-8">
-                <label>Task</label>
-                <select class="form-control form-control-sm">
-                  <option>Task 1</option>
-                  <option>Task 2</option>
-                  <option>Task 3</option>
-                </select>
-              </div>
-              <div class="form-group col-12 col-md-4">
-                <label>Probability</label>
-                <input class="form-control form-control-sm" type="number" min="0" max="100" />
-              </div>
-              <div class="col-12 p-3">
-                <div class="tags d-flex flex-wrap">
-                  <div class="tag mr-4 mb-2">
-                    <div class="d-flex">
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" />
-                        <label class="form-check-label">Tag 1</label>
-                      </div>
-                      <div class="form-group ml-2">
-                        <select class="form-control form-control-sm">
-                          <option>Low</option>
-                          <option>Average</option>
-                          <option>High</option>
-                        </select>
+    <div class="iterations container-fluid" formArrayName="iterations">
+      <div
+        class="iteration row p-2 border border-secondary rounded"
+        *ngFor="let iteration of formIterations.controls; let iterationIndex = index"
+      >
+        <ng-container [formGroupName]="iterationIndex">
+          <div class="form-group col-12 col-md-8">
+            <label>Iteration Name</label>
+            <input class="form-control" formControlName="name" />
+          </div>
+          <div class="form-group col-12 col-md-4">
+            <label>Duration</label>
+            <input class="form-control" type="number" formControlName="duration" />
+          </div>
+          <div class="col-12">
+            <div class="tasks container-fluid" formArrayName="tasks">
+              <div
+                class="task row p-2 border border-info rounded"
+                *ngFor="let task of getTaskControls(iteration); let taskIndex = index"
+              >
+                <ng-container [formGroupName]="taskIndex">
+                  <div class="form-group col-12 col-md-8">
+                    <label>Task</label>
+                    <select class="form-control form-control-sm" formControlName="id">
+                      <option>Task 1</option>
+                      <option>Task 2</option>
+                      <option>Task 3</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-12 col-md-4">
+                    <label>Probability</label>
+                    <input
+                      class="form-control form-control-sm"
+                      type="number"
+                      min="0"
+                      max="100"
+                      formControlName="probability"
+                    />
+                  </div>
+                  <div class="col-12 p-3">
+                    <div class="tags d-flex flex-wrap" formArrayName="tags">
+                      <div class="tag mr-4 mb-2" *ngFor="let tag of getTagControls(task); let tagIndex = index">
+                        <ng-container [formGroupName]="tagIndex">
+                          <input type="hidden" formControlName="id" />
+                          <div class="d-flex">
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" formControlName="selected" />
+                              <label class="form-check-label">{{ tag.controls.name?.value }}</label>
+                            </div>
+                            <div class="form-group ml-2">
+                              <select class="form-control form-control-sm" formControlName="probability">
+                                <option>Low</option>
+                                <option>Average</option>
+                                <option>High</option>
+                              </select>
+                            </div>
+                          </div>
+                        </ng-container>
                       </div>
                     </div>
                   </div>
-                </div>
+                </ng-container>
               </div>
             </div>
           </div>
-        </div>
-        <div class="col-12">
-          <button class="btn btn-info mt-2">Add Task</button>
-        </div>
+          <div class="col-12">
+            <button class="btn btn-info mt-2" (click)="addTaskButtonClickHandler(iterationIndex)">Add Task</button>
+          </div>
+        </ng-container>
       </div>
     </div>
     <div class="d-flex mt-2">
-      <button class="btn btn-secondary">Add Iteration</button>
+      <button class="btn btn-secondary" (click)="addIterationButtonClickHandler()">Add Iteration</button>
       <button class="btn btn-primary ml-auto">Save</button>
     </div>
-  </div>
+  </form>
 </div>
