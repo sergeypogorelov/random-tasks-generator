@@ -1,21 +1,22 @@
 import { Injectable } from '@angular/core';
-import { PersonDetails } from './interfaces/person-details.interface';
-import { PersonDetailsIteration } from './interfaces/person-details-iteration.interface';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
-import { PersonDetailsTag } from './interfaces/person-details-tag.interface';
-import { Tag } from 'src/app/core/interfaces/tag/tag.interface';
+
 import { ProbabilityRange } from 'src/app/core/enums/probability-range.enum';
-import { PersonDetailsTask } from './interfaces/person-details-task.interface';
+
+import { PersonModel } from './interfaces/person-model.interface';
+import { PersonIterationModel } from './interfaces/person-iteration-model.interface';
+import { PersonTaskModel } from './interfaces/person-task-model.interface';
+import { PersonTagModel } from './interfaces/person-tag-model.interface';
 
 @Injectable()
 export class PersonDetailsService {
-  generateFormGroup(personDetails: PersonDetails = null) {
+  generateFormGroup(personModel: PersonModel = null) {
     let formValue = this.generateDefaultValue();
 
-    if (personDetails) {
+    if (personModel) {
       formValue = {
         ...formValue,
-        ...personDetails
+        ...personModel
       };
     }
 
@@ -27,13 +28,13 @@ export class PersonDetailsService {
     });
   }
 
-  generateIterationFormGroup(personDetailsIteration: PersonDetailsIteration = null): FormGroup {
+  generateIterationFormGroup(personIterationModel: PersonIterationModel = null): FormGroup {
     let formValue = this.generateDefaultValueForIteration();
 
-    if (personDetailsIteration) {
+    if (personIterationModel) {
       formValue = {
         ...formValue,
-        ...personDetailsIteration
+        ...personIterationModel
       };
     }
 
@@ -44,13 +45,13 @@ export class PersonDetailsService {
     });
   }
 
-  generateTaskFormGroup(personDetailsTask: PersonDetailsTask = null): FormGroup {
+  generateTaskFormGroup(personTaskModel: PersonTaskModel = null): FormGroup {
     let formValue = this.generateDefaultValueForTask();
 
-    if (personDetailsTask) {
+    if (personTaskModel) {
       formValue = {
         ...formValue,
-        ...personDetailsTask
+        ...personTaskModel
       };
     }
 
@@ -61,12 +62,12 @@ export class PersonDetailsService {
     });
   }
 
-  generateTagFormGroup(id: string, name: string, personDetailsTag: PersonDetailsTag = null): FormGroup {
+  generateTagFormGroup(id: string, name: string, personTagModel: PersonTagModel = null): FormGroup {
     const formValue = this.generateDefaultValueForTag(id, name);
 
-    if (personDetailsTag) {
-      formValue.probability = personDetailsTag.probability;
-      formValue.selected = personDetailsTag.selected;
+    if (personTagModel) {
+      formValue.probability = personTagModel.probability;
+      formValue.selected = personTagModel.selected;
     }
 
     return new FormGroup({
@@ -77,7 +78,7 @@ export class PersonDetailsService {
     });
   }
 
-  generateDefaultValue(): PersonDetails {
+  generateDefaultValue(): PersonModel {
     return {
       name: '',
       description: '',
@@ -86,7 +87,7 @@ export class PersonDetailsService {
     };
   }
 
-  generateDefaultValueForIteration(): PersonDetailsIteration {
+  generateDefaultValueForIteration(): PersonIterationModel {
     return {
       name: '',
       duration: '',
@@ -94,7 +95,7 @@ export class PersonDetailsService {
     };
   }
 
-  generateDefaultValueForTask(): PersonDetailsTask {
+  generateDefaultValueForTask(): PersonTaskModel {
     return {
       id: '',
       probability: '',
@@ -102,7 +103,7 @@ export class PersonDetailsService {
     };
   }
 
-  generateDefaultValueForTag(id: string, name: string): PersonDetailsTag {
+  generateDefaultValueForTag(id: string, name: string): PersonTagModel {
     return {
       id,
       name,

@@ -12,7 +12,7 @@ import { AbstractControl, FormGroup, FormArray, Form } from '@angular/forms';
 import { TagService } from 'src/app/core/services/tag/tag.service';
 import { TaskService } from 'src/app/core/services/task/task.service';
 import { PersonDetailsService } from './person-details.service';
-import { PersonDetails } from './interfaces/person-details.interface';
+import { PersonModel } from './interfaces/person-model.interface';
 
 export const idOfNewPerson = 'new-person';
 
@@ -120,7 +120,7 @@ export class PersonDetailsComponent implements OnInit, OnDestroy {
     ]);
   }
 
-  private setForm(personDetails: PersonDetails = null) {
+  private setForm(personDetails: PersonModel = null) {
     this.form = this.personDetailsService.generateFormGroup(personDetails);
   }
 }
