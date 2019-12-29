@@ -1,18 +1,21 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { AbstractControl, FormGroup, FormArray } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 
 import { linkLabels } from '../../../core/constants/link-labels';
 import { urlFragments } from '../../../core/constants/url-fragments';
-import { BreadcrumbService } from '../../../core/services/breadcrumb/breadcrumb.service';
-import { Person } from 'src/app/core/interfaces/person/person.interface';
-import { Task } from 'src/app/core/interfaces/task/task.interface';
-import { Tag } from 'src/app/core/interfaces/tag/tag.interface';
-import { AbstractControl, FormGroup, FormArray, Form } from '@angular/forms';
-import { TagService } from 'src/app/core/services/tag/tag.service';
-import { TaskService } from 'src/app/core/services/task/task.service';
-import { PersonDetailsService } from './person-details.service';
+
+import { Person } from '../../../core/interfaces/person/person.interface';
+import { Task } from '../../../core/interfaces/task/task.interface';
+import { Tag } from '../../../core/interfaces/tag/tag.interface';
 import { PersonModel } from './interfaces/person-model.interface';
+
+import { TagService } from '../../../core/services/tag/tag.service';
+import { TaskService } from '../../../core/services/task/task.service';
+import { BreadcrumbService } from '../../../core/services/breadcrumb/breadcrumb.service';
+import { PersonDetailsService } from './person-details.service';
+import { tap } from 'rxjs/operators';
 
 export const idOfNewPerson = 'new-person';
 
@@ -122,5 +125,13 @@ export class PersonDetailsComponent implements OnInit, OnDestroy {
 
   private setForm(personDetails: PersonModel = null) {
     this.form = this.personDetailsService.generateFormGroup(personDetails);
+  }
+
+  private loadAndSetTasks(): Observable<Task[]> {
+    return this.taskService.getAll().pipe(tap(tasks => (this.tasks = tasks)));
+  }
+
+  private loadAndSetTags(): Observable<Tag[]> {
+    return this.tagService.getAllTags().pipe(tap(tags => (this.tags = tags)));
   }
 }

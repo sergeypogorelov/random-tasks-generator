@@ -14,6 +14,10 @@ export function dbMigrationFactory() {
       const taskStore = db.createObjectStore('task', { keyPath: 'id', autoIncrement: true });
       taskStore.createIndex('nameIdx', 'name', { unique: true });
       taskStore.createIndex('tagIdsIdx', 'tagIds', { unique: false, multiEntry: true });
+    },
+    3: (db: IDBPDatabase, transaction: IDBPTransaction) => {
+      const personStore = db.createObjectStore('person', { keyPath: 'id', autoIncrement: true });
+      personStore.createIndex('nameIdx', 'name', { unique: true });
     }
   };
 }
