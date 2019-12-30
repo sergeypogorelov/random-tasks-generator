@@ -21,7 +21,7 @@ export interface RtgDbSchema extends DBSchema {
     value: Task;
     indexes: { nameIdx: string; tagIdsIdx: number[] };
   };
-  peson: {
+  person: {
     key: number;
     value: Person;
     indexes: { nameIdx: string };

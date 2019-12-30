@@ -25,7 +25,7 @@ export class PersonService implements NameUnusedService {
       throw new Error('Id is not specified.');
     }
 
-    return this.idbService.openDB<RtgDbSchema>().pipe(mergeMap(db => db.get('peson', id)));
+    return this.idbService.openDB<RtgDbSchema>().pipe(mergeMap(db => db.get('person', id)));
   }
 
   getByName(name: string): Observable<Person> {
@@ -33,11 +33,11 @@ export class PersonService implements NameUnusedService {
       throw new Error('Name is not specified.');
     }
 
-    return this.idbService.openDB<RtgDbSchema>().pipe(mergeMap(db => db.getFromIndex('peson', 'nameIdx', name)));
+    return this.idbService.openDB<RtgDbSchema>().pipe(mergeMap(db => db.getFromIndex('person', 'nameIdx', name)));
   }
 
   getAll(): Observable<Person[]> {
-    return this.idbService.openDB<RtgDbSchema>().pipe(mergeMap(db => db.getAll('peson')));
+    return this.idbService.openDB<RtgDbSchema>().pipe(mergeMap(db => db.getAll('person')));
   }
 
   add(person: Person): Observable<Person> {
@@ -47,7 +47,7 @@ export class PersonService implements NameUnusedService {
 
     return this.idbService
       .openDB<RtgDbSchema>()
-      .pipe(mergeMap(db => db.add('peson', person)))
+      .pipe(mergeMap(db => db.add('person', person)))
       .pipe(mergeMap(id => this.getById(id)));
   }
 
@@ -58,7 +58,7 @@ export class PersonService implements NameUnusedService {
 
     return this.idbService
       .openDB<RtgDbSchema>()
-      .pipe(mergeMap(db => db.put('peson', person)))
+      .pipe(mergeMap(db => db.put('person', person)))
       .pipe(mergeMap(id => this.getById(id)));
   }
 
@@ -67,6 +67,6 @@ export class PersonService implements NameUnusedService {
       throw new Error('Id is not specified.');
     }
 
-    return this.idbService.openDB<RtgDbSchema>().pipe(mergeMap(db => db.delete('peson', id)));
+    return this.idbService.openDB<RtgDbSchema>().pipe(mergeMap(db => db.delete('person', id)));
   }
 }

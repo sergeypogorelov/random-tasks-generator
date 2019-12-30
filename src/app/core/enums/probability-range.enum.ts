@@ -1,5 +1,5 @@
 export enum ProbabilityRange {
-  Low,
-  Average,
-  High
+  Low = 'l',
+  Average = 'm',
+  High = 'h'
 }

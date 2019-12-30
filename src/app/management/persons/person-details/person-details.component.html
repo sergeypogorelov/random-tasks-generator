@@ -1,17 +1,36 @@
 <rtg-breadcrumb></rtg-breadcrumb>
 <div class="container p-2">
-  <form *ngIf="form" [formGroup]="form">
+  <form *ngIf="form" [formGroup]="form" (ngSubmit)="formSubmitHandler()">
     <div class="form-group">
       <label for="personName">Name</label>
-      <input id="personName" class="form-control" />
+      <input
+        id="personName"
+        class="form-control"
+        formControlName="name"
+        [class.is-valid]="formName.valid"
+        [class.is-invalid]="formName.touched && formName.invalid"
+      />
+      <div class="invalid-feedback" *ngIf="formName.hasError('required')">
+        Please specify a name.
+      </div>
+      <div class="invalid-feedback" *ngIf="formName.hasError('nameExists')">
+        Please specify another name. The name '{{ formName.value }}' is already in use.
+      </div>
     </div>
     <div class="form-group">
       <label for="personDescription">Description</label>
-      <textarea id="personDescription" class="form-control" rows="3"></textarea>
+      <textarea id="personDescription" class="form-control" rows="3" formControlName="description"></textarea>
     </div>
     <div class="form-group">
       <label for="personThumbnail">Thumbnail</label>
-      <input id="personThumbnail" class="form-control-file" type="file" />
+      <rtg-image-uploader
+        formControlName="thumbnail"
+        [valid]="formThumbnail.valid"
+        [invalid]="formThumbnail.touched && formThumbnail.invalid"
+      ></rtg-image-uploader>
+      <div class="invalid-feedback" *ngIf="formThumbnail.hasError('required')">
+        Please upload thumbnail.
+      </div>
     </div>
     <h3 class="font-weight-normal">Iterations</h3>
     <div class="iterations container-fluid" formArrayName="iterations">
@@ -38,9 +57,9 @@
                   <div class="form-group col-12 col-md-8">
                     <label>Task</label>
                     <select class="form-control form-control-sm" formControlName="id">
-                      <option>Task 1</option>
-                      <option>Task 2</option>
-                      <option>Task 3</option>
+                      <option *ngFor="let taskForDropdown of tasksForDropdown" [value]="taskForDropdown.value">
+                        {{ taskForDropdown.label }}
+                      </option>
                     </select>
                   </div>
                   <div class="form-group col-12 col-md-4">
@@ -65,9 +84,12 @@
                             </div>
                             <div class="form-group ml-2">
                               <select class="form-control form-control-sm" formControlName="probability">
-                                <option>Low</option>
-                                <option>Average</option>
-                                <option>High</option>
+                                <option
+                                  *ngFor="let probabilityItem of probabilityRangeItems"
+                                  [value]="probabilityItem.value"
+                                >
+                                  {{ probabilityItem.label }}
+                                </option>
                               </select>
                             </div>
                           </div>
@@ -80,14 +102,16 @@
             </div>
           </div>
           <div class="col-12">
-            <button class="btn btn-info mt-2" (click)="addTaskButtonClickHandler(iterationIndex)">Add Task</button>
+            <button class="btn btn-info mt-2" type="button" (click)="addTaskButtonClickHandler(iteration)">
+              Add Task
+            </button>
           </div>
         </ng-container>
       </div>
     </div>
     <div class="d-flex mt-2">
-      <button class="btn btn-secondary" (click)="addIterationButtonClickHandler()">Add Iteration</button>
-      <button class="btn btn-primary ml-auto">Save</button>
+      <button class="btn btn-secondary" type="button" (click)="addIterationButtonClickHandler()">Add Iteration</button>
+      <button class="btn btn-primary ml-auto" type="submit">Save</button>
     </div>
   </form>
 </div>
