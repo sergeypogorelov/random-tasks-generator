@@ -33,6 +33,40 @@
       </div>
     </div>
     <div class="form-group">
+      <label for="taskMinCount">Min Count</label>
+      <input
+        id="taskMinCount"
+        class="form-control"
+        type="number"
+        formControlName="minCount"
+        [class.is-valid]="formMinCount.valid"
+        [class.is-invalid]="formMinCount.touched && formMinCount.invalid"
+      />
+      <div class="invalid-feedback" *ngIf="formMinCount.hasError('required')">
+        Please specifiy min count of subtasks.
+      </div>
+      <div class="invalid-feedback" *ngIf="formMinCount.hasError('min')">
+        Min count of subtasks cannot be less than {{ formMinCount.errors['min'].min }}.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="taskMaxCount">Max Count</label>
+      <input
+        id="taskMaxCount"
+        class="form-control"
+        type="number"
+        formControlName="maxCount"
+        [class.is-valid]="formMaxCount.valid"
+        [class.is-invalid]="formMaxCount.touched && formMaxCount.invalid"
+      />
+      <div class="invalid-feedback" *ngIf="formMaxCount.hasError('required')">
+        Please specifiy max count of subtasks.
+      </div>
+      <div class="invalid-feedback" *ngIf="formMaxCount.hasError('min')">
+        Max count of subtasks cannot be less than {{ formMaxCount.errors['min'].min }}.
+      </div>
+    </div>
+    <div class="form-group">
       <label>Tags</label>
       <rtg-tags-selector
         formControlName="tags"

@@ -6,5 +6,6 @@ export interface Person {
   name: string;
   description: string;
   thumbnail: FileInfo;
+  startDate: string;
   iterations: PersonIteration[];
 }

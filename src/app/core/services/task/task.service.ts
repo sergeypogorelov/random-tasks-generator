@@ -4,11 +4,12 @@ import { map, mergeMap } from 'rxjs/operators';
 
 import { RtgDbSchema } from '../../interfaces/rtg-db-schema.interface';
 import { Task } from '../../interfaces/task/task.interface';
+import { NameUnusedService } from '../../validators/name-unused/name-unused-service.interface';
 
 import { IdbService } from '../../../idb/services/idb/idb.service';
 
 @Injectable()
-export class TaskService {
+export class TaskService implements NameUnusedService {
   constructor(private idbService: IdbService) {}
 
   checkIfNameUnused(name: string, originName: string = null): Observable<boolean> {

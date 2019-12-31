@@ -32,6 +32,19 @@
         Please upload thumbnail.
       </div>
     </div>
+    <div class="form-group">
+      <label for="personStartDate">Start Date</label>
+      <input
+        id="personStartDate"
+        class="form-control"
+        formControlName="startDate"
+        [class.is-valid]="formStartDate.valid"
+        [class.is-invalid]="formStartDate.touched && formStartDate.invalid"
+      />
+      <div class="invalid-feedback" *ngIf="formStartDate.hasError('required')">
+        Please specify a start date.
+      </div>
+    </div>
     <h3 class="font-weight-normal">Iterations</h3>
     <div class="iterations container-fluid" formArrayName="iterations">
       <div

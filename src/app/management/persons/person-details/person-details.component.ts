@@ -52,6 +52,10 @@ export class PersonDetailsComponent implements OnInit, OnDestroy {
     return this.form.get('thumbnail');
   }
 
+  get formStartDate(): AbstractControl {
+    return this.form.get('startDate');
+  }
+
   get formIterations(): FormArray {
     return this.form.get('iterations') as FormArray;
   }

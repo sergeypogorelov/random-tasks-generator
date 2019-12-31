@@ -25,6 +25,7 @@ export class PersonDetailsService {
       name: model.name,
       description: model.description,
       thumbnail: model.thumbnail,
+      startDate: model.startDate,
       iterations: model.iterations.map(i => this.castIterationModelToDto(i))
     };
 
@@ -82,6 +83,7 @@ export class PersonDetailsService {
       name: person.name,
       description: person.description,
       thumbnail: person.thumbnail,
+      startDate: person.startDate,
       iterations: person.iterations.map(i => this.castIterationDtoToModel(i, allTags))
     };
 
@@ -150,6 +152,7 @@ export class PersonDetailsService {
       name: new FormControl(formValue.name, [Validators.required]),
       description: new FormControl(formValue.description),
       thumbnail: new FormControl(formValue.thumbnail, [Validators.required]),
+      startDate: new FormControl(formValue.startDate, [Validators.required]),
       iterations: new FormArray(formValue.iterations.map(i => this.generateIterationFormGroup(i)))
     });
   }
@@ -209,6 +212,7 @@ export class PersonDetailsService {
       name: '',
       description: '',
       thumbnail: null,
+      startDate: '',
       iterations: []
     };
   }

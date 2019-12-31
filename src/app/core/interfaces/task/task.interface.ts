@@ -5,5 +5,7 @@ export interface Task {
   name: string;
   description: string;
   thumbnail: FileInfo;
+  minCount: number;
+  maxCount: number;
   tagIds: number[];
 }

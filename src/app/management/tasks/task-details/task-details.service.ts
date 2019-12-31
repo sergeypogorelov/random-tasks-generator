@@ -5,8 +5,8 @@ import { Tag } from '../../../core/interfaces/tag/tag.interface';
 import { Task } from '../../../core/interfaces/task/task.interface';
 import { TaskDetails } from './task-details.interface';
 
-import { nameUnusedValidator } from '../../../shared/validators/name-unused/name-unused.validator';
-import { arrayNotEmptyValidator } from '../../../shared/validators/array-not-empty/array-not-empty.validator';
+import { nameUnusedValidator } from '../../../core/validators/name-unused/name-unused.validator';
+import { arrayNotEmptyValidator } from '../../../core/validators/array-not-empty/array-not-empty.validator';
 import { TaskService } from '../../../core/services/task/task.service';
 
 @Injectable()
@@ -22,6 +22,8 @@ export class TaskDetailsService {
       title: task.name,
       description: task.description,
       thumbnail: task.thumbnail,
+      minCount: `${task.minCount}`,
+      maxCount: `${task.maxCount}`,
       tags: task.tagIds.map(id => allTags.find(i => i.id === id))
     };
   }
@@ -35,6 +37,8 @@ export class TaskDetailsService {
       name: taskDetails.title,
       description: taskDetails.description,
       thumbnail: taskDetails.thumbnail,
+      minCount: +taskDetails.minCount,
+      maxCount: +taskDetails.maxCount,
       tagIds: taskDetails.tags.map(i => i.id)
     };
   }
@@ -86,6 +90,8 @@ export class TaskDetailsService {
       ],
       description: [formValue.description],
       thumbnail: [formValue.thumbnail, [Validators.required]],
+      minCount: [formValue.minCount, [Validators.required, Validators.min(1)]],
+      maxCount: [formValue.maxCount, [Validators.required, Validators.min(1)]],
       tags: [formValue.tags, [arrayNotEmptyValidator()]]
     });
   }
@@ -95,6 +101,8 @@ export class TaskDetailsService {
       title: '',
       description: '',
       thumbnail: null,
+      minCount: '1',
+      maxCount: '1',
       tags: []
     };
   }

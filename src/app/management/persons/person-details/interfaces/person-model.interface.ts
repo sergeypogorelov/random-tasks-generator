@@ -5,5 +5,6 @@ export interface PersonModel {
   name: string;
   description: string;
   thumbnail: FileInfo;
+  startDate: string;
   iterations: PersonIterationModel[];
 }

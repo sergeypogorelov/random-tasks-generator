@@ -5,8 +5,8 @@ import { Tag } from '../../../core/interfaces/tag/tag.interface';
 import { Subtask } from '../../../core/interfaces/subtask/subtask.interface';
 import { SubtaskDetails } from './subtask-details.interface';
 
-import { nameUnusedValidator } from '../../../shared/validators/name-unused/name-unused.validator';
-import { arrayNotEmptyValidator } from '../../../shared/validators/array-not-empty/array-not-empty.validator';
+import { nameUnusedValidator } from '../../../core/validators/name-unused/name-unused.validator';
+import { arrayNotEmptyValidator } from '../../../core/validators/array-not-empty/array-not-empty.validator';
 
 import { SubtaskService } from '../../../core/services/subtask/subtask.service';
 

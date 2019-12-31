@@ -5,5 +5,7 @@ export interface TaskDetails {
   title: string;
   description: string;
   thumbnail: FileInfo;
+  minCount: string;
+  maxCount: string;
   tags: Tag[];
 }

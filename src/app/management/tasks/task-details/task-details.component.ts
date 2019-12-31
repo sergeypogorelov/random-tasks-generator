@@ -39,6 +39,14 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
     return this.form.get('thumbnail');
   }
 
+  get formMinCount(): AbstractControl {
+    return this.form.get('minCount');
+  }
+
+  get formMaxCount(): AbstractControl {
+    return this.form.get('maxCount');
+  }
+
   get formTags(): AbstractControl {
     return this.form.get('tags');
   }

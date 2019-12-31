@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 
-import { NameUnusedService } from '../../../shared/validators/name-unused/name-unused-service.interface';
+import { NameUnusedService } from '../../../core/validators/name-unused/name-unused-service.interface';
 import { RtgDbSchema } from '../../interfaces/rtg-db-schema.interface';
 import { Person } from '../../interfaces/person/person.interface';
 
