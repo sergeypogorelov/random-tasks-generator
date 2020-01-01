@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { DpDatePickerModule } from 'ng2-date-picker';
 
 import { HeaderComponent } from './layout/header/header.component';
 import { PrimaryNavigationComponent } from './layout/primary-navigation/primary-navigation.component';
@@ -25,6 +26,8 @@ import { GridCellTemplateDirective } from './components/grid/grid-column/grid-ce
 
 const angularModules = [CommonModule, FormsModule, ReactiveFormsModule, RouterModule];
 
+const communityModules = [DpDatePickerModule];
+
 const declarationsAndExports = [
   HeaderComponent,
   PrimaryNavigationComponent,
@@ -46,9 +49,9 @@ const declarationsAndExports = [
 const entryComponents = [ModalConfirmComponent];
 
 @NgModule({
-  imports: [...angularModules],
+  imports: [...angularModules, ...communityModules],
   declarations: [...declarationsAndExports, ...entryComponents],
   entryComponents: [...entryComponents],
-  exports: [...angularModules, ...declarationsAndExports]
+  exports: [...angularModules, ...communityModules, ...declarationsAndExports]
 })
 export class SharedModule {}

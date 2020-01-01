@@ -23,6 +23,7 @@
     "@angular/router": "~8.2.13",
     "bootstrap": "^4.4.1",
     "idb": "^4.0.5",
+    "ng2-date-picker": "^8.0.0",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"

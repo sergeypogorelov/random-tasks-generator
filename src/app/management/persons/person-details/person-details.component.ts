@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormGroup, FormArray } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription, Observable, forkJoin, throwError } from 'rxjs';
@@ -22,6 +22,7 @@ import { TaskService } from '../../../core/services/task/task.service';
 import { PersonService } from 'src/app/core/services/person/person.service';
 import { BreadcrumbService } from '../../../core/services/breadcrumb/breadcrumb.service';
 import { PersonDetailsService } from './person-details.service';
+import { IDatePickerConfig } from 'ng2-date-picker';
 
 export const idOfNewPerson = 'new-person';
 
@@ -29,7 +30,8 @@ export const labelOfNewPerson = 'New Person';
 
 @Component({
   selector: 'rtg-person-details',
-  templateUrl: './person-details.component.html'
+  templateUrl: './person-details.component.html',
+  encapsulation: ViewEncapsulation.None
 })
 export class PersonDetailsComponent implements OnInit, OnDestroy {
   person: Person;
@@ -43,6 +45,11 @@ export class PersonDetailsComponent implements OnInit, OnDestroy {
   tasksForDropdown: ValueAndLabel[];
 
   probabilityRangeItems: ValueAndLabel[];
+
+  datePickerCfg: IDatePickerConfig = {
+    disableKeypress: true,
+    format: 'YYYY-MM-DD'
+  };
 
   get formName(): AbstractControl {
     return this.form.get('name');

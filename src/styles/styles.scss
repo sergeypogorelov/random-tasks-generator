@@ -9,3 +9,12 @@
     max-height: 64px;
   }
 }
+
+.form-control.dp-date-picker-control {
+  &[readonly] {
+    background-color: white;
+  }
+  & ~ dp-date-picker.dp-material {
+    position: absolute !important;
+  }
+}
