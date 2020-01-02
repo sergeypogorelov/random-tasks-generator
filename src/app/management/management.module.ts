@@ -10,6 +10,7 @@ import { SubtasksService } from './subtasks/subtasks.service';
 import { TaskDetailsService } from './tasks/task-details/task-details.service';
 import { TasksService } from './tasks/tasks.service';
 import { PersonDetailsService } from './persons/person-details/person-details.service';
+import { PersonsService } from './persons/persons.service';
 
 import { ManagementComponent } from './management.component';
 import { PersonsComponent } from './persons/persons.component';
@@ -39,7 +40,8 @@ const services = [
   SubtasksService,
   TaskDetailsService,
   TasksService,
-  PersonDetailsService
+  PersonDetailsService,
+  PersonsService
 ];
 
 @NgModule({
