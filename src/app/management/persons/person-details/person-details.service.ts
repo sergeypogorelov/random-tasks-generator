@@ -14,8 +14,13 @@ import { PersonIterationModel } from './interfaces/person-iteration-model.interf
 import { PersonTaskModel } from './interfaces/person-task-model.interface';
 import { PersonTagModel } from './interfaces/person-tag-model.interface';
 
+import { nameUnusedValidator } from '../../../core/validators/name-unused/name-unused.validator';
+import { PersonService } from '../../../core/services/person/person.service';
+
 @Injectable()
 export class PersonDetailsService {
+  constructor(private personService: PersonService) {}
+
   castModelToDto(model: PersonModel): Person {
     if (!model) {
       throw new Error('Model is not specified.');
@@ -110,7 +115,7 @@ export class PersonDetailsService {
     }
 
     const result: PersonTaskModel = {
-      id: `$${task.taskId}`,
+      id: `${task.taskId}`,
       probability: `${task.probability}`,
       tags: task.tags.map(i => this.castTagDtoToModel(i, allTags))
     };
@@ -138,6 +143,28 @@ export class PersonDetailsService {
     return result;
   }
 
+  overrideDtoByModel(dto: Person, model: PersonModel): Person {
+    if (!dto) {
+      throw new Error('Dto is not specified.');
+    }
+
+    if (!model) {
+      throw new Error('Model is not specified.');
+    }
+
+    const result = {
+      ...dto
+    };
+
+    result.name = model.name;
+    result.description = model.description;
+    result.thumbnail = model.thumbnail;
+    result.startDate = model.startDate;
+    result.iterations = model.iterations.map(i => this.castIterationModelToDto(i));
+
+    return result;
+  }
+
   generateFormGroup(personModel: PersonModel = null) {
     let formValue = this.generateDefaultValue();
 
@@ -148,8 +175,17 @@ export class PersonDetailsService {
       };
     }
 
+    let originName: string = null;
+    if (personModel) {
+      originName = personModel.name;
+    }
+
     return new FormGroup({
-      name: new FormControl(formValue.name, [Validators.required]),
+      name: new FormControl(formValue.name, {
+        updateOn: 'blur',
+        validators: [Validators.required],
+        asyncValidators: [nameUnusedValidator(this.personService, originName)]
+      }),
       description: new FormControl(formValue.description),
       thumbnail: new FormControl(formValue.thumbnail, [Validators.required]),
       startDate: new FormControl(formValue.startDate, [Validators.required]),

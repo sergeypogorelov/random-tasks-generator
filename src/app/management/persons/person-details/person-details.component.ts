@@ -1,28 +1,28 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AbstractControl, FormGroup, FormArray } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Subscription, Observable, forkJoin, throwError } from 'rxjs';
+import { Subscription, Observable, forkJoin } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { IDatePickerConfig } from 'ng2-date-picker';
 
 import { linkLabels } from '../../../core/constants/link-labels';
 import { urlFragments } from '../../../core/constants/url-fragments';
 
-import { ProbabilityRange } from 'src/app/core/enums/probability-range.enum';
+import { ProbabilityRange } from '../../../core/enums/probability-range.enum';
 
-import { ValueAndLabel } from 'src/app/core/interfaces/common/value-and-label.interface';
+import { ValueAndLabel } from '../../../core/interfaces/common/value-and-label.interface';
 import { Person } from '../../../core/interfaces/person/person.interface';
 import { Task } from '../../../core/interfaces/task/task.interface';
 import { Tag } from '../../../core/interfaces/tag/tag.interface';
 import { PersonModel } from './interfaces/person-model.interface';
 
-import { Utils } from 'src/app/core/helpers/utils.class';
+import { Utils } from '../../../core/helpers/utils.class';
 
 import { TagService } from '../../../core/services/tag/tag.service';
 import { TaskService } from '../../../core/services/task/task.service';
-import { PersonService } from 'src/app/core/services/person/person.service';
+import { PersonService } from '../../../core/services/person/person.service';
 import { BreadcrumbService } from '../../../core/services/breadcrumb/breadcrumb.service';
 import { PersonDetailsService } from './person-details.service';
-import { IDatePickerConfig } from 'ng2-date-picker';
 
 export const idOfNewPerson = 'new-person';
 
@@ -122,18 +122,23 @@ export class PersonDetailsComponent implements OnInit, OnDestroy {
 
   formSubmitHandler() {
     if (this.form.valid) {
-      if (!this.person) {
-        const formRawValue = this.form.getRawValue() as PersonModel;
-        const dto = this.personDetailsService.castModelToDto(formRawValue);
+      let action: Observable<Person>;
 
-        this.subs.push(
-          this.personService
-            .add(dto)
-            .subscribe(() =>
-              this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.persons])
-            )
-        );
+      const formRawValue = this.form.getRawValue() as PersonModel;
+
+      if (this.person) {
+        const updatedDto = this.personDetailsService.overrideDtoByModel(this.person, formRawValue);
+        action = this.personService.update(updatedDto);
+      } else {
+        const newDto = this.personDetailsService.castModelToDto(formRawValue);
+        action = this.personService.add(newDto);
       }
+
+      this.subs.push(
+        action.subscribe(() =>
+          this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.persons])
+        )
+      );
     } else {
       this.form.markAllAsTouched();
     }
@@ -188,6 +193,8 @@ export class PersonDetailsComponent implements OnInit, OnDestroy {
         this.activateListeningToIdForTaskControl(taskControl as FormGroup)
       );
     }
+
+    this.form.valueChanges.subscribe(i => console.log(i));
   }
 
   private activateListeningToIdForTaskControl(taskControl: FormGroup) {
