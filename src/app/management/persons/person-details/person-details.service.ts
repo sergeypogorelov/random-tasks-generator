@@ -169,7 +169,7 @@ export class PersonDetailsService {
 
     return new FormGroup({
       name: new FormControl(formValue.name, [Validators.required]),
-      duration: new FormControl(formValue.duration, [Validators.required]),
+      duration: new FormControl(formValue.duration, [Validators.required, Validators.min(1)]),
       tasks: new FormArray(formValue.tasks.map(i => this.generateTaskFormGroup(i)))
     });
   }
@@ -186,7 +186,11 @@ export class PersonDetailsService {
 
     return new FormGroup({
       id: new FormControl(formValue.id, [Validators.required]),
-      probability: new FormControl(formValue.probability, [Validators.required]),
+      probability: new FormControl(formValue.probability, [
+        Validators.required,
+        Validators.min(0),
+        Validators.max(100)
+      ]),
       tags: new FormArray(formValue.tags.map(i => this.generateTagFormGroup(i.id, i.name, i)))
     });
   }

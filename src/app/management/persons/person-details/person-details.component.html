@@ -1,7 +1,7 @@
 <rtg-breadcrumb></rtg-breadcrumb>
 <div class="container p-2">
   <form *ngIf="form" [formGroup]="form" (ngSubmit)="formSubmitHandler()">
-    <div class="form-group">
+    <div class="form-group position-relative">
       <label for="personName">Name</label>
       <input
         id="personName"
@@ -10,10 +10,10 @@
         [class.is-valid]="formName.valid"
         [class.is-invalid]="formName.touched && formName.invalid"
       />
-      <div class="invalid-feedback" *ngIf="formName.hasError('required')">
+      <div class="invalid-tooltip" *ngIf="formName.hasError('required')">
         Please specify a name.
       </div>
-      <div class="invalid-feedback" *ngIf="formName.hasError('nameExists')">
+      <div class="invalid-tooltip" *ngIf="formName.hasError('nameExists')">
         Please specify another name. The name '{{ formName.value }}' is already in use.
       </div>
     </div>
@@ -21,18 +21,18 @@
       <label for="personDescription">Description</label>
       <textarea id="personDescription" class="form-control" rows="3" formControlName="description"></textarea>
     </div>
-    <div class="form-group">
+    <div class="form-group position-relative">
       <label for="personThumbnail">Thumbnail</label>
       <rtg-image-uploader
         formControlName="thumbnail"
         [valid]="formThumbnail.valid"
         [invalid]="formThumbnail.touched && formThumbnail.invalid"
       ></rtg-image-uploader>
-      <div class="invalid-feedback" *ngIf="formThumbnail.hasError('required')">
+      <div class="invalid-tooltip" *ngIf="formThumbnail.hasError('required')">
         Please upload thumbnail.
       </div>
     </div>
-    <div class="form-group">
+    <div class="form-group position-relative">
       <label>Start Date</label>
       <input
         id="personStartDate"
@@ -43,7 +43,7 @@
         [class.is-invalid]="formStartDate.touched && formStartDate.invalid"
         [dpDayPicker]="datePickerCfg"
       />
-      <div class="invalid-feedback" *ngIf="formStartDate.hasError('required')">
+      <div class="invalid-tooltip" *ngIf="formStartDate.hasError('required')">
         Please specify a start date.
       </div>
     </div>
@@ -56,11 +56,32 @@
         <ng-container [formGroupName]="iterationIndex">
           <div class="form-group col-12 col-md-8">
             <label>Iteration Name</label>
-            <input class="form-control" formControlName="name" />
+            <input
+              class="form-control"
+              formControlName="name"
+              [class.is-valid]="iteration.controls.name.valid"
+              [class.is-invalid]="iteration.controls.name.touched && iteration.controls.name.invalid"
+            />
+            <div class="invalid-tooltip" *ngIf="iteration.controls.name.hasError('required')">
+              Please specify an iteration name.
+            </div>
           </div>
           <div class="form-group col-12 col-md-4">
             <label>Duration</label>
-            <input class="form-control" type="number" min="1" formControlName="duration" />
+            <input
+              class="form-control"
+              type="number"
+              min="1"
+              formControlName="duration"
+              [class.is-valid]="iteration.controls.duration.valid"
+              [class.is-invalid]="iteration.controls.duration.touched && iteration.controls.duration.invalid"
+            />
+            <div class="invalid-tooltip" *ngIf="iteration.controls.duration.hasError('required')">
+              Please specify duration of the iteration.
+            </div>
+            <div class="invalid-tooltip" *ngIf="iteration.controls.duration.hasError('min')">
+              The iteration duration cannot be less than {{ iteration.controls.duration.errors['min'].min }}.
+            </div>
           </div>
           <div class="col-12">
             <div class="tasks container-fluid" formArrayName="tasks">
@@ -71,11 +92,19 @@
                 <ng-container [formGroupName]="taskIndex">
                   <div class="form-group col-12 col-md-8">
                     <label>Task</label>
-                    <select class="form-control form-control-sm" formControlName="id">
+                    <select
+                      class="custom-select custom-select-sm"
+                      formControlName="id"
+                      [class.is-valid]="task.controls.id.valid"
+                      [class.is-invalid]="task.controls.id.touched && task.controls.id.invalid"
+                    >
                       <option *ngFor="let taskForDropdown of tasksForDropdown" [value]="taskForDropdown.value">
                         {{ taskForDropdown.label }}
                       </option>
                     </select>
+                    <div class="invalid-tooltip" *ngIf="task.controls.id.hasError('required')">
+                      Please specify a task.
+                    </div>
                   </div>
                   <div class="form-group col-12 col-md-4">
                     <label>Probability</label>
@@ -85,7 +114,18 @@
                       min="0"
                       max="100"
                       formControlName="probability"
+                      [class.is-valid]="task.controls.probability.valid"
+                      [class.is-invalid]="task.controls.probability.touched && task.controls.probability.invalid"
                     />
+                    <div class="invalid-tooltip" *ngIf="task.controls.probability.hasError('required')">
+                      Please specify probability of the task appearance.
+                    </div>
+                    <div class="invalid-tooltip" *ngIf="task.controls.probability.hasError('min')">
+                      Probability cannot be less than {{ task.controls.probability.errors['min'].min }}.
+                    </div>
+                    <div class="invalid-tooltip" *ngIf="task.controls.probability.hasError('max')">
+                      Probability cannot be more than {{ task.controls.probability.errors['max'].max }}.
+                    </div>
                   </div>
                   <div class="col-12 p-3">
                     <div class="tags d-flex flex-wrap" formArrayName="tags">
@@ -93,10 +133,10 @@
                         <ng-container [formGroupName]="tagIndex">
                           <input type="hidden" formControlName="id" />
                           <div class="d-flex">
-                            <div class="form-check">
-                              <input class="form-check-input" type="checkbox" formControlName="selected" />
-                              <label class="form-check-label">{{ tag.controls.name?.value }}</label>
-                            </div>
+                            <label class="custom-control custom-checkbox">
+                              <input class="custom-control-input" type="checkbox" formControlName="selected" />
+                              <div class="custom-control-label d-inline-block">{{ tag.controls.name?.value }}</div>
+                            </label>
                             <div class="form-group ml-2">
                               <select class="form-control form-control-sm" formControlName="probability">
                                 <option

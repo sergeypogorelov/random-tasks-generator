@@ -30,8 +30,8 @@ export const labelOfNewPerson = 'New Person';
 
 @Component({
   selector: 'rtg-person-details',
-  templateUrl: './person-details.component.html',
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./person-details.component.scss'],
+  templateUrl: './person-details.component.html'
 })
 export class PersonDetailsComponent implements OnInit, OnDestroy {
   person: Person;
@@ -134,6 +134,8 @@ export class PersonDetailsComponent implements OnInit, OnDestroy {
             )
         );
       }
+    } else {
+      this.form.markAllAsTouched();
     }
   }
 
