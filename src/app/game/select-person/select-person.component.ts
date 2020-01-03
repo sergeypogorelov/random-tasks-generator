@@ -9,11 +9,11 @@ import { urlFragments } from '../../core/constants/url-fragments';
 
 import { Person } from '../../core/interfaces/person/person.interface';
 
+import { FileReaderHelper } from '../../core/helpers/filer-reader/file-reader-helper.class';
+
 import { PersonService } from '../../core/services/person/person.service';
 import { BreadcrumbService } from '../../core/services/breadcrumb/breadcrumb.service';
 import { GameService } from '../game.service';
-
-import { FileReaderHelper } from '../../core/helpers/filer-reader/file-reader-helper.class';
 
 const PERSON_INDEX_BY_DEFAULT = 0;
 
