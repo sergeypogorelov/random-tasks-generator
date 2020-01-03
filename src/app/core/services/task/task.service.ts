@@ -7,6 +7,7 @@ import { Task } from '../../interfaces/task/task.interface';
 import { NameUnusedService } from '../../validators/name-unused/name-unused-service.interface';
 
 import { IdbService } from '../../../idb/services/idb/idb.service';
+import { IDBPDatabase } from 'idb';
 
 @Injectable()
 export class TaskService implements NameUnusedService {
@@ -26,6 +27,14 @@ export class TaskService implements NameUnusedService {
     }
 
     return this.idbService.openDB<RtgDbSchema>().pipe(mergeMap(db => db.get('task', id)));
+  }
+
+  getByIds(ids: number[]): Observable<Task[]> {
+    if (!ids) {
+      throw new Error('Ids are not specified.');
+    }
+
+    return this.idbService.openDB<RtgDbSchema>().pipe(mergeMap(db => this.getAllByIds(db, ids)));
   }
 
   getByName(name: string): Observable<Task> {
@@ -68,5 +77,37 @@ export class TaskService implements NameUnusedService {
     }
 
     return this.idbService.openDB<RtgDbSchema>().pipe(mergeMap(db => db.delete('task', id)));
+  }
+
+  private async getAllByIds(db: IDBPDatabase<RtgDbSchema>, ids: number[]): Promise<Task[]> {
+    if (!db) {
+      throw new Error('IDBPDatabase instance is not specified.');
+    }
+
+    if (!ids) {
+      throw new Error('Ids are not specified.');
+    }
+
+    ids = ids.sort((a, b) => a - b);
+
+    const results: Task[] = [];
+
+    let i = 0;
+    let cursor = await db.transaction('task').store.openCursor();
+
+    while (cursor) {
+      if (cursor.key === ids[i]) {
+        results.push(cursor.value);
+        i++;
+      }
+
+      if (i >= ids.length) {
+        break;
+      }
+
+      cursor = await cursor.continue(ids[i]);
+    }
+
+    return results;
   }
 }

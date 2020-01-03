@@ -1,24 +1,26 @@
 <rtg-breadcrumb></rtg-breadcrumb>
-<div class="container mb-3 p-2">
+<div class="container mb-3 p-2" *ngIf="person">
   <div class="row">
     <div class="col-12 col-sm-6">
-      <h3 class="mb-1">John Watson</h3>
+      <h3 class="mb-1">{{ person.name }}</h3>
       <p class="mt-0 text-muted">Dec 9</p>
       <div class="d-sm-none">
-        <img class="img-fluid img-thumbnail" src="/assets/img/thumbnail.png" />
+        <img class="img-fluid img-thumbnail" [src]="personThumbnailSafeUrl" (load)="imgLoadHandler()" />
       </div>
       <p class="mt-2 text-justify">
-        This person is one of the most popular in the world known as a friend of Sherlock Holmes. He helps in Sherlock's
-        cases to investigate murders, roberries and so on.
+        <ng-container *ngIf="person.description; else defaultDescription">{{ person.description }}</ng-container>
+        <ng-template #defaultDescription>{{ person.name }} has no description.</ng-template>
       </p>
     </div>
     <div class="d-none d-sm-block col-sm-6">
-      <img class="img-fluid img-thumbnail" src="/assets/img/thumbnail.png" />
+      <img class="img-fluid img-thumbnail" [src]="personThumbnailSafeUrl" (load)="imgLoadHandler()" />
     </div>
   </div>
   <div class="d-flex flex-column flex-sm-row mt-sm-2 border-sm">
-    <button class="btn btn-secondary">Prev</button>
-    <button class="btn btn-secondary my-2 ml-sm-1 my-sm-0">Next</button>
+    <button class="btn btn-secondary" [disabled]="!prevBtnEnabled" (click)="prevBtnClickHandler()">Prev</button>
+    <button class="btn btn-secondary my-2 ml-sm-1 my-sm-0" [disabled]="!nextBtnEnabled" (click)="nextBtnClickHandler()">
+      Next
+    </button>
     <button class="btn btn-primary ml-sm-auto" (click)="selectButtonClickHandler()">Select</button>
   </div>
 </div>
