@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Task } from 'src/app/core/interfaces/task/task.interface';
-import { TaskModel } from './task-model.interface';
-import { FileReaderHelper } from 'src/app/core/helpers/filer-reader/file-reader-helper.class';
 import { DomSanitizer } from '@angular/platform-browser';
+
+import { Task } from '../../core/interfaces/task/task.interface';
+import { Subtask } from '../../core/interfaces/subtask/subtask.interface';
+import { TaskModel } from './task-model.interface';
 import { SubtaskModel } from './subtask-model.interface';
-import { Subtask } from 'src/app/core/interfaces/subtask/subtask.interface';
+
+import { FileReaderHelper } from '../../core/helpers/filer-reader/file-reader-helper.class';
 
 @Injectable()
 export class GetTasksPageService {

@@ -6,7 +6,4 @@ export interface GameState {
   personIteration?: PersonIteration;
   tasks?: GameTask[];
   tasksToDo?: GameTask[];
-  tasksSkipped?: GameTask[];
-  tasksCompleted?: GameTask[];
-  tasksFailed?: GameTask[];
 }

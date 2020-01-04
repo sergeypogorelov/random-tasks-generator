@@ -1,25 +1,24 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable, forkJoin, Subscription } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 import { linkLabels } from '../../core/constants/link-labels';
 import { urlFragments } from '../../core/constants/url-fragments';
 
-import { BreadcrumbService } from '../../core/services/breadcrumb/breadcrumb.service';
-import { GameService } from '../game.service';
-import { GameStateService } from '../game-state.service';
-import { Observable, forkJoin, Subscription } from 'rxjs';
-import { Task } from 'src/app/core/interfaces/task/task.interface';
-import { TaskService } from 'src/app/core/services/task/task.service';
-import { Subtask } from 'src/app/core/interfaces/subtask/subtask.interface';
-import { tap, mergeMap } from 'rxjs/operators';
-import { SubtaskService } from 'src/app/core/services/subtask/subtask.service';
+import { Task } from '../../core/interfaces/task/task.interface';
+import { Subtask } from '../../core/interfaces/subtask/subtask.interface';
 import { GameTask } from '../game-task.interface';
-import { Utils } from 'src/app/core/helpers/utils.class';
 import { TaskModel } from './task-model.interface';
 import { SubtaskModel } from './subtask-model.interface';
+
+import { Utils } from '../../core/helpers/utils.class';
+
+import { TaskService } from '../../core/services/task/task.service';
+import { SubtaskService } from '../../core/services/subtask/subtask.service';
+import { BreadcrumbService } from '../../core/services/breadcrumb/breadcrumb.service';
+import { GameService } from '../game.service';
 import { GetTasksPageService } from './get-tasks-page.service';
-import { ProbabilityRange } from 'src/app/core/enums/probability-range.enum';
-import { RandHelper } from 'src/app/core/helpers/rand-helper.class';
 
 const TASK_INDEX_BY_DEFAULT = 0;
 
@@ -87,8 +86,7 @@ export class GetTasksComponent implements OnInit, OnDestroy {
     private subtaskService: SubtaskService,
     private breadcrumbService: BreadcrumbService,
     private gameService: GameService,
-    private getTasksPageService: GetTasksPageService,
-    private gameStateService: GameStateService
+    private getTasksPageService: GetTasksPageService
   ) {
     this.gameTaskIndex = TASK_INDEX_BY_DEFAULT;
   }
@@ -140,6 +138,7 @@ export class GetTasksComponent implements OnInit, OnDestroy {
   }
 
   finishButtonClickHandler() {
+    this.gameService.setGameTasksToDo(this.gameTasks);
     this.router.navigate([`${urlFragments.game}`, urlFragments.gameChilds.completeTasks]);
   }
 

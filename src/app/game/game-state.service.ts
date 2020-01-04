@@ -59,10 +59,7 @@ export class GameStateService {
       personId,
       personIteration: null,
       tasks: [],
-      tasksToDo: [],
-      tasksSkipped: [],
-      tasksCompleted: [],
-      tasksFailed: []
+      tasksToDo: []
     };
   }
 }

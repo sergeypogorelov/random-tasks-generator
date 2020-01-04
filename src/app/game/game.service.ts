@@ -1,22 +1,20 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { Observable, of, forkJoin } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 
-import { urlFragments } from '../core/constants/url-fragments';
+import { ProbabilityRange } from '../core/enums/probability-range.enum';
 
+import { Person } from '../core/interfaces/person/person.interface';
+import { PersonIteration } from '../core/interfaces/person/person-iteration.interface';
+import { Subtask } from '../core/interfaces/subtask/subtask.interface';
 import { GameTask } from './game-task.interface';
 
-import { GameStateService } from './game-state.service';
-import { Person } from '../core/interfaces/person/person.interface';
-import { Task } from '../core/interfaces/task/task.interface';
-import { PersonIteration } from '../core/interfaces/person/person-iteration.interface';
-import { RandHelper } from '../core/helpers/rand-helper.class';
-import { Observable, of, forkJoin } from 'rxjs';
-import { Subtask } from '../core/interfaces/subtask/subtask.interface';
-import { SubtaskService } from '../core/services/subtask/subtask.service';
-import { mergeMap, tap } from 'rxjs/operators';
-import { ProbabilityRange } from '../core/enums/probability-range.enum';
 import { Utils } from '../core/helpers/utils.class';
+import { RandHelper } from '../core/helpers/rand-helper.class';
+
+import { SubtaskService } from '../core/services/subtask/subtask.service';
 import { TaskService } from '../core/services/task/task.service';
+import { GameStateService } from './game-state.service';
 
 const DAY_MULTIPLIER = 24 * 60 * 60 * 1000;
 
@@ -97,12 +95,16 @@ export class GameService {
     const newGameTasks: GameTask[] = [];
     const personIteration = this.getCurrentPersonIteration();
 
+    let i = 0;
     for (const personTask of personIteration.tasks) {
       if (RandHelper.getTrueOrFalse(personTask.probability)) {
         newGameTasks.push({
+          id: i,
           taskId: personTask.taskId,
           subtaskIds: []
         });
+
+        i++;
       }
     }
 
@@ -209,5 +211,25 @@ export class GameService {
         return of(result);
       })
     );
+  }
+
+  getGameTasksToDo(): GameTask[] {
+    if (!this.currentPerson) {
+      throw new Error('Current person is not specified.');
+    }
+
+    return this.gameStateService.getState(this.currentPerson.id).tasksToDo;
+  }
+
+  setGameTasksToDo(gameTasks: GameTask[]) {
+    if (!gameTasks) {
+      throw new Error('Game tasks are not specified.');
+    }
+
+    if (!this.currentPerson) {
+      throw new Error('Current person is not specified.');
+    }
+
+    this.gameStateService.setState(this.currentPerson.id, { tasksToDo: gameTasks });
   }
 }

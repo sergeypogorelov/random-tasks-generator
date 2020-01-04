@@ -3,6 +3,10 @@ import { ValueAndLabel } from '../interfaces/common/value-and-label.interface';
 export class Utils {
   private constructor() {}
 
+  static arrayFlat<T>(array: T[][]): T[] {
+    return [].concat.apply([], array);
+  }
+
   static arrayDistinct<T>(array: T[], idGetter?: (item: T) => any): T[] {
     if (!idGetter) {
       idGetter = i => i;
