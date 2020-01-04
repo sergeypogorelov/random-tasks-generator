@@ -3,6 +3,16 @@ import { ValueAndLabel } from '../interfaces/common/value-and-label.interface';
 export class Utils {
   private constructor() {}
 
+  static arrayDistinct<T>(array: T[], idGetter?: (item: T) => any): T[] {
+    if (!idGetter) {
+      idGetter = i => i;
+    }
+
+    return array.filter((item, index) => {
+      return array.map(mapItem => idGetter(mapItem)).indexOf(idGetter(item)) === index;
+    });
+  }
+
   static jsonCopy<T>(source: T): T {
     if (!source) {
       throw new Error('Source is not specified.');

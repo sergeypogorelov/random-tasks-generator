@@ -57,10 +57,12 @@ export class GameStateService {
 
     return {
       personId,
+      personIteration: null,
       tasks: [],
       tasksToDo: [],
       tasksSkipped: [],
-      tasksCompleted: []
+      tasksCompleted: [],
+      tasksFailed: []
     };
   }
 }

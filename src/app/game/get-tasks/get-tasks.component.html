@@ -1,48 +1,38 @@
 <rtg-breadcrumb></rtg-breadcrumb>
-<div class="container mb-3 p-2">
+<div class="container mb-3 p-2" *ngIf="taskModel">
   <div class="row">
     <div class="col-12 col-sm-6">
-      <h3 class="mb-1">Task 1</h3>
-      <p class="mt-0 text-muted">Dec 9</p>
+      <h3 class="mb-1">{{ taskModel.name }}</h3>
       <div class="d-sm-none">
-        <img class="img-fluid img-thumbnail" src="/assets/img/thumbnail.png" />
+        <img class="img-fluid img-thumbnail" [src]="taskModel.thumbnailSafeUrl" />
       </div>
-      <p class="my-2 text-justify">
-        This task is about going on the beach and have some fun there.
-      </p>
+      <p class="my-2 text-justify">{{ taskModel.description }}</p>
     </div>
     <div class="d-none d-sm-block col-sm-6">
-      <img class="img-fluid img-thumbnail" src="/assets/img/thumbnail.png" />
+      <img class="img-fluid img-thumbnail" [src]="taskModel.thumbnailSafeUrl" />
     </div>
   </div>
-  <div class="row">
+  <div class="row" *ngIf="subtaskModels && subtaskModels.length > 0">
     <div class="col">
       <h5>Subtasks</h5>
       <div class="subtasks">
-        <div class="subtask">
-          <img class="subtask-img" src="/assets/img/thumbnail.png" />
-          <h6 class="subtask-title">Subtask 1</h6>
-        </div>
-        <div class="subtask">
-          <img class="subtask-img" src="/assets/img/thumbnail.png" />
-          <h6 class="subtask-title">Subtask 2</h6>
-        </div>
-        <div class="subtask">
-          <img class="subtask-img" src="/assets/img/thumbnail.png" />
-          <h6 class="subtask-title">Subtask 3</h6>
-        </div>
-        <div class="subtask">
-          <img class="subtask-img" src="/assets/img/thumbnail.png" />
-          <h6 class="subtask-title">Subtask 4</h6>
+        <div class="subtask" *ngFor="let model of subtaskModels">
+          <img class="subtask-img" [src]="model.thumbnailSafeUrl" />
+          <h6 class="subtask-title">{{ model.name }}</h6>
         </div>
       </div>
     </div>
   </div>
   <div class="d-flex flex-column flex-sm-row mt-sm-2 border-sm">
-    <button class="btn btn-secondary">Prev</button>
-    <button class="btn btn-secondary my-2 ml-sm-1 my-sm-0">Next</button>
-    <button class="btn btn-info mb-2 ml-sm-auto my-sm-0">Get <span class="badge badge-light">4</span></button>
-    <!-- <button class="btn btn-info mb-2 ml-sm-auto my-sm-0">OK</button> -->
-    <button class="btn btn-primary ml-sm-1" (click)="finishButtonClickHandler()">Finish</button>
+    <button class="btn btn-secondary" [disabled]="!prevBtnEnabled" (click)="prevBtnClickHandler()">Prev</button>
+    <button class="btn btn-secondary my-2 ml-sm-1 my-sm-0" [disabled]="!nextBtnEnabled" (click)="nextBtnClickHandler()">
+      Next
+    </button>
+    <button class="btn btn-info mb-2 ml-sm-auto my-sm-0" [disabled]="subtasksLeft === 0" (click)="getBtnClickHandler()">
+      Get <span class="badge badge-light">{{ subtasksLeft }}</span>
+    </button>
+    <button class="btn btn-primary ml-sm-1" [disabled]="!finishBtnEnabled" (click)="finishButtonClickHandler()">
+      Finish
+    </button>
   </div>
 </div>

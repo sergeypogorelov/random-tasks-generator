@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
+import { IDBPDatabase } from 'idb';
 
 import { RtgDbSchema } from '../../interfaces/rtg-db-schema.interface';
 import { Task } from '../../interfaces/task/task.interface';
 import { NameUnusedService } from '../../validators/name-unused/name-unused-service.interface';
 
 import { IdbService } from '../../../idb/services/idb/idb.service';
-import { IDBPDatabase } from 'idb';
 
 @Injectable()
 export class TaskService implements NameUnusedService {
