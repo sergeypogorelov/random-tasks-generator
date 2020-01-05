@@ -4,7 +4,7 @@ export class Utils {
   private constructor() {}
 
   static arrayFlat<T>(array: T[][]): T[] {
-    return [].concat.apply([], array);
+    return Array.prototype.concat.apply([], array);
   }
 
   static arrayDistinct<T>(array: T[], idGetter?: (item: T) => any): T[] {

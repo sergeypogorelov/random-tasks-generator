@@ -1,6 +1,13 @@
 @import '../../../styles/bootstrap/bootstrap-required.scss';
 
 .media {
+  &.failed {
+    .media-body {
+      text-decoration: line-through;
+    }
+    opacity: 0.3;
+    color: $danger;
+  }
   &.skipped {
     opacity: 0.3;
   }
@@ -9,6 +16,9 @@
       text-decoration: line-through;
     }
     opacity: 0.3;
+  }
+  &.selected {
+    border: 1px solid $primary;
   }
   &-img {
     max-width: 32px;

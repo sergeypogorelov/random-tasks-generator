@@ -1,41 +1,20 @@
 <rtg-breadcrumb></rtg-breadcrumb>
-<div class="container mb-3 pt-0 pb-2 px-2">
+<div class="container mb-3 pt-0 pb-2 px-2" *ngIf="models && models.length > 0">
   <div class="row">
-    <div class="col-12 col-md-6">
+    <div class="col-12 col-md-6" *ngFor="let task of models">
       <div class="media p-1">
-        <img class="media-img" src="/assets/img/thumbnail.png" />
+        <img class="media-img" [src]="task.thumbnailSafeUrl" />
         <div class="media-body ml-1">
-          <h5 class="my-0">Task 1</h5>
-          <div class="media p-1 completed">
-            <img class="media-img" src="/assets/img/thumbnail.png" />
+          <h5 class="my-0">{{ task.name }}</h5>
+          <div
+            class="media p-1"
+            *ngFor="let subtask of task.subtasks"
+            [ngClass]="generateSubtaskClasses(task, subtask)"
+            (click)="subtaskClickHandler(task, subtask)"
+          >
+            <img class="media-img" [src]="subtask.thumbnailSafeUrl" />
             <div class="media-body ml-1">
-              <h5 class="my-0">Subtask 1</h5>
-            </div>
-          </div>
-          <div class="media p-1 skipped">
-            <img class="media-img" src="/assets/img/thumbnail.png" />
-            <div class="media-body ml-1">
-              <h5 class="my-0">Subtask 2</h5>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-12 col-md-6">
-      <div class="media p-1">
-        <img class="media-img" src="/assets/img/thumbnail.png" />
-        <div class="media-body ml-1">
-          <h5 class="my-0">Task 2</h5>
-          <div class="media p-1 border border-primary">
-            <img class="media-img" src="/assets/img/thumbnail.png" />
-            <div class="media-body ml-1">
-              <h5 class="my-0">Subtask 3</h5>
-            </div>
-          </div>
-          <div class="media p-1">
-            <img class="media-img" src="/assets/img/thumbnail.png" />
-            <div class="media-body ml-1">
-              <h5 class="my-0">Subtask 4</h5>
+              <h5 class="my-0">{{ subtask.name }}</h5>
             </div>
           </div>
         </div>
@@ -45,9 +24,37 @@
   <div class="row">
     <div class="col">
       <div class="d-flex flex-column flex-sm-row mt-sm-2 border-sm">
-        <button class="btn btn-secondary">Info</button>
-        <button class="btn btn-warning my-2 ml-sm-auto my-sm-0">Skip</button>
-        <button class="btn btn-info mb-2 ml-sm-1 my-sm-0">Complete</button>
+        <button class="btn btn-secondary" [disabled]="!subtaskButtonsEnabled" (click)="infoBtnClickHandler()">
+          Info
+        </button>
+        <button
+          class="btn btn-danger my-2 ml-sm-auto my-sm-0"
+          [disabled]="!subtaskButtonsEnabled"
+          (click)="failBtnClickHandler()"
+        >
+          Fail
+        </button>
+        <button
+          class="btn btn-warning my-2 ml-sm-1 my-sm-0"
+          [disabled]="!subtaskButtonsEnabled"
+          (click)="skipBtnClickHandler()"
+        >
+          Skip
+        </button>
+        <button
+          class="btn btn-info mb-2 ml-sm-1 my-sm-0"
+          [disabled]="!subtaskButtonsEnabled"
+          (click)="completeBtnClickHandler()"
+        >
+          Complete
+        </button>
+        <button
+          class="btn btn-dark mb-2 ml-sm-1 my-sm-0"
+          [disabled]="!subtaskButtonsEnabled"
+          (click)="resetBtnClickHandler()"
+        >
+          Reset
+        </button>
         <button class="btn btn-primary ml-sm-1" (click)="finishButtonClickHandler()">Finish</button>
       </div>
     </div>

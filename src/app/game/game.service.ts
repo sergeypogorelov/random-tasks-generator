@@ -15,6 +15,8 @@ import { RandHelper } from '../core/helpers/rand-helper.class';
 import { SubtaskService } from '../core/services/subtask/subtask.service';
 import { TaskService } from '../core/services/task/task.service';
 import { GameStateService } from './game-state.service';
+import { TaskModel } from './complete-tasks/task-model.interface';
+import { GameTaskMarked } from './game-task-marked.interface';
 
 const DAY_MULTIPLIER = 24 * 60 * 60 * 1000;
 
@@ -230,6 +232,26 @@ export class GameService {
       throw new Error('Current person is not specified.');
     }
 
-    this.gameStateService.setState(this.currentPerson.id, { tasksToDo: gameTasks });
+    this.gameStateService.patchState(this.currentPerson.id, { tasksToDo: gameTasks });
+  }
+
+  getTasksMarked(): GameTaskMarked[] {
+    if (!this.currentPerson) {
+      throw new Error('Current person is not specified.');
+    }
+
+    return this.gameStateService.getState(this.currentPerson.id).tasksMarked;
+  }
+
+  setTasksMarked(tasksMarked: GameTaskMarked[]) {
+    if (!tasksMarked) {
+      throw new Error('Models are not specified.');
+    }
+
+    if (!this.currentPerson) {
+      throw new Error('Current person is not specified.');
+    }
+
+    this.gameStateService.patchState(this.currentPerson.id, { tasksMarked });
   }
 }

@@ -15,6 +15,8 @@ import { GameService } from '../game.service';
 import { Utils } from 'src/app/core/helpers/utils.class';
 import { mergeMap } from 'rxjs/operators';
 import { SubtaskStates } from 'src/app/core/enums/subtask-states.enum';
+import { GameSubtaskMarked } from '../game-subtask-marked.interface';
+import { GameTaskMarked } from '../game-task-marked.interface';
 
 @Injectable()
 export class CompleteTasksPageService {
@@ -49,6 +51,51 @@ export class CompleteTasksPageService {
         return of(newResults);
       })
     );
+  }
+
+  initModelsByState(models: TaskModel[]) {
+    if (!models) {
+      throw new Error('Models are not specified.');
+    }
+
+    const tasksMarked = this.gameService.getTasksMarked();
+
+    for (const model of models) {
+      const taskMarked = tasksMarked.find(i => i.id === model.id);
+
+      if (taskMarked) {
+        for (const subtaskMarked of taskMarked.subtasks) {
+          const modelSubtask = model.subtasks.find(i => i.id === subtaskMarked.id);
+
+          if (modelSubtask) {
+            modelSubtask.state = subtaskMarked.state;
+          }
+        }
+      }
+    }
+
+    const newTasksMarked = models.map(i => this.castTaskModelToTaskMarked(i));
+
+    this.gameService.setTasksMarked(newTasksMarked);
+  }
+
+  castTaskModelToTaskMarked(model: TaskModel): GameTaskMarked {
+    const result: GameTaskMarked = {
+      id: model.id,
+      taskId: model.taskId,
+      subtasks: model.subtasks.map(i => this.castSubtaskModelToSubtaskMarked(i))
+    };
+
+    return result;
+  }
+
+  castSubtaskModelToSubtaskMarked(model: SubtaskModel): GameSubtaskMarked {
+    const result: GameSubtaskMarked = {
+      id: model.id,
+      state: model.state
+    };
+
+    return result;
   }
 
   castTaskDtoToModel(modelId: number, task: Task, subtasks: Subtask[]): TaskModel {

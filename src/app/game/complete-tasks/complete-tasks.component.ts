@@ -13,6 +13,9 @@ import { SubtaskService } from '../../core/services/subtask/subtask.service';
 import { BreadcrumbService } from '../../core/services/breadcrumb/breadcrumb.service';
 import { GameService } from '../game.service';
 import { CompleteTasksPageService } from './complete-tasks-page.service';
+import { SubtaskModel } from './subtask-model.interface';
+import { SubtaskStates } from 'src/app/core/enums/subtask-states.enum';
+import { ModalSubtaskInfoService } from './modal-subtask-info/modal-subtask-info.service';
 
 @Component({
   selector: 'rtg-complete-tasks',
@@ -26,13 +29,22 @@ export class CompleteTasksComponent implements OnInit {
 
   models: TaskModel[];
 
+  taskIdSelected: number;
+
+  subtaskIdSelected: number;
+
+  get subtaskButtonsEnabled(): boolean {
+    return typeof this.taskIdSelected === 'number' && typeof this.subtaskIdSelected === 'number';
+  }
+
   constructor(
     private router: Router,
     private taskService: TaskService,
     private subtaskService: SubtaskService,
     private breadcrumbService: BreadcrumbService,
     private gameService: GameService,
-    private completeTasksPageService: CompleteTasksPageService
+    private completeTasksPageService: CompleteTasksPageService,
+    private modalSubtaskInfoService: ModalSubtaskInfoService
   ) {}
 
   ngOnInit() {
@@ -50,12 +62,48 @@ export class CompleteTasksComponent implements OnInit {
     }
 
     this.setBreadcrumb();
+    this.loadAndSetModels();
+  }
 
-    this.completeTasksPageService.loadModels().subscribe(i => console.log(i));
+  infoBtnClickHandler() {
+    const foundTaskModel = this.models.find(i => i.id === this.taskIdSelected);
+    const foundSubtraskModel = foundTaskModel.subtasks.find(i => i.id === this.subtaskIdSelected);
+
+    this.modalSubtaskInfoService.createAndShowSubtaskInfoModal('subtask-info', foundSubtraskModel);
+  }
+
+  subtaskClickHandler(taskModel: TaskModel, subtaskModel: SubtaskModel) {
+    this.taskIdSelected = taskModel.id;
+    this.subtaskIdSelected = subtaskModel.id;
+  }
+
+  failBtnClickHandler() {
+    this.setStateToSelectedSubtask(SubtaskStates.Failed);
+  }
+
+  skipBtnClickHandler() {
+    this.setStateToSelectedSubtask(SubtaskStates.Skipped);
+  }
+
+  completeBtnClickHandler() {
+    this.setStateToSelectedSubtask(SubtaskStates.Completed);
+  }
+
+  resetBtnClickHandler() {
+    this.setStateToSelectedSubtask(SubtaskStates.Untouched);
   }
 
   finishButtonClickHandler() {
     this.router.navigate([`${urlFragments.home}`]);
+  }
+
+  generateSubtaskClasses(taskModel: TaskModel, subtaskModel: SubtaskModel) {
+    return {
+      failed: subtaskModel.state === SubtaskStates.Failed,
+      skipped: subtaskModel.state === SubtaskStates.Skipped,
+      completed: subtaskModel.state === SubtaskStates.Completed,
+      selected: this.taskIdSelected === taskModel.id && this.subtaskIdSelected === subtaskModel.id
+    };
   }
 
   private setBreadcrumb() {
@@ -72,5 +120,23 @@ export class CompleteTasksComponent implements OnInit {
         label: linkLabels.gameChilds.completeTasks
       }
     ]);
+  }
+
+  private loadAndSetModels() {
+    this.completeTasksPageService.loadModels().subscribe(models => {
+      this.models = models;
+      this.completeTasksPageService.initModelsByState(models);
+    });
+  }
+
+  private setStateToSelectedSubtask(state: SubtaskStates) {
+    if (!state) {
+      throw new Error('State is not specified.');
+    }
+
+    const foundTaskModel = this.models.find(i => i.id === this.taskIdSelected);
+    const foundSubtraskModel = foundTaskModel.subtasks.find(i => i.id === this.subtaskIdSelected);
+
+    foundSubtraskModel.state = state;
   }
 }
