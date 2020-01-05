@@ -50,6 +50,24 @@ export class GameStateService {
     this.statesMap.set(personId, Utils.jsonCopy(newState));
   }
 
+  clearState(personId: number) {
+    if (typeof personId !== 'number') {
+      throw new Error('Person id is not specified.');
+    }
+
+    if (this.statesMap.has(personId)) {
+      this.statesMap.delete(personId);
+    }
+  }
+
+  getAllPersonIds(): number[] {
+    const result: number[] = [];
+    for (const item of this.statesMap.keys()) {
+      result.push(item);
+    }
+    return result;
+  }
+
   private getDefaultState(personId: number): GameState {
     if (typeof personId !== 'number') {
       throw new Error('Person id is not specified.');

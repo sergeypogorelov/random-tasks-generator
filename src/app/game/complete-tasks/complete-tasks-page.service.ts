@@ -17,6 +17,7 @@ import { mergeMap } from 'rxjs/operators';
 import { SubtaskStates } from 'src/app/core/enums/subtask-states.enum';
 import { GameSubtaskMarked } from '../game-subtask-marked.interface';
 import { GameTaskMarked } from '../game-task-marked.interface';
+import { GameResult } from 'src/app/core/interfaces/game-result/game-result.interface';
 
 @Injectable()
 export class CompleteTasksPageService {
@@ -93,6 +94,23 @@ export class CompleteTasksPageService {
     const result: GameSubtaskMarked = {
       id: model.id,
       state: model.state
+    };
+
+    return result;
+  }
+
+  castTaskModelsToDto(models: TaskModel[]): GameResult {
+    let index = 0;
+
+    const subtasksNotFlat = models.map(model =>
+      model.subtasks.map(i => ({ index: index++, subtaskId: i.id, subtaskState: i.state }))
+    );
+
+    const result: GameResult = {
+      personId: this.gameService.getCurrentPerson().id,
+      startDate: new Date(this.gameService.getStartDate()),
+      finishDate: new Date(this.gameService.getFinishDate()),
+      subtasks: Utils.arrayFlat(subtasksNotFlat)
     };
 
     return result;

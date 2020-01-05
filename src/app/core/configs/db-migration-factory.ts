@@ -18,6 +18,12 @@ export function dbMigrationFactory() {
     3: (db: IDBPDatabase, transaction: IDBPTransaction) => {
       const personStore = db.createObjectStore('person', { keyPath: 'id', autoIncrement: true });
       personStore.createIndex('nameIdx', 'name', { unique: true });
+    },
+    4: (db: IDBPDatabase, transaction: IDBPTransaction) => {
+      const gameResultStore = db.createObjectStore('game-result', { keyPath: 'id', autoIncrement: true });
+      gameResultStore.createIndex('personIdIdx', 'personId', { unique: false });
+      gameResultStore.createIndex('startDateIdx', 'startDate', { unique: false });
+      gameResultStore.createIndex('finishDateIdx', 'finishDate', { unique: false });
     }
   };
 }

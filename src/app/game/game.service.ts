@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, forkJoin } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { mergeMap, tap } from 'rxjs/operators';
 
 import { ProbabilityRange } from '../core/enums/probability-range.enum';
 
@@ -17,6 +17,7 @@ import { TaskService } from '../core/services/task/task.service';
 import { GameStateService } from './game-state.service';
 import { TaskModel } from './complete-tasks/task-model.interface';
 import { GameTaskMarked } from './game-task-marked.interface';
+import { PersonService } from '../core/services/person/person.service';
 
 const DAY_MULTIPLIER = 24 * 60 * 60 * 1000;
 
@@ -25,6 +26,7 @@ export class GameService {
   private currentPerson: Person;
 
   constructor(
+    private personService: PersonService,
     private taskService: TaskService,
     private subtaskService: SubtaskService,
     private gameStateService: GameStateService
@@ -253,5 +255,66 @@ export class GameService {
     }
 
     this.gameStateService.patchState(this.currentPerson.id, { tasksMarked });
+  }
+
+  getStartDate(): string {
+    if (!this.currentPerson) {
+      throw new Error('Current person is not specified.');
+    }
+
+    return this.gameStateService.getState(this.currentPerson.id).startDate;
+  }
+
+  registerGameStart() {
+    if (!this.currentPerson) {
+      throw new Error('Current person is not specified.');
+    }
+
+    let startDateStr = this.gameStateService.getState(this.currentPerson.id).startDate;
+    if (startDateStr) {
+      return;
+    }
+
+    startDateStr = new Date().toISOString();
+    this.gameStateService.patchState(this.currentPerson.id, { startDate: startDateStr });
+  }
+
+  getFinishDate(): string {
+    if (!this.currentPerson) {
+      throw new Error('Current person is not specified.');
+    }
+
+    return this.gameStateService.getState(this.currentPerson.id).finishDate;
+  }
+
+  registerGameFinish() {
+    if (!this.currentPerson) {
+      throw new Error('Current person is not specified.');
+    }
+
+    let finishDateStr = this.gameStateService.getState(this.currentPerson.id).finishDate;
+    if (finishDateStr) {
+      return;
+    }
+
+    finishDateStr = new Date().toISOString();
+    this.gameStateService.patchState(this.currentPerson.id, { finishDate: finishDateStr });
+  }
+
+  clearCurrentPerson(): Observable<Person> {
+    if (!this.currentPerson) {
+      throw new Error('Current person is not specified.');
+    }
+
+    this.gameStateService.clearState(this.currentPerson.id);
+
+    const personIds = this.gameStateService.getAllPersonIds();
+    if (personIds && personIds.length > 0) {
+      return this.personService.getById(personIds[0]).pipe(tap(person => this.setCurrentPerson(person)));
+    }
+
+    this.currentPerson = null;
+
+    return of(null);
   }
 }

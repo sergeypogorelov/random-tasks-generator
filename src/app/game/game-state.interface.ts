@@ -7,5 +7,7 @@ export interface GameState {
   personIteration?: PersonIteration;
   tasks?: GameTask[];
   tasksToDo?: GameTask[];
+  startDate?: string;
   tasksMarked?: GameTaskMarked[];
+  finishDate?: string;
 }

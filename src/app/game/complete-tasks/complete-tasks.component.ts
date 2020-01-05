@@ -16,6 +16,10 @@ import { CompleteTasksPageService } from './complete-tasks-page.service';
 import { SubtaskModel } from './subtask-model.interface';
 import { SubtaskStates } from 'src/app/core/enums/subtask-states.enum';
 import { ModalSubtaskInfoService } from './modal-subtask-info/modal-subtask-info.service';
+import { GameResultService } from 'src/app/core/services/game-result/game-result.service';
+import { ModalConfirmService } from 'src/app/core/services/modal-confirm/modal-confirm.service';
+import { ModalConfirmCallbacksContainer } from 'src/app/shared/components/modal-confirm/modal-confirm-callbacks-container.interface';
+import { mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'rtg-complete-tasks',
@@ -39,9 +43,9 @@ export class CompleteTasksComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private taskService: TaskService,
-    private subtaskService: SubtaskService,
+    private gameResultService: GameResultService,
     private breadcrumbService: BreadcrumbService,
+    private modalConfirmService: ModalConfirmService,
     private gameService: GameService,
     private completeTasksPageService: CompleteTasksPageService,
     private modalSubtaskInfoService: ModalSubtaskInfoService
@@ -60,6 +64,8 @@ export class CompleteTasksComponent implements OnInit {
       this.router.navigate([`/${urlFragments.game}`, urlFragments.gameChilds.getTasks]);
       return;
     }
+
+    this.gameService.registerGameStart();
 
     this.setBreadcrumb();
     this.loadAndSetModels();
@@ -94,7 +100,21 @@ export class CompleteTasksComponent implements OnInit {
   }
 
   finishButtonClickHandler() {
-    this.router.navigate([`${urlFragments.home}`]);
+    const callbacks: ModalConfirmCallbacksContainer = {
+      confirm: () => {
+        this.gameService.registerGameFinish();
+
+        const gameResult = this.completeTasksPageService.castTaskModelsToDto(this.models);
+        this.gameResultService
+          .insert(gameResult)
+          .pipe(mergeMap(() => this.gameService.clearCurrentPerson()))
+          .subscribe(() => {
+            this.router.navigate([`${urlFragments.home}`]);
+          });
+      }
+    };
+
+    this.modalConfirmService.createAndShowConfirmModal('confirm-game-finish', callbacks);
   }
 
   generateSubtaskClasses(taskModel: TaskModel, subtaskModel: SubtaskModel) {
