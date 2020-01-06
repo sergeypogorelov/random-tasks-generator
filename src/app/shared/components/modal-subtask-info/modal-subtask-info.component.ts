@@ -1,8 +1,7 @@
 import { Component, Input } from '@angular/core';
 
-import { ModalComponent } from '../../../shared/components/modal-generator/modal-component.interface';
-import { ModalSubtaskInfoCallbacksContainer } from './modal-subtask-info-callbacks-container.interface';
-import { SubtaskModel } from '../subtask-model.interface';
+import { ModalComponent } from '../modal-generator/modal-component.interface';
+import { SubtaskModel } from '../../../game/complete-tasks/interfaces/subtask-model.interface';
 
 @Component({
   selector: 'rtg-modal-subtask-info',
@@ -13,7 +12,7 @@ export class ModalSubtaskInfoComponent implements ModalComponent {
   data: { subtask: SubtaskModel };
 
   @Input()
-  callbacksContainer: ModalSubtaskInfoCallbacksContainer;
+  callbacksContainer: { close?: () => void };
 
   okHandler() {
     if (this.callbacksContainer && this.callbacksContainer.close) {

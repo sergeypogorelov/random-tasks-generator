@@ -12,12 +12,13 @@ import { GameResultService } from './services/game-result/game-result.service';
 
 import { ModalService } from './services/modal/modal.service';
 import { ModalConfirmService } from './services/modal-confirm/modal-confirm.service';
+import { ModalSubtaskInfoService } from './services/modal-subtask-info/modal-subtask-info.service';
 
 import { BreadcrumbService } from './services/breadcrumb/breadcrumb.service';
 
 const dbServices = [TagService, SubtaskService, TaskService, PersonService, GameResultService];
 
-const modalServices = [ModalService, ModalConfirmService];
+const modalServices = [ModalService, ModalConfirmService, ModalSubtaskInfoService];
 
 const componentServices = [BreadcrumbService];
 

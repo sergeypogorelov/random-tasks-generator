@@ -15,7 +15,7 @@ import { RandHelper } from '../core/helpers/rand-helper.class';
 import { SubtaskService } from '../core/services/subtask/subtask.service';
 import { TaskService } from '../core/services/task/task.service';
 import { GameStateService } from './game-state.service';
-import { TaskModel } from './complete-tasks/task-model.interface';
+import { TaskModel } from './complete-tasks/interfaces/task-model.interface';
 import { GameTaskMarked } from './game-task-marked.interface';
 import { PersonService } from '../core/services/person/person.service';
 

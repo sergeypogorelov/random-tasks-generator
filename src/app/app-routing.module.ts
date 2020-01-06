@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, ExtraOptions } from '@angular/router';
 
 import { urlFragments } from './core/constants/url-fragments';
 
@@ -27,8 +27,12 @@ const routes: Routes = [
   }
 ];
 
+const routeOptions: ExtraOptions = {
+  useHash: true
+};
+
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, routeOptions)],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}

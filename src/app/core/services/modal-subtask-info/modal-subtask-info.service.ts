@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { ModalService } from 'src/app/core/services/modal/modal.service';
-import { ModalSubtaskInfoCallbacksContainer } from './modal-subtask-info-callbacks-container.interface';
-import { ModalInfo } from 'src/app/core/services/modal/modal-info.interface';
-import { ModalSubtaskInfoComponent } from './modal-subtask-info.component';
-import { SubtaskModel } from '../subtask-model.interface';
+
+import { ModalInfo } from '../modal/modal-info.interface';
+import { SubtaskModel } from '../../../game/complete-tasks/interfaces/subtask-model.interface';
+
+import { ModalService } from '../modal/modal.service';
+
+import { ModalSubtaskInfoComponent } from '../../../shared/components/modal-subtask-info/modal-subtask-info.component';
 
 @Injectable()
 export class ModalSubtaskInfoService {
@@ -16,12 +18,8 @@ export class ModalSubtaskInfoService {
    * @param subtask subtask model
    * @param callbacksContainer callbacks on close
    */
-  createAndShowSubtaskInfoModal(
-    tag: string,
-    subtask: SubtaskModel,
-    callbacksContainer?: ModalSubtaskInfoCallbacksContainer
-  ) {
-    const newCallbacksContainer: ModalSubtaskInfoCallbacksContainer = {
+  createAndShowSubtaskInfoModal(tag: string, subtask: SubtaskModel, callbacksContainer?: { close?: () => void }) {
+    const newCallbacksContainer = {
       close: () => {
         this.modalService.hide(tag);
         if (callbacksContainer && callbacksContainer.close) {

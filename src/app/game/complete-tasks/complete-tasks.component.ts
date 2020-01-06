@@ -1,25 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { mergeMap } from 'rxjs/operators';
 
 import { linkLabels } from '../../core/constants/link-labels';
 import { urlFragments } from '../../core/constants/url-fragments';
 
+import { SubtaskStates } from '../../core/enums/subtask-states.enum';
+
 import { Task } from '../../core/interfaces/task/task.interface';
 import { Subtask } from '../../core/interfaces/subtask/subtask.interface';
-import { TaskModel } from './task-model.interface';
+import { ModalConfirmCallbacksContainer } from '../../shared/components/modal-confirm/modal-confirm-callbacks-container.interface';
+import { TaskModel } from './interfaces/task-model.interface';
+import { SubtaskModel } from './interfaces/subtask-model.interface';
 
-import { TaskService } from '../../core/services/task/task.service';
-import { SubtaskService } from '../../core/services/subtask/subtask.service';
+import { GameResultService } from '../../core/services/game-result/game-result.service';
 import { BreadcrumbService } from '../../core/services/breadcrumb/breadcrumb.service';
+import { ModalSubtaskInfoService } from '../../core/services/modal-subtask-info/modal-subtask-info.service';
+import { ModalConfirmService } from '../../core/services/modal-confirm/modal-confirm.service';
 import { GameService } from '../game.service';
-import { CompleteTasksPageService } from './complete-tasks-page.service';
-import { SubtaskModel } from './subtask-model.interface';
-import { SubtaskStates } from 'src/app/core/enums/subtask-states.enum';
-import { ModalSubtaskInfoService } from './modal-subtask-info/modal-subtask-info.service';
-import { GameResultService } from 'src/app/core/services/game-result/game-result.service';
-import { ModalConfirmService } from 'src/app/core/services/modal-confirm/modal-confirm.service';
-import { ModalConfirmCallbacksContainer } from 'src/app/shared/components/modal-confirm/modal-confirm-callbacks-container.interface';
-import { mergeMap } from 'rxjs/operators';
+import { CompleteTasksPageService } from './services/complete-tasks-page.service';
 
 @Component({
   selector: 'rtg-complete-tasks',

@@ -23,7 +23,7 @@ import { ModalConfirmComponent } from './components/modal-confirm/modal-confirm.
 import { ClickOutsideDirective } from './directives/click-outside/click-outside.directive';
 import { ModalGeneratorHostDirective } from './components/modal-generator/modal-generator-host.directive';
 import { GridCellTemplateDirective } from './components/grid/grid-column/grid-cell-template.directive';
-import { ModalSubtaskInfoComponent } from '../game/complete-tasks/modal-subtask-info/modal-subtask-info.component';
+import { ModalSubtaskInfoComponent } from './components/modal-subtask-info/modal-subtask-info.component';
 
 const angularModules = [CommonModule, FormsModule, ReactiveFormsModule, RouterModule];
 
