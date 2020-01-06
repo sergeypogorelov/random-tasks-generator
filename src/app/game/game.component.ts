@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 
 import { urlFragments } from '../core/constants/url-fragments';
 
-import { GameService } from './game.service';
-import { GameStateService } from './game-state.service';
+import { GameService } from './services/game/game.service';
+import { GameStateService } from './services/game-state/game-state.service';
 
 @Component({
   selector: 'rtg-game',

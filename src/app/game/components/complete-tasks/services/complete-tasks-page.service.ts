@@ -3,22 +3,22 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Observable, forkJoin, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
-import { SubtaskStates } from '../../../core/enums/subtask-states.enum';
+import { SubtaskStates } from '../../../../core/enums/subtask-states.enum';
 
-import { Task } from '../../../core/interfaces/task/task.interface';
-import { Subtask } from '../../../core/interfaces/subtask/subtask.interface';
-import { GameResult } from '../../../core/interfaces/game-result/game-result.interface';
+import { Task } from '../../../../core/interfaces/task/task.interface';
+import { Subtask } from '../../../../core/interfaces/subtask/subtask.interface';
+import { GameResult } from '../../../../core/interfaces/game-result/game-result.interface';
 import { TaskModel } from '../interfaces/task-model.interface';
 import { SubtaskModel } from '../interfaces/subtask-model.interface';
-import { GameSubtaskMarked } from '../../game-subtask-marked.interface';
-import { GameTaskMarked } from '../../game-task-marked.interface';
+import { GameSubtaskMarked } from '../../../interfaces/game-subtask-marked.interface';
+import { GameTaskMarked } from '../../../interfaces/game-task-marked.interface';
 
-import { Utils } from '../../../core/helpers/utils.class';
-import { FileReaderHelper } from '../../../core/helpers/filer-reader/file-reader-helper.class';
+import { Utils } from '../../../../core/helpers/utils.class';
+import { FileReaderHelper } from '../../../../core/helpers/filer-reader/file-reader-helper.class';
 
-import { TaskService } from '../../../core/services/task/task.service';
-import { SubtaskService } from '../../../core/services/subtask/subtask.service';
-import { GameService } from '../../game.service';
+import { TaskService } from '../../../../core/services/task/task.service';
+import { SubtaskService } from '../../../../core/services/subtask/subtask.service';
+import { GameService } from '../../../services/game/game.service';
 
 @Injectable()
 export class CompleteTasksPageService {

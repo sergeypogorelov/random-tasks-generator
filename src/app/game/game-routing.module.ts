@@ -4,9 +4,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { urlFragments } from '../core/constants/url-fragments';
 
 import { GameComponent } from './game.component';
-import { SelectPersonComponent } from './select-person/select-person.component';
-import { GetTasksComponent } from './get-tasks/get-tasks.component';
-import { CompleteTasksComponent } from './complete-tasks/complete-tasks.component';
+import { SelectPersonComponent } from './components/select-person/select-person.component';
+import { GetTasksComponent } from './components/get-tasks/get-tasks.component';
+import { CompleteTasksComponent } from './components/complete-tasks/complete-tasks.component';
 
 const routes: Routes = [
   {

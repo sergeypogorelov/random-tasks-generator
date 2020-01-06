@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 import { ModalComponent } from '../modal-generator/modal-component.interface';
-import { SubtaskModel } from '../../../game/complete-tasks/interfaces/subtask-model.interface';
+import { SubtaskModel } from '../../../game/components/complete-tasks/interfaces/subtask-model.interface';
 
 @Component({
   selector: 'rtg-modal-subtask-info',

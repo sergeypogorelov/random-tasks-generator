@@ -2,22 +2,21 @@ import { Injectable } from '@angular/core';
 import { Observable, of, forkJoin } from 'rxjs';
 import { mergeMap, tap } from 'rxjs/operators';
 
-import { ProbabilityRange } from '../core/enums/probability-range.enum';
+import { ProbabilityRange } from '../../../core/enums/probability-range.enum';
 
-import { Person } from '../core/interfaces/person/person.interface';
-import { PersonIteration } from '../core/interfaces/person/person-iteration.interface';
-import { Subtask } from '../core/interfaces/subtask/subtask.interface';
-import { GameTask } from './game-task.interface';
+import { Person } from '../../../core/interfaces/person/person.interface';
+import { PersonIteration } from '../../../core/interfaces/person/person-iteration.interface';
+import { Subtask } from '../../../core/interfaces/subtask/subtask.interface';
+import { GameTask } from '../../interfaces/game-task.interface';
+import { GameTaskMarked } from '../../interfaces/game-task-marked.interface';
 
-import { Utils } from '../core/helpers/utils.class';
-import { RandHelper } from '../core/helpers/rand-helper.class';
+import { Utils } from '../../../core/helpers/utils.class';
+import { RandHelper } from '../../../core/helpers/rand-helper.class';
 
-import { SubtaskService } from '../core/services/subtask/subtask.service';
-import { TaskService } from '../core/services/task/task.service';
-import { GameStateService } from './game-state.service';
-import { TaskModel } from './complete-tasks/interfaces/task-model.interface';
-import { GameTaskMarked } from './game-task-marked.interface';
-import { PersonService } from '../core/services/person/person.service';
+import { SubtaskService } from '../../../core/services/subtask/subtask.service';
+import { TaskService } from '../../../core/services/task/task.service';
+import { PersonService } from '../../../core/services/person/person.service';
+import { GameStateService } from '../game-state/game-state.service';
 
 const DAY_MULTIPLIER = 24 * 60 * 60 * 1000;
 

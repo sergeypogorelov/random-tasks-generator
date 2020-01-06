@@ -1,4 +1,4 @@
-import { SubtaskStates } from '../core/enums/subtask-states.enum';
+import { SubtaskStates } from '../../core/enums/subtask-states.enum';
 
 export interface GameSubtaskMarked {
   id: number;

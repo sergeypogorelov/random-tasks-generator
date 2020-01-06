@@ -2,22 +2,22 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { mergeMap } from 'rxjs/operators';
 
-import { linkLabels } from '../../core/constants/link-labels';
-import { urlFragments } from '../../core/constants/url-fragments';
+import { linkLabels } from '../../../core/constants/link-labels';
+import { urlFragments } from '../../../core/constants/url-fragments';
 
-import { SubtaskStates } from '../../core/enums/subtask-states.enum';
+import { SubtaskStates } from '../../../core/enums/subtask-states.enum';
 
-import { Task } from '../../core/interfaces/task/task.interface';
-import { Subtask } from '../../core/interfaces/subtask/subtask.interface';
-import { ModalConfirmCallbacksContainer } from '../../shared/components/modal-confirm/modal-confirm-callbacks-container.interface';
+import { Task } from '../../../core/interfaces/task/task.interface';
+import { Subtask } from '../../../core/interfaces/subtask/subtask.interface';
+import { ModalConfirmCallbacksContainer } from '../../../shared/components/modal-confirm/modal-confirm-callbacks-container.interface';
 import { TaskModel } from './interfaces/task-model.interface';
 import { SubtaskModel } from './interfaces/subtask-model.interface';
 
-import { GameResultService } from '../../core/services/game-result/game-result.service';
-import { BreadcrumbService } from '../../core/services/breadcrumb/breadcrumb.service';
-import { ModalSubtaskInfoService } from '../../core/services/modal-subtask-info/modal-subtask-info.service';
-import { ModalConfirmService } from '../../core/services/modal-confirm/modal-confirm.service';
-import { GameService } from '../game.service';
+import { GameResultService } from '../../../core/services/game-result/game-result.service';
+import { BreadcrumbService } from '../../../core/services/breadcrumb/breadcrumb.service';
+import { ModalSubtaskInfoService } from '../../../core/services/modal-subtask-info/modal-subtask-info.service';
+import { ModalConfirmService } from '../../../core/services/modal-confirm/modal-confirm.service';
+import { GameService } from '../../services/game/game.service';
 import { CompleteTasksPageService } from './services/complete-tasks-page.service';
 
 @Component({

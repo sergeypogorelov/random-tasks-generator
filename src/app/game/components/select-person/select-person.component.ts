@@ -4,16 +4,16 @@ import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import { linkLabels } from '../../core/constants/link-labels';
-import { urlFragments } from '../../core/constants/url-fragments';
+import { linkLabels } from '../../../core/constants/link-labels';
+import { urlFragments } from '../../../core/constants/url-fragments';
 
-import { Person } from '../../core/interfaces/person/person.interface';
+import { Person } from '../../../core/interfaces/person/person.interface';
 
-import { FileReaderHelper } from '../../core/helpers/filer-reader/file-reader-helper.class';
+import { FileReaderHelper } from '../../../core/helpers/filer-reader/file-reader-helper.class';
 
-import { PersonService } from '../../core/services/person/person.service';
-import { BreadcrumbService } from '../../core/services/breadcrumb/breadcrumb.service';
-import { GameService } from '../game.service';
+import { PersonService } from '../../../core/services/person/person.service';
+import { BreadcrumbService } from '../../../core/services/breadcrumb/breadcrumb.service';
+import { GameService } from '../../services/game/game.service';
 
 const PERSON_INDEX_BY_DEFAULT = 0;
 

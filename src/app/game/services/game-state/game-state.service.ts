@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { GameState } from './game-state.interface';
 
-import { Utils } from '../core/helpers/utils.class';
+import { Utils } from '../../../core/helpers/utils.class';
 
 @Injectable()
 export class GameStateService {

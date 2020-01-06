@@ -3,21 +3,21 @@ import { Router } from '@angular/router';
 import { Observable, forkJoin, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import { linkLabels } from '../../core/constants/link-labels';
-import { urlFragments } from '../../core/constants/url-fragments';
+import { linkLabels } from '../../../core/constants/link-labels';
+import { urlFragments } from '../../../core/constants/url-fragments';
 
-import { Task } from '../../core/interfaces/task/task.interface';
-import { Subtask } from '../../core/interfaces/subtask/subtask.interface';
-import { GameTask } from '../game-task.interface';
-import { TaskModel } from './task-model.interface';
-import { SubtaskModel } from './subtask-model.interface';
+import { Task } from '../../../core/interfaces/task/task.interface';
+import { Subtask } from '../../../core/interfaces/subtask/subtask.interface';
+import { GameTask } from '../../interfaces/game-task.interface';
+import { TaskModel } from './interfaces/task-model.interface';
+import { SubtaskModel } from './interfaces/subtask-model.interface';
 
-import { Utils } from '../../core/helpers/utils.class';
+import { Utils } from '../../../core/helpers/utils.class';
 
-import { TaskService } from '../../core/services/task/task.service';
-import { SubtaskService } from '../../core/services/subtask/subtask.service';
-import { BreadcrumbService } from '../../core/services/breadcrumb/breadcrumb.service';
-import { GameService } from '../game.service';
+import { TaskService } from '../../../core/services/task/task.service';
+import { SubtaskService } from '../../../core/services/subtask/subtask.service';
+import { BreadcrumbService } from '../../../core/services/breadcrumb/breadcrumb.service';
+import { GameService } from '../../services/game/game.service';
 import { GetTasksPageService } from './get-tasks-page.service';
 
 const TASK_INDEX_BY_DEFAULT = 0;

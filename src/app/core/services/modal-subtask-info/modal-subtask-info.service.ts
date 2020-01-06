@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { ModalInfo } from '../modal/modal-info.interface';
-import { SubtaskModel } from '../../../game/complete-tasks/interfaces/subtask-model.interface';
+import { SubtaskModel } from '../../../game/components/complete-tasks/interfaces/subtask-model.interface';
 
 import { ModalService } from '../modal/modal.service';
 

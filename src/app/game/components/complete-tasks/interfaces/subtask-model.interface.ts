@@ -1,6 +1,6 @@
 import { SafeUrl } from '@angular/platform-browser';
 
-import { SubtaskStates } from '../../../core/enums/subtask-states.enum';
+import { SubtaskStates } from '../../../../core/enums/subtask-states.enum';
 
 export interface SubtaskModel {
   id: number;
