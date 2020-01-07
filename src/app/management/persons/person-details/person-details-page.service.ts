@@ -16,6 +16,7 @@ import { PersonTagModel } from './interfaces/person-tag-model.interface';
 
 import { nameUnusedValidator } from '../../../core/validators/name-unused/name-unused.validator';
 import { PersonService } from '../../../core/services/person/person.service';
+import { Task } from 'src/app/core/interfaces/task/task.interface';
 
 @Injectable()
 export class PersonDetailsPageService {
@@ -79,7 +80,7 @@ export class PersonDetailsPageService {
     return result;
   }
 
-  castDtoToModel(person: Person, allTags: Tag[]): PersonModel {
+  castDtoToModel(person: Person, allTags: Tag[], allTasks: Task[]): PersonModel {
     if (!person) {
       throw new Error('Person is not specified.');
     }
@@ -89,13 +90,13 @@ export class PersonDetailsPageService {
       description: person.description,
       thumbnail: person.thumbnail,
       startDate: person.startDate,
-      iterations: person.iterations.map(i => this.castIterationDtoToModel(i, allTags))
+      iterations: person.iterations.map(i => this.castIterationDtoToModel(i, allTags, allTasks))
     };
 
     return result;
   }
 
-  castIterationDtoToModel(iteration: PersonIteration, allTags: Tag[]): PersonIterationModel {
+  castIterationDtoToModel(iteration: PersonIteration, allTags: Tag[], allTasks: Task[]): PersonIterationModel {
     if (!iteration) {
       throw new Error('Iteration is not specified.');
     }
@@ -103,21 +104,34 @@ export class PersonDetailsPageService {
     const result: PersonIterationModel = {
       name: iteration.name,
       duration: `${iteration.duration}`,
-      tasks: iteration.tasks.map(i => this.castTaskDtoToModel(i, allTags))
+      tasks: iteration.tasks.map(i => this.castTaskDtoToModel(i, allTags, allTasks))
     };
 
     return result;
   }
 
-  castTaskDtoToModel(task: PersonIterationTask, allTags: Tag[]): PersonTaskModel {
-    if (!task) {
+  castTaskDtoToModel(personTask: PersonIterationTask, allTags: Tag[], allTasks: Task[]): PersonTaskModel {
+    if (!personTask) {
       throw new Error('Task is not specified.');
     }
 
+    const foundTask = allTasks.find(i => i.id === personTask.taskId);
+
+    const personTagModels: PersonTagModel[] = foundTask.tagIds
+      .map(id => allTags.find(i => i.id === id))
+      .map(tag => {
+        const personTag = personTask.tags.find(i => i.tagId === tag.id);
+        if (personTag) {
+          return this.castTagDtoToModel(personTag, allTags);
+        }
+
+        return this.generateDefaultValueForTag(`${tag.id}`, tag.name);
+      });
+
     const result: PersonTaskModel = {
-      id: `${task.taskId}`,
-      probability: `${task.probability}`,
-      tags: task.tags.map(i => this.castTagDtoToModel(i, allTags))
+      id: `${personTask.taskId}`,
+      probability: `${personTask.probability}`,
+      tags: personTagModels
     };
 
     return result;

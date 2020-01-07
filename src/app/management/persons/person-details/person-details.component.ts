@@ -180,7 +180,7 @@ export class PersonDetailsComponent implements OnInit, OnDestroy {
     let personModel: PersonModel = null;
 
     if (person) {
-      personModel = this.personDetailsService.castDtoToModel(person, this.tags);
+      personModel = this.personDetailsService.castDtoToModel(person, this.tags, this.tasks);
     }
 
     this.form = this.personDetailsService.generateFormGroup(personModel);
