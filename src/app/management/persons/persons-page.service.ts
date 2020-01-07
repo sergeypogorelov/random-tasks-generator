@@ -3,15 +3,15 @@ import { DomSanitizer } from '@angular/platform-browser';
 
 import { Task } from '../../core/interfaces/task/task.interface';
 import { Person } from '../../core/interfaces/person/person.interface';
-import { PersonsGridItem } from './persons-grid-item.interface';
+import { PersonsGridModel } from './persons-grid-model.interface';
 
 import { FileReaderHelper } from '../../core/helpers/filer-reader/file-reader-helper.class';
 
 @Injectable()
-export class PersonsService {
+export class PersonsPageService {
   constructor(private domSanitizer: DomSanitizer) {}
 
-  castDtoToModel(dto: Person, tasks: Task[]): PersonsGridItem {
+  castDtoToModel(dto: Person, tasks: Task[]): PersonsGridModel {
     if (!dto) {
       throw new Error('Dto is not specified.');
     }
@@ -30,7 +30,7 @@ export class PersonsService {
     const thumbnailDateUrl = FileReaderHelper.arrayBufferToDataUrl(dto.thumbnail.arrayBuffer, dto.thumbnail.type);
     const thumbnailSafeUrl = this.domSanitizer.bypassSecurityTrustUrl(thumbnailDateUrl);
 
-    const result: PersonsGridItem = {
+    const result: PersonsGridModel = {
       id,
       name,
       description,

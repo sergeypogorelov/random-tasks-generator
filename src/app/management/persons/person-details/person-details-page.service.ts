@@ -18,7 +18,7 @@ import { nameUnusedValidator } from '../../../core/validators/name-unused/name-u
 import { PersonService } from '../../../core/services/person/person.service';
 
 @Injectable()
-export class PersonDetailsService {
+export class PersonDetailsPageService {
   constructor(private personService: PersonService) {}
 
   castModelToDto(model: PersonModel): Person {

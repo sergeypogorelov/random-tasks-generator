@@ -9,8 +9,8 @@ import { SubtaskDetailsPageService } from './subtasks/subtask-details/subtask-de
 import { SubtasksPageService } from './subtasks/subtasks-page.service';
 import { TaskDetailsService } from './tasks/task-details/task-details.service';
 import { TasksService } from './tasks/tasks.service';
-import { PersonDetailsService } from './persons/person-details/person-details.service';
-import { PersonsService } from './persons/persons.service';
+import { PersonDetailsPageService } from './persons/person-details/person-details-page.service';
+import { PersonsPageService } from './persons/persons-page.service';
 
 import { ManagementComponent } from './management.component';
 import { PersonsComponent } from './persons/persons.component';
@@ -40,8 +40,8 @@ const services = [
   SubtasksPageService,
   TaskDetailsService,
   TasksService,
-  PersonDetailsService,
-  PersonsService
+  PersonDetailsPageService,
+  PersonsPageService
 ];
 
 @NgModule({

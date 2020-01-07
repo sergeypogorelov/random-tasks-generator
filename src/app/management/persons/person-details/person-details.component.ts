@@ -22,7 +22,7 @@ import { TagService } from '../../../core/services/tag/tag.service';
 import { TaskService } from '../../../core/services/task/task.service';
 import { PersonService } from '../../../core/services/person/person.service';
 import { BreadcrumbService } from '../../../core/services/breadcrumb/breadcrumb.service';
-import { PersonDetailsService } from './person-details.service';
+import { PersonDetailsPageService } from './person-details-page.service';
 
 export const idOfNewPerson = 'new-person';
 
@@ -76,7 +76,7 @@ export class PersonDetailsComponent implements OnInit, OnDestroy {
     private taskService: TaskService,
     private personService: PersonService,
     private breadcrumbService: BreadcrumbService,
-    private personDetailsService: PersonDetailsService
+    private personDetailsService: PersonDetailsPageService
   ) {
     this.probabilityRangeItems = Utils.enumAsValueAndLabel(ProbabilityRange);
   }

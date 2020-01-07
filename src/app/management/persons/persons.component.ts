@@ -8,13 +8,13 @@ import { urlFragments } from '../../core/constants/url-fragments';
 
 import { Task } from '../../core/interfaces/task/task.interface';
 import { Person } from '../../core/interfaces/person/person.interface';
-import { PersonsGridItem } from './persons-grid-item.interface';
+import { PersonsGridModel } from './persons-grid-model.interface';
 
 import { TaskService } from '../../core/services/task/task.service';
 import { PersonService } from '../../core/services/person/person.service';
 import { BreadcrumbService } from '../../core/services/breadcrumb/breadcrumb.service';
 import { ModalConfirmService } from '../../core/services/modal-confirm/modal-confirm.service';
-import { PersonsService } from './persons.service';
+import { PersonsPageService } from './persons-page.service';
 
 import { idOfNewPerson } from './person-details/person-details.component';
 
@@ -27,7 +27,7 @@ export class PersonsComponent implements OnInit, OnDestroy {
 
   persons: Person[];
 
-  models: PersonsGridItem[] = [];
+  models: PersonsGridModel[] = [];
 
   private subs: Subscription[] = [];
 
@@ -37,7 +37,7 @@ export class PersonsComponent implements OnInit, OnDestroy {
     private personService: PersonService,
     private breadcrumbService: BreadcrumbService,
     private modalConfirmService: ModalConfirmService,
-    private personsService: PersonsService
+    private personsService: PersonsPageService
   ) {}
 
   ngOnInit() {
@@ -53,11 +53,11 @@ export class PersonsComponent implements OnInit, OnDestroy {
     this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.persons, idOfNewPerson]);
   }
 
-  editButtonClickHandler(item: PersonsGridItem) {
+  editButtonClickHandler(item: PersonsGridModel) {
     this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.persons, item.id]);
   }
 
-  removeButtonClickHandler(item: PersonsGridItem) {
+  removeButtonClickHandler(item: PersonsGridModel) {
     this.modalConfirmService.createAndShowConfirmModal('remove-person', {
       confirm: () => {
         this.subs.push(this.personService.delete(item.id).subscribe(() => this.updateGrid()));
@@ -65,7 +65,7 @@ export class PersonsComponent implements OnInit, OnDestroy {
     });
   }
 
-  imgLoadHandler(item: PersonsGridItem) {
+  imgLoadHandler(item: PersonsGridModel) {
     URL.revokeObjectURL(item.thumbnailDateUrl);
   }
 
