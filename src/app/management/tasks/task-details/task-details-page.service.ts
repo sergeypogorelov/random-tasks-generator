@@ -3,17 +3,17 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Tag } from '../../../core/interfaces/tag/tag.interface';
 import { Task } from '../../../core/interfaces/task/task.interface';
-import { TaskDetails } from './task-details.interface';
+import { TaskModel } from './task-model.interface';
 
 import { nameUnusedValidator } from '../../../core/validators/name-unused/name-unused.validator';
 import { arrayNotEmptyValidator } from '../../../core/validators/array-not-empty/array-not-empty.validator';
 import { TaskService } from '../../../core/services/task/task.service';
 
 @Injectable()
-export class TaskDetailsService {
+export class TaskDetailsPageService {
   constructor(private fb: FormBuilder, private taskService: TaskService) {}
 
-  castDtoToFormModel(task: Task, allTags: Tag[]): TaskDetails {
+  castDtoToFormModel(task: Task, allTags: Tag[]): TaskModel {
     if (!task) {
       throw new Error('Task is not specified.');
     }
@@ -28,7 +28,7 @@ export class TaskDetailsService {
     };
   }
 
-  castFormModelToDto(taskDetails: TaskDetails): Task {
+  castFormModelToDto(taskDetails: TaskModel): Task {
     if (!taskDetails) {
       throw new Error('Task details are not specified.');
     }
@@ -43,7 +43,7 @@ export class TaskDetailsService {
     };
   }
 
-  overrideDtoByFormModel(task: Task, taskDetails: TaskDetails): Task {
+  overrideDtoByFormModel(task: Task, taskDetails: TaskModel): Task {
     if (!task) {
       throw new Error('Task is not specified.');
     }
@@ -64,7 +64,7 @@ export class TaskDetailsService {
     return result;
   }
 
-  generateFormGroup(taskDetails: TaskDetails = null): FormGroup {
+  generateFormGroup(taskDetails: TaskModel = null): FormGroup {
     let formValue = this.generateDefaultFormValue();
 
     if (taskDetails) {
@@ -96,7 +96,7 @@ export class TaskDetailsService {
     });
   }
 
-  generateDefaultFormValue(): TaskDetails {
+  generateDefaultFormValue(): TaskModel {
     return {
       title: '',
       description: '',

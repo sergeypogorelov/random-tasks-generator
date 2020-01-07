@@ -8,13 +8,13 @@ import { urlFragments } from '../../core/constants/url-fragments';
 
 import { Tag } from '../../core/interfaces/tag/tag.interface';
 import { Task } from '../../core/interfaces/task/task.interface';
-import { TaskModel } from './task-model.interface';
+import { TaskGridModel } from './task-grid-model.interface';
 
 import { TagService } from '../../core/services/tag/tag.service';
 import { TaskService } from '../../core/services/task/task.service';
 import { BreadcrumbService } from '../../core/services/breadcrumb/breadcrumb.service';
 import { ModalConfirmService } from '../../core/services/modal-confirm/modal-confirm.service';
-import { TasksService } from './tasks.service';
+import { TasksPageService } from './tasks-page.service';
 
 import { idOfNewTask } from './task-details/task-details.component';
 
@@ -27,7 +27,7 @@ export class TasksComponent implements OnInit, OnDestroy {
 
   tasks: Task[];
 
-  models: TaskModel[] = [];
+  models: TaskGridModel[] = [];
 
   private subs: Subscription[] = [];
 
@@ -35,7 +35,7 @@ export class TasksComponent implements OnInit, OnDestroy {
     private router: Router,
     private tagService: TagService,
     private taskService: TaskService,
-    private tasksService: TasksService,
+    private tasksService: TasksPageService,
     private breadcrumbService: BreadcrumbService,
     private modalConfirmService: ModalConfirmService
   ) {}
@@ -53,11 +53,11 @@ export class TasksComponent implements OnInit, OnDestroy {
     this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.tasks, idOfNewTask]);
   }
 
-  editButtonClickHandler(subtask: TaskModel) {
+  editButtonClickHandler(subtask: TaskGridModel) {
     this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.tasks, subtask.id]);
   }
 
-  removeButtonClickHandler(subtask: TaskModel) {
+  removeButtonClickHandler(subtask: TaskGridModel) {
     this.modalConfirmService.createAndShowConfirmModal('remove-task', {
       confirm: () => {
         this.subs.push(this.taskService.delete(subtask.id).subscribe(() => this.updateGrid()));
@@ -65,7 +65,7 @@ export class TasksComponent implements OnInit, OnDestroy {
     });
   }
 
-  imgLoadHandler(subtask: TaskModel) {
+  imgLoadHandler(subtask: TaskGridModel) {
     URL.revokeObjectURL(subtask.thumbnailDateUrl);
   }
 

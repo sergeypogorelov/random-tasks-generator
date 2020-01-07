@@ -2,7 +2,7 @@ import { SafeUrl } from '@angular/platform-browser';
 
 import { Tag } from '../../core/interfaces/tag/tag.interface';
 
-export interface TaskModel {
+export interface TaskGridModel {
   id: number;
   name: string;
   description: string;

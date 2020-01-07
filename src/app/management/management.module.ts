@@ -7,8 +7,8 @@ import { ManagementRoutingModule } from './management-routing.module';
 import { TagDetailsPageService } from './tags/tag-details/tag-details-page.service';
 import { SubtaskDetailsPageService } from './subtasks/subtask-details/subtask-details-page.service';
 import { SubtasksPageService } from './subtasks/subtasks-page.service';
-import { TaskDetailsService } from './tasks/task-details/task-details.service';
-import { TasksService } from './tasks/tasks.service';
+import { TaskDetailsPageService } from './tasks/task-details/task-details-page.service';
+import { TasksPageService } from './tasks/tasks-page.service';
 import { PersonDetailsPageService } from './persons/person-details/person-details-page.service';
 import { PersonsPageService } from './persons/persons-page.service';
 
@@ -38,8 +38,8 @@ const services = [
   TagDetailsPageService,
   SubtaskDetailsPageService,
   SubtasksPageService,
-  TaskDetailsService,
-  TasksService,
+  TaskDetailsPageService,
+  TasksPageService,
   PersonDetailsPageService,
   PersonsPageService
 ];

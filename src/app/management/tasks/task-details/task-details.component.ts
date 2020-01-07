@@ -9,12 +9,12 @@ import { urlFragments } from '../../../core/constants/url-fragments';
 
 import { Task } from '../../../core/interfaces/task/task.interface';
 import { Tag } from '../../../core/interfaces/tag/tag.interface';
-import { TaskDetails } from './task-details.interface';
+import { TaskModel } from './task-model.interface';
 
 import { TagService } from '../../../core/services/tag/tag.service';
 import { TaskService } from '../../../core/services/task/task.service';
 import { BreadcrumbService } from '../../../core/services/breadcrumb/breadcrumb.service';
-import { TaskDetailsService } from './task-details.service';
+import { TaskDetailsPageService } from './task-details-page.service';
 
 export const idOfNewTask = 'new-task';
 
@@ -59,7 +59,7 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
     private tagService: TagService,
     private taskService: TaskService,
     private breadcrumbService: BreadcrumbService,
-    private taskDetailsService: TaskDetailsService
+    private taskDetailsService: TaskDetailsPageService
   ) {}
 
   ngOnInit() {
@@ -90,7 +90,7 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
 
   formSubmitHandler() {
     if (this.form.valid) {
-      const formRawValue = this.form.getRawValue() as TaskDetails;
+      const formRawValue = this.form.getRawValue() as TaskModel;
 
       let action: Observable<any>;
 
