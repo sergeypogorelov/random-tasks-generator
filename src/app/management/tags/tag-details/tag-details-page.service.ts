@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { TagDetails } from './tag-details.interface';
+import { TagModel } from './tag-model.interface';
 import { Tag } from '../../../core/interfaces/tag/tag.interface';
 
 import { Utils } from '../../../core/helpers/utils.class';
 
-import { tagNameUnusedValidator } from './tag-name-unused.validator';
+import { nameUnusedValidator } from '../../../core/validators/name-unused/name-unused.validator';
 import { TagService } from '../../../core/services/tag/tag.service';
 
 @Injectable()
-export class TagDetailsService {
+export class TagDetailsPageService {
   constructor(private fb: FormBuilder, private tagService: TagService) {}
 
-  castDtoToFormModel(tag: Tag): TagDetails {
+  castDtoToFormModel(tag: Tag): TagModel {
     if (!tag) {
       throw new Error('Tag is not specified.');
     }
@@ -24,7 +24,7 @@ export class TagDetailsService {
     };
   }
 
-  castFormModelToDto(tagDetails: TagDetails): Tag {
+  castFormModelToDto(tagDetails: TagModel): Tag {
     if (!tagDetails) {
       throw new Error('Tag details are not specified.');
     }
@@ -35,7 +35,7 @@ export class TagDetailsService {
     };
   }
 
-  overrideDtoByFormModel(tag: Tag, tagDetails: TagDetails): Tag {
+  overrideDtoByFormModel(tag: Tag, tagDetails: TagModel): Tag {
     if (!tag) {
       throw new Error('Tag is not specified.');
     }
@@ -52,7 +52,7 @@ export class TagDetailsService {
     return result;
   }
 
-  generateFormGroup(tagDetails: TagDetails = null): FormGroup {
+  generateFormGroup(tagDetails: TagModel = null): FormGroup {
     let formValue = this.generateDefaultFormValue();
 
     if (tagDetails) {
@@ -73,14 +73,14 @@ export class TagDetailsService {
         {
           updateOn: 'blur',
           validators: [Validators.required],
-          asyncValidators: [tagNameUnusedValidator(this.tagService, originTagName)]
+          asyncValidators: [nameUnusedValidator(this.tagService, originTagName)]
         }
       ],
       description: [formValue.description]
     });
   }
 
-  generateDefaultFormValue(): TagDetails {
+  generateDefaultFormValue(): TagModel {
     return {
       title: '',
       description: ''

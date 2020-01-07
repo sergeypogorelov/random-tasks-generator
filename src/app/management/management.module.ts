@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
 import { ManagementRoutingModule } from './management-routing.module';
 
-import { TagDetailsService } from './tags/tag-details/tag-details.service';
+import { TagDetailsPageService } from './tags/tag-details/tag-details-page.service';
 import { SubtaskDetailsService } from './subtasks/subtask-details/subtask-details.service';
 import { SubtasksService } from './subtasks/subtasks.service';
 import { TaskDetailsService } from './tasks/task-details/task-details.service';
@@ -35,7 +35,7 @@ const declarations = [
 ];
 
 const services = [
-  TagDetailsService,
+  TagDetailsPageService,
   SubtaskDetailsService,
   SubtasksService,
   TaskDetailsService,

@@ -6,12 +6,12 @@ import { Subscription, Observable } from 'rxjs';
 import { linkLabels } from '../../../core/constants/link-labels';
 import { urlFragments } from '../../../core/constants/url-fragments';
 
-import { TagDetails } from './tag-details.interface';
+import { Tag } from '../../../core/interfaces/tag/tag.interface';
+import { TagModel } from './tag-model.interface';
 
 import { TagService } from '../../../core/services/tag/tag.service';
 import { BreadcrumbService } from '../../../core/services/breadcrumb/breadcrumb.service';
-import { TagDetailsService } from './tag-details.service';
-import { Tag } from 'src/app/core/interfaces/tag/tag.interface';
+import { TagDetailsPageService } from './tag-details-page.service';
 
 export const idOfNewTag = 'new';
 
@@ -41,7 +41,7 @@ export class TagDetailsComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private tagService: TagService,
     private breadcrumbService: BreadcrumbService,
-    private tagDetailsService: TagDetailsService
+    private tagDetailsService: TagDetailsPageService
   ) {}
 
   ngOnInit() {
@@ -72,7 +72,7 @@ export class TagDetailsComponent implements OnInit, OnDestroy {
 
   formSubmitHandler() {
     if (this.form.valid) {
-      const formRawValue = this.form.getRawValue() as TagDetails;
+      const formRawValue = this.form.getRawValue() as TagModel;
 
       let action: Observable<any>;
 
