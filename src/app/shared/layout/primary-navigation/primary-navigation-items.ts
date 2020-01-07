@@ -15,21 +15,21 @@ export const primaryNavigationItems: LinkItem[] = [
   {
     label: linkLabels.management,
     routerLink: [`/${urlFragments.management}`]
-  },
-  {
-    label: linkLabels.statistics,
-    routerLink: [`/${urlFragments.statistics}`]
-  },
-  {
-    label: linkLabels.importAndExport,
-    routerLink: [`/${urlFragments.importAndExport}`]
-  },
-  {
-    label: linkLabels.about,
-    routerLink: [`/${urlFragments.about}`]
-  },
-  {
-    label: linkLabels.exit,
-    routerLink: [`/${urlFragments.exit}`]
   }
+  // {
+  //   label: linkLabels.statistics,
+  //   routerLink: [`/${urlFragments.statistics}`]
+  // },
+  // {
+  //   label: linkLabels.importAndExport,
+  //   routerLink: [`/${urlFragments.importAndExport}`]
+  // },
+  // {
+  //   label: linkLabels.about,
+  //   routerLink: [`/${urlFragments.about}`]
+  // },
+  // {
+  //   label: linkLabels.exit,
+  //   routerLink: [`/${urlFragments.exit}`]
+  // }
 ];
