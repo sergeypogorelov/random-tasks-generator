@@ -10,7 +10,7 @@
       classNames="d-none d-sm-table-cell text-center"
     >
       <ng-template rtgGridCellTemplate let-dataItem="dataItem">
-        <img class="image-sm img-thumbnail" [src]="dataItem.thumbnailSafeUrl" (load)="imgLoadHandler(dataItem)" />
+        <img class="image-sm img-thumbnail" [src]="dataItem.thumbnailSafeUrl" />
       </ng-template>
     </rtg-grid-column>
     <rtg-grid-column title="Name" field="name"></rtg-grid-column>

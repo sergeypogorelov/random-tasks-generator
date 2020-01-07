@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import { Observable, forkJoin, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
@@ -14,18 +13,20 @@ import { GameSubtaskMarked } from '../../../interfaces/game-subtask-marked.inter
 import { GameTaskMarked } from '../../../interfaces/game-task-marked.interface';
 
 import { Utils } from '../../../../core/helpers/utils.class';
-import { FileReaderHelper } from '../../../../core/helpers/filer-reader/file-reader-helper.class';
 
 import { TaskService } from '../../../../core/services/task/task.service';
 import { SubtaskService } from '../../../../core/services/subtask/subtask.service';
 import { GameService } from '../../../services/game/game.service';
+import { ObjectUrlService } from 'src/app/core/services/object-url/object-url.service';
+
+const TAG = 'complete-tasks-page-service';
 
 @Injectable()
 export class CompleteTasksPageService {
   constructor(
-    private domSanitizer: DomSanitizer,
     private taskService: TaskService,
     private subtaskService: SubtaskService,
+    private objectUrlService: ObjectUrlService,
     private gameService: GameService
   ) {}
 
@@ -118,8 +119,9 @@ export class CompleteTasksPageService {
   }
 
   castTaskDtoToModel(modelId: number, task: Task, subtasks: Subtask[]): TaskModel {
-    const thumbnailDateUrl = FileReaderHelper.arrayBufferToDataUrl(task.thumbnail.arrayBuffer, task.thumbnail.type);
-    const thumbnailSafeUrl = this.domSanitizer.bypassSecurityTrustUrl(thumbnailDateUrl);
+    const imgInfo = this.objectUrlService.createImgUrl(TAG, task.thumbnail);
+    const thumbnailDateUrl = imgInfo.dataUrl;
+    const thumbnailSafeUrl = imgInfo.safeUrl;
 
     const result: TaskModel = {
       id: modelId,
@@ -135,11 +137,9 @@ export class CompleteTasksPageService {
   }
 
   castSubtaskDtoToModel(subtask: Subtask): SubtaskModel {
-    const thumbnailDateUrl = FileReaderHelper.arrayBufferToDataUrl(
-      subtask.thumbnail.arrayBuffer,
-      subtask.thumbnail.type
-    );
-    const thumbnailSafeUrl = this.domSanitizer.bypassSecurityTrustUrl(thumbnailDateUrl);
+    const imgInfo = this.objectUrlService.createImgUrl(TAG, subtask.thumbnail);
+    const thumbnailDateUrl = imgInfo.dataUrl;
+    const thumbnailSafeUrl = imgInfo.safeUrl;
 
     const result: SubtaskModel = {
       id: subtask.id,
@@ -151,5 +151,9 @@ export class CompleteTasksPageService {
     };
 
     return result;
+  }
+
+  revokeImgUrls() {
+    this.objectUrlService.revokeUrlsByTag(TAG);
   }
 }

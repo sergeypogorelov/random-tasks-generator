@@ -27,9 +27,9 @@ export class SubtasksComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private subtaskService: SubtaskService,
-    private subtasksService: SubtasksPageService,
     private breadcrumbService: BreadcrumbService,
-    private modalConfirmService: ModalConfirmService
+    private modalConfirmService: ModalConfirmService,
+    private subtasksPageService: SubtasksPageService
   ) {}
 
   ngOnInit() {
@@ -39,6 +39,8 @@ export class SubtasksComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subs.forEach(i => i.unsubscribe());
+
+    this.subtasksPageService.revokeImgUrls();
   }
 
   newButtonClickHandler() {
@@ -77,7 +79,7 @@ export class SubtasksComponent implements OnInit, OnDestroy {
     this.subs.push(
       this.subtaskService
         .getAllSubtasks()
-        .pipe(mergeMap(subtasks => forkJoin(subtasks.map(i => this.subtasksService.castDtoToModel(i)))))
+        .pipe(mergeMap(subtasks => forkJoin(subtasks.map(i => this.subtasksPageService.castDtoToModel(i)))))
         .subscribe(models => (this.subtaskModels = models))
     );
   }

@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 
 import { Tag } from '../../core/interfaces/tag/tag.interface';
 import { Task } from '../../core/interfaces/task/task.interface';
 import { TaskGridModel } from './task-grid-model.interface';
 
-import { FileReaderHelper } from '../../core/helpers/filer-reader/file-reader-helper.class';
+import { ObjectUrlService } from '../../core/services/object-url/object-url.service';
+
+const DATA_URLS_TAG = 'tasks-page-service';
 
 @Injectable()
 export class TasksPageService {
-  constructor(private domSanitizer: DomSanitizer) {}
+  constructor(private objectUrlService: ObjectUrlService) {}
 
   castDtoToModel(dto: Task, tags: Tag[]): TaskGridModel {
     if (!dto) {
@@ -18,8 +19,9 @@ export class TasksPageService {
 
     const { id, name, description, tagIds } = dto;
 
-    const thumbnailDateUrl = FileReaderHelper.arrayBufferToDataUrl(dto.thumbnail.arrayBuffer, dto.thumbnail.type);
-    const thumbnailSafeUrl = this.domSanitizer.bypassSecurityTrustUrl(thumbnailDateUrl);
+    const imgInfo = this.objectUrlService.createImgUrl(DATA_URLS_TAG, dto.thumbnail);
+    const thumbnailDateUrl = imgInfo.dataUrl;
+    const thumbnailSafeUrl = imgInfo.safeUrl;
 
     const result: TaskGridModel = {
       id,
@@ -31,5 +33,9 @@ export class TasksPageService {
     };
 
     return result;
+  }
+
+  revokeImgUrls() {
+    this.objectUrlService.revokeUrlsByTag(DATA_URLS_TAG);
   }
 }

@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 
 import { Task } from '../../core/interfaces/task/task.interface';
 import { Person } from '../../core/interfaces/person/person.interface';
 import { PersonsGridModel } from './persons-grid-model.interface';
 
-import { FileReaderHelper } from '../../core/helpers/filer-reader/file-reader-helper.class';
+import { ObjectUrlService } from '../../core/services/object-url/object-url.service';
+
+const TAG = 'persons-page-service';
 
 @Injectable()
 export class PersonsPageService {
-  constructor(private domSanitizer: DomSanitizer) {}
+  constructor(private objectUrlService: ObjectUrlService) {}
 
   castDtoToModel(dto: Person, tasks: Task[]): PersonsGridModel {
     if (!dto) {
@@ -27,8 +28,9 @@ export class PersonsPageService {
       });
     });
 
-    const thumbnailDateUrl = FileReaderHelper.arrayBufferToDataUrl(dto.thumbnail.arrayBuffer, dto.thumbnail.type);
-    const thumbnailSafeUrl = this.domSanitizer.bypassSecurityTrustUrl(thumbnailDateUrl);
+    const imgInfo = this.objectUrlService.createImgUrl(TAG, dto.thumbnail);
+    const thumbnailDateUrl = imgInfo.dataUrl;
+    const thumbnailSafeUrl = imgInfo.safeUrl;
 
     const result: PersonsGridModel = {
       id,
@@ -40,5 +42,9 @@ export class PersonsPageService {
     };
 
     return result;
+  }
+
+  revokeImgUrls() {
+    this.objectUrlService.revokeUrlsByTag(TAG);
   }
 }

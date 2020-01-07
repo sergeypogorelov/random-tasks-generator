@@ -35,7 +35,7 @@ export class TasksComponent implements OnInit, OnDestroy {
     private router: Router,
     private tagService: TagService,
     private taskService: TaskService,
-    private tasksService: TasksPageService,
+    private tasksPageService: TasksPageService,
     private breadcrumbService: BreadcrumbService,
     private modalConfirmService: ModalConfirmService
   ) {}
@@ -47,6 +47,8 @@ export class TasksComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subs.forEach(i => i.unsubscribe());
+
+    this.tasksPageService.revokeImgUrls();
   }
 
   newButtonClickHandler() {
@@ -63,10 +65,6 @@ export class TasksComponent implements OnInit, OnDestroy {
         this.subs.push(this.taskService.delete(subtask.id).subscribe(() => this.updateGrid()));
       }
     });
-  }
-
-  imgLoadHandler(subtask: TaskGridModel) {
-    URL.revokeObjectURL(subtask.thumbnailDateUrl);
   }
 
   private setBreadcrumb() {
@@ -87,7 +85,7 @@ export class TasksComponent implements OnInit, OnDestroy {
         const tags = results[0];
         const tasks = results[1];
 
-        this.models = tasks.map(task => this.tasksService.castDtoToModel(task, tags));
+        this.models = tasks.map(task => this.tasksPageService.castDtoToModel(task, tags));
       })
     );
   }

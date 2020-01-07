@@ -14,9 +14,13 @@ import { ModalService } from './services/modal/modal.service';
 import { ModalConfirmService } from './services/modal-confirm/modal-confirm.service';
 import { ModalSubtaskInfoService } from './services/modal-subtask-info/modal-subtask-info.service';
 
+import { ObjectUrlService } from './services/object-url/object-url.service';
+
 import { BreadcrumbService } from './services/breadcrumb/breadcrumb.service';
 
 const dbServices = [TagService, SubtaskService, TaskService, PersonService, GameResultService];
+
+const helpers = [ObjectUrlService];
 
 const modalServices = [ModalService, ModalConfirmService, ModalSubtaskInfoService];
 
@@ -24,6 +28,6 @@ const componentServices = [BreadcrumbService];
 
 @NgModule({
   imports: [IdbModule.forRoot(dbConfig)],
-  providers: [...dbServices, ...modalServices, ...componentServices]
+  providers: [...dbServices, ...helpers, ...modalServices, ...componentServices]
 })
 export class CoreModule {}

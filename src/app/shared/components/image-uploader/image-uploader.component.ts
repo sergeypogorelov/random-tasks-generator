@@ -5,8 +5,8 @@ import { Subscription } from 'rxjs';
 
 import { LoadMessageTypes } from '../../../core/helpers/filer-reader/load-message-types.enum';
 
-import { FileInfo } from 'src/app/core/interfaces/common/file-info.interface';
-import { LoadMessage } from '../../..//core/helpers/filer-reader/interfaces/load-message.intreface';
+import { FileInfo } from '../../../core/interfaces/common/file-info.interface';
+import { LoadMessage } from '../../../core/helpers/filer-reader/interfaces/load-message.intreface';
 import { LoadProgressMessage } from '../../../core/helpers/filer-reader/interfaces/load-progress-message.interface';
 
 import { FileReaderHelper, FileTypes } from '../../../core/helpers/filer-reader/file-reader-helper.class';

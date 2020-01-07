@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { mergeMap } from 'rxjs/operators';
 
@@ -25,7 +25,7 @@ import { CompleteTasksPageService } from './services/complete-tasks-page.service
   styleUrls: ['./complete-tasks.component.scss'],
   templateUrl: './complete-tasks.component.html'
 })
-export class CompleteTasksComponent implements OnInit {
+export class CompleteTasksComponent implements OnInit, OnDestroy {
   tasks: Task[];
 
   subtasks: Subtask[];
@@ -68,6 +68,10 @@ export class CompleteTasksComponent implements OnInit {
 
     this.setBreadcrumb();
     this.loadAndSetModels();
+  }
+
+  ngOnDestroy() {
+    this.completeTasksPageService.revokeImgUrls();
   }
 
   infoBtnClickHandler() {

@@ -14,14 +14,17 @@ import { FileReaderHelper } from '../../../core/helpers/filer-reader/file-reader
 import { PersonService } from '../../../core/services/person/person.service';
 import { BreadcrumbService } from '../../../core/services/breadcrumb/breadcrumb.service';
 import { GameService } from '../../services/game/game.service';
+import { ObjectUrlService } from 'src/app/core/services/object-url/object-url.service';
 
 const PERSON_INDEX_BY_DEFAULT = 0;
+
+const TAG = 'select-person-component';
 
 @Component({
   selector: 'rtg-select-person',
   templateUrl: './select-person.component.html'
 })
-export class SelectPersonComponent implements OnInit {
+export class SelectPersonComponent implements OnInit, OnDestroy {
   person: Person;
 
   personIndex: number;
@@ -50,9 +53,9 @@ export class SelectPersonComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private domSanitizer: DomSanitizer,
     private personService: PersonService,
     private breadcrumbService: BreadcrumbService,
+    private objectUrlService: ObjectUrlService,
     private gameService: GameService
   ) {
     this.personIndex = PERSON_INDEX_BY_DEFAULT;
@@ -61,6 +64,10 @@ export class SelectPersonComponent implements OnInit {
   ngOnInit() {
     this.setBreadcrumb();
     this.loadAndSetPersons().subscribe(persons => this.setPerson(persons[this.personIndex]));
+  }
+
+  ngOnDestroy() {
+    this.objectUrlService.revokeUrlsByTag(TAG);
   }
 
   imgLoadHandler() {
@@ -100,12 +107,9 @@ export class SelectPersonComponent implements OnInit {
 
     this.person = person;
 
-    this.personThumbnailDateUrl = FileReaderHelper.arrayBufferToDataUrl(
-      person.thumbnail.arrayBuffer,
-      person.thumbnail.type
-    );
-
-    this.personThumbnailSafeUrl = this.domSanitizer.bypassSecurityTrustUrl(this.personThumbnailDateUrl);
+    const imgInfo = this.objectUrlService.createImgUrl(TAG, this.person.thumbnail);
+    this.personThumbnailDateUrl = imgInfo.dataUrl;
+    this.personThumbnailSafeUrl = imgInfo.safeUrl;
   }
 
   private loadAndSetPersons(): Observable<Person[]> {

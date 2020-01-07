@@ -1,24 +1,25 @@
 import { Injectable } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-
 import { Task } from '../../../core/interfaces/task/task.interface';
 import { Subtask } from '../../../core/interfaces/subtask/subtask.interface';
 import { TaskModel } from './interfaces/task-model.interface';
 import { SubtaskModel } from './interfaces/subtask-model.interface';
 
-import { FileReaderHelper } from '../../../core/helpers/filer-reader/file-reader-helper.class';
+import { ObjectUrlService } from 'src/app/core/services/object-url/object-url.service';
+
+const TAG = 'get-tasks-page-service';
 
 @Injectable()
 export class GetTasksPageService {
-  constructor(private domSanitizer: DomSanitizer) {}
+  constructor(private objectUrlService: ObjectUrlService) {}
 
   castTaskDtoToModel(dto: Task): TaskModel {
     if (!dto) {
       throw new Error('Task DTO is not specified.');
     }
 
-    const thumbnailDateUrl = FileReaderHelper.arrayBufferToDataUrl(dto.thumbnail.arrayBuffer, dto.thumbnail.type);
-    const thumbnailSafeUrl = this.domSanitizer.bypassSecurityTrustUrl(thumbnailDateUrl);
+    const imgInfo = this.objectUrlService.createImgUrl(TAG, dto.thumbnail);
+    const thumbnailDateUrl = imgInfo.dataUrl;
+    const thumbnailSafeUrl = imgInfo.safeUrl;
 
     const result: TaskModel = {
       id: dto.id,
@@ -36,8 +37,9 @@ export class GetTasksPageService {
       throw new Error('Subtask DTO is not specified.');
     }
 
-    const thumbnailDateUrl = FileReaderHelper.arrayBufferToDataUrl(dto.thumbnail.arrayBuffer, dto.thumbnail.type);
-    const thumbnailSafeUrl = this.domSanitizer.bypassSecurityTrustUrl(thumbnailDateUrl);
+    const imgInfo = this.objectUrlService.createImgUrl(TAG, dto.thumbnail);
+    const thumbnailDateUrl = imgInfo.dataUrl;
+    const thumbnailSafeUrl = imgInfo.safeUrl;
 
     const result: SubtaskModel = {
       id: dto.id,
@@ -48,5 +50,9 @@ export class GetTasksPageService {
     };
 
     return result;
+  }
+
+  revokeImgUrls() {
+    this.objectUrlService.revokeUrlsByTag(TAG);
   }
 }

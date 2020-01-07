@@ -107,6 +107,8 @@ export class GetTasksComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subs.forEach(i => i.unsubscribe());
+
+    this.getTasksPageService.revokeImgUrls();
   }
 
   prevBtnClickHandler() {

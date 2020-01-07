@@ -37,7 +37,7 @@ export class PersonsComponent implements OnInit, OnDestroy {
     private personService: PersonService,
     private breadcrumbService: BreadcrumbService,
     private modalConfirmService: ModalConfirmService,
-    private personsService: PersonsPageService
+    private personsPageService: PersonsPageService
   ) {}
 
   ngOnInit() {
@@ -47,6 +47,8 @@ export class PersonsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subs.forEach(i => i.unsubscribe());
+
+    this.personsPageService.revokeImgUrls();
   }
 
   newButtonClickHandler() {
@@ -87,7 +89,7 @@ export class PersonsComponent implements OnInit, OnDestroy {
         const tags = results[0];
         const persons = results[1];
 
-        this.models = persons.map(person => this.personsService.castDtoToModel(person, tags));
+        this.models = persons.map(person => this.personsPageService.castDtoToModel(person, tags));
       })
     );
   }

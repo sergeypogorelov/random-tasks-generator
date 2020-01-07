@@ -193,8 +193,6 @@ export class PersonDetailsComponent implements OnInit, OnDestroy {
         this.activateListeningToIdForTaskControl(taskControl as FormGroup)
       );
     }
-
-    this.form.valueChanges.subscribe(i => console.log(i));
   }
 
   private activateListeningToIdForTaskControl(taskControl: FormGroup) {
