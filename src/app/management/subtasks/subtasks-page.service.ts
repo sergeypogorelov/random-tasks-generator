@@ -4,17 +4,17 @@ import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Subtask } from '../../core/interfaces/subtask/subtask.interface';
-import { SubtaskModel } from './subtask-model.interface';
+import { SubtaskGridModel } from './subtask-grid-model.interface';
 
 import { FileReaderHelper } from '../../core/helpers/filer-reader/file-reader-helper.class';
 
 import { TagService } from '../../core/services/tag/tag.service';
 
 @Injectable()
-export class SubtasksService {
+export class SubtasksPageService {
   constructor(private domSanitizer: DomSanitizer, private tagService: TagService) {}
 
-  castDtoToModel(dto: Subtask): Observable<SubtaskModel> {
+  castDtoToModel(dto: Subtask): Observable<SubtaskGridModel> {
     if (!dto) {
       throw new Error('Dto is not specified.');
     }
@@ -26,7 +26,7 @@ export class SubtasksService {
         const thumbnailDateUrl = FileReaderHelper.arrayBufferToDataUrl(dto.thumbnail.arrayBuffer, dto.thumbnail.type);
         const thumbnailSafeUrl = this.domSanitizer.bypassSecurityTrustUrl(thumbnailDateUrl);
 
-        const result: SubtaskModel = {
+        const result: SubtaskGridModel = {
           id,
           name,
           description,

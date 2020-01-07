@@ -2,7 +2,7 @@ import { SafeUrl } from '@angular/platform-browser';
 
 import { Tag } from '../../core/interfaces/tag/tag.interface';
 
-export interface SubtaskModel {
+export interface SubtaskGridModel {
   id: number;
   name: string;
   description: string;

@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Tag } from '../../../core/interfaces/tag/tag.interface';
 import { Subtask } from '../../../core/interfaces/subtask/subtask.interface';
-import { SubtaskDetails } from './subtask-details.interface';
+import { SubtaskModel } from './subtask-model.interface';
 
 import { nameUnusedValidator } from '../../../core/validators/name-unused/name-unused.validator';
 import { arrayNotEmptyValidator } from '../../../core/validators/array-not-empty/array-not-empty.validator';
@@ -11,10 +11,10 @@ import { arrayNotEmptyValidator } from '../../../core/validators/array-not-empty
 import { SubtaskService } from '../../../core/services/subtask/subtask.service';
 
 @Injectable()
-export class SubtaskDetailsService {
+export class SubtaskDetailsPageService {
   constructor(private fb: FormBuilder, private subtaskService: SubtaskService) {}
 
-  castDtoToFormModel(subtask: Subtask, allTags: Tag[]): SubtaskDetails {
+  castDtoToFormModel(subtask: Subtask, allTags: Tag[]): SubtaskModel {
     if (!subtask) {
       throw new Error('Subtask is not specified.');
     }
@@ -30,7 +30,7 @@ export class SubtaskDetailsService {
     };
   }
 
-  castFormModelToDto(subtaskDetails: SubtaskDetails): Subtask {
+  castFormModelToDto(subtaskDetails: SubtaskModel): Subtask {
     if (!subtaskDetails) {
       throw new Error('Subtask details are not specified.');
     }
@@ -46,7 +46,7 @@ export class SubtaskDetailsService {
     };
   }
 
-  overrideDtoByFormModel(subtask: Subtask, subtaskDetails: SubtaskDetails): Subtask {
+  overrideDtoByFormModel(subtask: Subtask, subtaskDetails: SubtaskModel): Subtask {
     if (!subtask) {
       throw new Error('Subtask is not specified.');
     }
@@ -70,7 +70,7 @@ export class SubtaskDetailsService {
     return result;
   }
 
-  generateFormGroup(subtaskDetails: SubtaskDetails = null): FormGroup {
+  generateFormGroup(subtaskDetails: SubtaskModel = null): FormGroup {
     let formValue = this.generateDefaultFormValue();
 
     if (subtaskDetails) {
@@ -103,7 +103,7 @@ export class SubtaskDetailsService {
     });
   }
 
-  generateDefaultFormValue(): SubtaskDetails {
+  generateDefaultFormValue(): SubtaskModel {
     return {
       title: '',
       description: '',

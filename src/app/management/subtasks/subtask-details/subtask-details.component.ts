@@ -11,9 +11,9 @@ import { Subtask } from '../../../core/interfaces/subtask/subtask.interface';
 import { BreadcrumbService } from '../../../core/services/breadcrumb/breadcrumb.service';
 import { Tag } from 'src/app/core/interfaces/tag/tag.interface';
 import { SubtaskService } from 'src/app/core/services/subtask/subtask.service';
-import { SubtaskDetailsService } from './subtask-details.service';
+import { SubtaskDetailsPageService } from './subtask-details-page.service';
 import { TagService } from 'src/app/core/services/tag/tag.service';
-import { SubtaskDetails } from './subtask-details.interface';
+import { SubtaskModel } from './subtask-model.interface';
 import { tap } from 'rxjs/operators';
 
 export const idOfNewSubtask = 'new-subtask';
@@ -63,7 +63,7 @@ export class SubtaskDetailsComponent implements OnInit, OnDestroy {
     private tagService: TagService,
     private subtaskService: SubtaskService,
     private breadcrumbService: BreadcrumbService,
-    private subtaskDetailsService: SubtaskDetailsService
+    private subtaskDetailsService: SubtaskDetailsPageService
   ) {}
 
   ngOnInit() {
@@ -94,7 +94,7 @@ export class SubtaskDetailsComponent implements OnInit, OnDestroy {
 
   formSubmitHandler() {
     if (this.form.valid) {
-      const formRawValue = this.form.getRawValue() as SubtaskDetails;
+      const formRawValue = this.form.getRawValue() as SubtaskModel;
 
       let action: Observable<any>;
 

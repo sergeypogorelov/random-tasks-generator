@@ -5,8 +5,8 @@ import { SharedModule } from '../shared/shared.module';
 import { ManagementRoutingModule } from './management-routing.module';
 
 import { TagDetailsPageService } from './tags/tag-details/tag-details-page.service';
-import { SubtaskDetailsService } from './subtasks/subtask-details/subtask-details.service';
-import { SubtasksService } from './subtasks/subtasks.service';
+import { SubtaskDetailsPageService } from './subtasks/subtask-details/subtask-details-page.service';
+import { SubtasksPageService } from './subtasks/subtasks-page.service';
 import { TaskDetailsService } from './tasks/task-details/task-details.service';
 import { TasksService } from './tasks/tasks.service';
 import { PersonDetailsService } from './persons/person-details/person-details.service';
@@ -36,8 +36,8 @@ const declarations = [
 
 const services = [
   TagDetailsPageService,
-  SubtaskDetailsService,
-  SubtasksService,
+  SubtaskDetailsPageService,
+  SubtasksPageService,
   TaskDetailsService,
   TasksService,
   PersonDetailsService,
