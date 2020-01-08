@@ -59,6 +59,8 @@ export class TaskDetailsPageService {
     result.name = taskDetails.title;
     result.description = taskDetails.description;
     result.thumbnail = taskDetails.thumbnail;
+    result.minCount = +taskDetails.minCount;
+    result.maxCount = +taskDetails.maxCount;
     result.tagIds = taskDetails.tags.map(i => i.id);
 
     return result;

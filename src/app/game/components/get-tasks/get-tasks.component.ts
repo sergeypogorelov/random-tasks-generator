@@ -54,11 +54,14 @@ export class GetTasksComponent implements OnInit, OnDestroy {
   }
 
   get nextBtnEnabled(): boolean {
-    if (!this.gameTasks) {
+    if (!this.tasks || !this.gameTasks) {
       return false;
     }
 
-    return this.gameTaskIndex < this.gameTasks.length - 1;
+    const gameTask = this.gameTasks[this.gameTaskIndex];
+    const task = this.tasks.find(i => i.id === gameTask.taskId);
+
+    return this.gameTaskIndex < this.gameTasks.length - 1 && gameTask.subtaskIds.length >= task.minCount;
   }
 
   get prevBtnEnabled(): boolean {

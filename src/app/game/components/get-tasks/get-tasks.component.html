@@ -12,26 +12,31 @@
       <img class="img-fluid img-thumbnail" [src]="taskModel.thumbnailSafeUrl" />
     </div>
   </div>
-  <div class="row" *ngIf="subtaskModels && subtaskModels.length > 0">
+  <div class="row">
     <div class="col">
-      <h5>Subtasks</h5>
-      <div class="subtasks">
+      <div class="d-flex align-items-end mt-3 border-bottom">
+        <h5>Subtasks</h5>
+        <button class="btn btn-info ml-auto mb-2" [disabled]="subtasksLeft === 0" (click)="getBtnClickHandler()">
+          Get <span class="badge badge-light">{{ subtasksLeft }}</span>
+        </button>
+      </div>
+      <div class="subtasks" *ngIf="subtaskModels && subtaskModels.length > 0; else noSubtasks">
         <div class="subtask" *ngFor="let model of subtaskModels">
           <img class="subtask-img" [src]="model.thumbnailSafeUrl" />
           <h6 class="subtask-title">{{ model.name }}</h6>
         </div>
       </div>
+      <ng-template #noSubtasks>
+        <p class="my-2 text-center">No subtasks generated yet.</p>
+      </ng-template>
     </div>
   </div>
-  <div class="d-flex flex-column flex-sm-row mt-sm-2 border-sm">
+  <div class="d-flex flex-column flex-sm-row mt-0 pt-4 border-top">
     <button class="btn btn-secondary" [disabled]="!prevBtnEnabled" (click)="prevBtnClickHandler()">Prev</button>
     <button class="btn btn-secondary my-2 ml-sm-1 my-sm-0" [disabled]="!nextBtnEnabled" (click)="nextBtnClickHandler()">
       Next
     </button>
-    <button class="btn btn-info mb-2 ml-sm-auto my-sm-0" [disabled]="subtasksLeft === 0" (click)="getBtnClickHandler()">
-      Get <span class="badge badge-light">{{ subtasksLeft }}</span>
-    </button>
-    <button class="btn btn-primary ml-sm-1" [disabled]="!finishBtnEnabled" (click)="finishButtonClickHandler()">
+    <button class="btn btn-primary ml-sm-auto" [disabled]="!finishBtnEnabled" (click)="finishButtonClickHandler()">
       Finish
     </button>
   </div>

@@ -110,12 +110,12 @@ export class TagsSelectorComponent implements ControlValueAccessor {
   }
 
   private filterSuggestedDataItems(value: string) {
-    value = value ? value.trim() : '';
+    value = value ? value.trim().toUpperCase() : '';
 
     if (value) {
       this.suggestedDataItems = this.dataItems
         .filter(item => this.selectedDataItems.findIndex(i => i[this.valueKey] === item[this.valueKey]) === -1)
-        .filter(item => item[this.labelKey].includes(value));
+        .filter(item => item[this.labelKey].toUpperCase().includes(value));
     } else {
       this.suggestedDataItems = [];
     }
