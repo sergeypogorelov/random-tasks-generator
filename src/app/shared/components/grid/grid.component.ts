@@ -44,7 +44,7 @@ export class GridComponent {
 
     this.dataFiltered = this.data.filter(dataItem => {
       const dataItemValue = dataItem[this.searchField] as string;
-      return dataItemValue.includes(searchValue);
+      return dataItemValue.toUpperCase().includes(searchValue);
     });
   }
 }

@@ -1,17 +1,17 @@
 <rtg-breadcrumb></rtg-breadcrumb>
 <div class="container mb-3 pt-0 pb-2 px-2" *ngIf="models && models.length > 0">
   <div class="row">
-    <div class="col-12 col-md-6" *ngFor="let task of models">
-      <h5 class="my-0 p-1">{{ task.name }}</h5>
+    <div class="col-12 col-md-6" *ngFor="let task of models; let taskNumber = index">
+      <h4 class="my-0 p-1">({{ taskNumber + 1 }}) {{ task.name }}</h4>
       <div
         class="media p-1 subtask"
         *ngFor="let subtask of task.subtasks"
         [ngClass]="generateSubtaskClasses(task, subtask)"
         (click)="subtaskClickHandler(task, subtask)"
       >
-        <img class="media-img" [src]="subtask.thumbnailSafeUrl" />
+        <img class="media-img img-thumbnail" [src]="subtask.thumbnailSafeUrl" />
         <div class="media-body ml-1">
-          <h5 class="my-0">{{ subtask.name }}</h5>
+          <h6 class="my-0">{{ subtask.name }}</h6>
         </div>
       </div>
     </div>
