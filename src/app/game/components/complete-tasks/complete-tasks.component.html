@@ -2,21 +2,16 @@
 <div class="container mb-3 pt-0 pb-2 px-2" *ngIf="models && models.length > 0">
   <div class="row">
     <div class="col-12 col-md-6" *ngFor="let task of models">
-      <div class="media p-1">
-        <img class="media-img" [src]="task.thumbnailSafeUrl" />
+      <h5 class="my-0 p-1">{{ task.name }}</h5>
+      <div
+        class="media p-1 subtask"
+        *ngFor="let subtask of task.subtasks"
+        [ngClass]="generateSubtaskClasses(task, subtask)"
+        (click)="subtaskClickHandler(task, subtask)"
+      >
+        <img class="media-img" [src]="subtask.thumbnailSafeUrl" />
         <div class="media-body ml-1">
-          <h5 class="my-0">{{ task.name }}</h5>
-          <div
-            class="media p-1"
-            *ngFor="let subtask of task.subtasks"
-            [ngClass]="generateSubtaskClasses(task, subtask)"
-            (click)="subtaskClickHandler(task, subtask)"
-          >
-            <img class="media-img" [src]="subtask.thumbnailSafeUrl" />
-            <div class="media-body ml-1">
-              <h5 class="my-0">{{ subtask.name }}</h5>
-            </div>
-          </div>
+          <h5 class="my-0">{{ subtask.name }}</h5>
         </div>
       </div>
     </div>

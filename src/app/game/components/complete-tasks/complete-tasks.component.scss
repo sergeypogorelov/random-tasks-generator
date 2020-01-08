@@ -1,6 +1,9 @@
 @import '../../../../styles/bootstrap/bootstrap-required.scss';
 
 .media {
+  &.subtask {
+    cursor: pointer;
+  }
   &.failed {
     .media-body {
       text-decoration: line-through;
