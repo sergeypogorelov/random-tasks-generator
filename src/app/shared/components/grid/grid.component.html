@@ -1,28 +1,34 @@
-<table class="table table-bordered" *ngIf="columns">
-  <thead>
-    <tr>
-      <th *ngFor="let column of columns" [class]="column.headClassNames">{{ column.title }}</th>
-    </tr>
-  </thead>
-  <tbody>
-    <ng-container *ngIf="data && data.length > 0; else defaultTableBody">
-      <tr *ngFor="let dataItem of data">
-        <td *ngFor="let column of columns" [class]="column.classNames">
-          <ng-container
-            *ngIf="column.gridCellTemplate; else defaultCell"
-            [ngTemplateOutlet]="column.gridCellTemplate"
-            [ngTemplateOutletContext]="{ dataItem: dataItem }"
-          ></ng-container>
-          <ng-template #defaultCell>
-            {{ dataItem[column.field] }}
-          </ng-template>
-        </td>
-      </tr>
-    </ng-container>
-    <ng-template #defaultTableBody>
+<div class="grid">
+  <form class="grid-search form-inline flex-nowrap mb-3" *ngIf="searchField" (ngSubmit)="searchSubmitHandler()">
+    <input class="form-control flex-grow-1 mr-2" name="search" placeholder="Search" [(ngModel)]="searchValue" />
+    <button class="btn btn-secondary">Search</button>
+  </form>
+  <table class="table table-bordered" *ngIf="columns">
+    <thead>
       <tr>
-        <td class="text-center" [attr.colspan]="columns.length">No records available.</td>
+        <th *ngFor="let column of columns" [class]="column.headClassNames">{{ column.title }}</th>
       </tr>
-    </ng-template>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <ng-container *ngIf="dataFiltered && dataFiltered.length > 0; else defaultTableBody">
+        <tr *ngFor="let dataItem of dataFiltered">
+          <td *ngFor="let column of columns" [class]="column.classNames">
+            <ng-container
+              *ngIf="column.gridCellTemplate; else defaultCell"
+              [ngTemplateOutlet]="column.gridCellTemplate"
+              [ngTemplateOutletContext]="{ dataItem: dataItem }"
+            ></ng-container>
+            <ng-template #defaultCell>
+              {{ dataItem[column.field] }}
+            </ng-template>
+          </td>
+        </tr>
+      </ng-container>
+      <ng-template #defaultTableBody>
+        <tr>
+          <td class="text-center" [attr.colspan]="columns.length">No records available.</td>
+        </tr>
+      </ng-template>
+    </tbody>
+  </table>
+</div>

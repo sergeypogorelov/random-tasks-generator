@@ -74,7 +74,7 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
     const isNew = params.id === idOfNewTask;
 
     if (isNew) {
-      this.setBreadcrumb(idOfNewTask);
+      this.setBreadcrumb(labelOfNewTask);
       this.loadAndSetTags().subscribe(() => this.setForm());
     } else {
       this.subs.push(
