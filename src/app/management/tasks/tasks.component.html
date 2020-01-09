@@ -1,7 +1,7 @@
 <rtg-breadcrumb></rtg-breadcrumb>
 <div class="container p-2">
   <div class="mb-2 text-right">
-    <button class="btn btn-primary" (click)="newButtonClickHandler()">New</button>
+    <a class="btn btn-primary" [routerLink]="getRouterLinkToAdd()">New</a>
   </div>
   <rtg-grid
     searchField="name"
@@ -35,7 +35,7 @@
     <rtg-grid-column title="Action">
       <ng-template rtgGridCellTemplate let-dataItem="dataItem">
         <div class="btn-group d-flex">
-          <button class="btn btn-secondary" (click)="editButtonClickHandler(dataItem)">Edit</button>
+          <a class="btn btn-secondary" [routerLink]="getRouterLinkToEdit(dataItem)">Edit</a>
           <button class="btn btn-warning" (click)="removeButtonClickHandler(dataItem)">Remove</button>
         </div>
       </ng-template>

@@ -55,18 +55,10 @@ export class TasksComponent implements OnInit, OnDestroy {
     this.tasksPageService.revokeImgUrls();
   }
 
-  newButtonClickHandler() {
-    this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.tasks, idOfNewTask]);
-  }
-
   gridSearchValueChangeHandler(search: string) {
     this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.tasks], {
       queryParams: { search }
     });
-  }
-
-  editButtonClickHandler(subtask: TaskGridModel) {
-    this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.tasks, subtask.id]);
   }
 
   removeButtonClickHandler(subtask: TaskGridModel) {
@@ -75,6 +67,14 @@ export class TasksComponent implements OnInit, OnDestroy {
         this.subs.push(this.taskService.delete(subtask.id).subscribe(() => this.updateGrid()));
       }
     });
+  }
+
+  getRouterLinkToAdd() {
+    return [`/${urlFragments.management}`, urlFragments.managementChilds.tasks, idOfNewTask];
+  }
+
+  getRouterLinkToEdit(dataItem: TaskGridModel) {
+    return [`/${urlFragments.management}`, urlFragments.managementChilds.tasks, dataItem.id];
   }
 
   private activateListeningToQueryParams() {

@@ -42,18 +42,10 @@ export class TagsComponent implements OnInit, OnDestroy {
     this.subs.forEach(i => i.unsubscribe());
   }
 
-  newButtonClickHandler() {
-    this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.tags, idOfNewTag]);
-  }
-
   gridSearchValueChangeHandler(search: string) {
     this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.tags], {
       queryParams: { search }
     });
-  }
-
-  editButtonClickHandler(tag: Tag) {
-    this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.tags, tag.id]);
   }
 
   removeButtonClickHandler(tag: Tag) {
@@ -62,6 +54,14 @@ export class TagsComponent implements OnInit, OnDestroy {
         this.subs.push(this.tagService.deleteTag(tag.id).subscribe(() => this.updateGrid()));
       }
     });
+  }
+
+  getRouterLinkToAdd() {
+    return [`/${urlFragments.management}`, urlFragments.managementChilds.tags, idOfNewTag];
+  }
+
+  getRouterLinkToEdit(dataItem: Tag) {
+    return [`/${urlFragments.management}`, urlFragments.managementChilds.tags, dataItem.id];
   }
 
   private activateListeningToQueryParams() {

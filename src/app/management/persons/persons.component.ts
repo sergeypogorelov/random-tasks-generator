@@ -51,14 +51,6 @@ export class PersonsComponent implements OnInit, OnDestroy {
     this.personsPageService.revokeImgUrls();
   }
 
-  newButtonClickHandler() {
-    this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.persons, idOfNewPerson]);
-  }
-
-  editButtonClickHandler(item: PersonsGridModel) {
-    this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.persons, item.id]);
-  }
-
   removeButtonClickHandler(item: PersonsGridModel) {
     this.modalConfirmService.createAndShowConfirmModal('remove-person', {
       confirm: () => {
@@ -67,8 +59,12 @@ export class PersonsComponent implements OnInit, OnDestroy {
     });
   }
 
-  imgLoadHandler(item: PersonsGridModel) {
-    URL.revokeObjectURL(item.thumbnailDateUrl);
+  getRouterLinkToAdd() {
+    return [`/${urlFragments.management}`, urlFragments.managementChilds.persons, idOfNewPerson];
+  }
+
+  getRouterLinkToEdit(dataItem: PersonsGridModel) {
+    return [`/${urlFragments.management}`, urlFragments.managementChilds.persons, dataItem.id];
   }
 
   private setBreadcrumb() {

@@ -47,18 +47,10 @@ export class SubtasksComponent implements OnInit, OnDestroy {
     this.subtasksPageService.revokeImgUrls();
   }
 
-  newButtonClickHandler() {
-    this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.subtasks, idOfNewSubtask]);
-  }
-
   gridSearchValueChangeHandler(search: string) {
     this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.subtasks], {
       queryParams: { search }
     });
-  }
-
-  editButtonClickHandler(subtask: SubtaskGridModel) {
-    this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.subtasks, subtask.id]);
   }
 
   removeButtonClickHandler(subtask: SubtaskGridModel) {
@@ -67,6 +59,14 @@ export class SubtasksComponent implements OnInit, OnDestroy {
         this.subs.push(this.subtaskService.deleteSubtask(subtask.id).subscribe(() => this.updateGrid()));
       }
     });
+  }
+
+  getRouterLinkToAdd() {
+    return [`/${urlFragments.management}`, urlFragments.managementChilds.subtasks, idOfNewSubtask];
+  }
+
+  getRouterLinkToEdit(dataItem: SubtaskGridModel) {
+    return [`/${urlFragments.management}`, urlFragments.managementChilds.subtasks, dataItem.id];
   }
 
   private activateListeningToQueryParams() {
