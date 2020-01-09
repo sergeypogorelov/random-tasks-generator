@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription, forkJoin } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
@@ -20,11 +20,14 @@ import { idOfNewSubtask } from './subtask-details/subtask-details.component';
   templateUrl: './subtasks.component.html'
 })
 export class SubtasksComponent implements OnInit, OnDestroy {
+  search: string;
+
   subtaskModels: SubtaskGridModel[] = [];
 
   private subs: Subscription[] = [];
 
   constructor(
+    private route: ActivatedRoute,
     private router: Router,
     private subtaskService: SubtaskService,
     private breadcrumbService: BreadcrumbService,
@@ -33,6 +36,7 @@ export class SubtasksComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.activateListeningToQueryParams();
     this.setBreadcrumb();
     this.updateGrid();
   }
@@ -47,6 +51,12 @@ export class SubtasksComponent implements OnInit, OnDestroy {
     this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.subtasks, idOfNewSubtask]);
   }
 
+  gridSearchValueChangeHandler(search: string) {
+    this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.subtasks], {
+      queryParams: { search }
+    });
+  }
+
   editButtonClickHandler(subtask: SubtaskGridModel) {
     this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.subtasks, subtask.id]);
   }
@@ -59,8 +69,8 @@ export class SubtasksComponent implements OnInit, OnDestroy {
     });
   }
 
-  imgLoadHandler(subtask: SubtaskGridModel) {
-    URL.revokeObjectURL(subtask.thumbnailDateUrl);
+  private activateListeningToQueryParams() {
+    this.subs.push(this.route.queryParams.subscribe(params => (this.search = params.search)));
   }
 
   private setBreadcrumb() {

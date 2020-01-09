@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription, Observable, forkJoin } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
@@ -23,6 +23,8 @@ import { idOfNewTask } from './task-details/task-details.component';
   templateUrl: './tasks.component.html'
 })
 export class TasksComponent implements OnInit, OnDestroy {
+  search: string;
+
   tags: Tag[];
 
   tasks: Task[];
@@ -32,6 +34,7 @@ export class TasksComponent implements OnInit, OnDestroy {
   private subs: Subscription[] = [];
 
   constructor(
+    private route: ActivatedRoute,
     private router: Router,
     private tagService: TagService,
     private taskService: TaskService,
@@ -41,6 +44,7 @@ export class TasksComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.activateListeningToQueryParams();
     this.setBreadcrumb();
     this.updateGrid();
   }
@@ -55,6 +59,12 @@ export class TasksComponent implements OnInit, OnDestroy {
     this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.tasks, idOfNewTask]);
   }
 
+  gridSearchValueChangeHandler(search: string) {
+    this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.tasks], {
+      queryParams: { search }
+    });
+  }
+
   editButtonClickHandler(subtask: TaskGridModel) {
     this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.tasks, subtask.id]);
   }
@@ -65,6 +75,10 @@ export class TasksComponent implements OnInit, OnDestroy {
         this.subs.push(this.taskService.delete(subtask.id).subscribe(() => this.updateGrid()));
       }
     });
+  }
+
+  private activateListeningToQueryParams() {
+    this.subs.push(this.route.queryParams.subscribe(params => (this.search = params.search)));
   }
 
   private setBreadcrumb() {

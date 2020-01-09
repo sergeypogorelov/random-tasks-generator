@@ -3,7 +3,12 @@
   <div class="mb-2 text-right">
     <button class="btn btn-primary" (click)="newButtonClickHandler()">New</button>
   </div>
-  <rtg-grid searchField="name" [data]="models">
+  <rtg-grid
+    searchField="name"
+    [searchValue]="search"
+    [data]="models"
+    (searchValueChange)="gridSearchValueChangeHandler($event)"
+  >
     <rtg-grid-column
       title="Thumbnail"
       headClassNames="d-none d-sm-table-cell"

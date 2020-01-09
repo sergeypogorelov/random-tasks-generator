@@ -1,4 +1,4 @@
-import { Component, QueryList, ContentChildren, Input } from '@angular/core';
+import { Component, QueryList, ContentChildren, Input, EventEmitter, Output } from '@angular/core';
 
 import { GridColumnComponent } from './grid-column/grid-column.component';
 
@@ -7,7 +7,7 @@ import { GridColumnComponent } from './grid-column/grid-column.component';
   templateUrl: './grid.component.html'
 })
 export class GridComponent {
-  searchValue: string;
+  searchControlValue: string;
 
   dataFiltered: any[];
 
@@ -22,25 +22,46 @@ export class GridComponent {
     this.applySearch();
   }
 
+  get searchValue(): string {
+    return this.searchValueByDefault;
+  }
+
+  @Input()
+  set searchValue(value: string) {
+    this.searchValueByDefault = value;
+    this.searchControlValue = value;
+
+    this.applySearch();
+  }
+
   @Input()
   searchField: string;
+
+  @Output()
+  searchValueChange = new EventEmitter<string>();
 
   @ContentChildren(GridColumnComponent)
   columns: QueryList<GridColumnComponent>;
 
   private dataItems: any[];
 
+  private searchValueByDefault: string;
+
   searchSubmitHandler() {
-    this.applySearch();
+    if (typeof this.searchValue === 'undefined') {
+      this.applySearch();
+    }
+
+    this.searchValueChange.emit(this.searchControlValue);
   }
 
   private applySearch() {
-    if (!this.searchField || !this.searchValue) {
+    if (!this.searchField || !this.searchControlValue) {
       this.dataFiltered = this.data;
       return;
     }
 
-    const searchValue = this.searchValue.toUpperCase();
+    const searchValue = this.searchControlValue.toUpperCase();
 
     this.dataFiltered = this.data.filter(dataItem => {
       const dataItemValue = dataItem[this.searchField] as string;

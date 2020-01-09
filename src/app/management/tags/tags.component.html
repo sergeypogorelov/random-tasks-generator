@@ -3,7 +3,12 @@
   <div class="mb-2 text-right">
     <button class="btn btn-primary" (click)="newButtonClickHandler()">New</button>
   </div>
-  <rtg-grid searchField="name" [data]="tags">
+  <rtg-grid
+    searchField="name"
+    [searchValue]="search"
+    [data]="tags"
+    (searchValueChange)="gridSearchValueChangeHandler($event)"
+  >
     <rtg-grid-column title="Name" field="name"></rtg-grid-column>
     <rtg-grid-column
       title="Description"

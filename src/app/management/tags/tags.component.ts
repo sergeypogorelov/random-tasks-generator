@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { linkLabels } from '../../core/constants/link-labels';
@@ -18,11 +18,14 @@ import { idOfNewTag } from './tag-details/tag-details.component';
   templateUrl: './tags.component.html'
 })
 export class TagsComponent implements OnInit, OnDestroy {
+  search: string;
+
   tags: Tag[] = [];
 
   private subs: Subscription[] = [];
 
   constructor(
+    private route: ActivatedRoute,
     private router: Router,
     private tagService: TagService,
     private breadcrumbService: BreadcrumbService,
@@ -30,6 +33,7 @@ export class TagsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.activateListeningToQueryParams();
     this.setBreadcrumb();
     this.updateGrid();
   }
@@ -42,6 +46,12 @@ export class TagsComponent implements OnInit, OnDestroy {
     this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.tags, idOfNewTag]);
   }
 
+  gridSearchValueChangeHandler(search: string) {
+    this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.tags], {
+      queryParams: { search }
+    });
+  }
+
   editButtonClickHandler(tag: Tag) {
     this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.tags, tag.id]);
   }
@@ -52,6 +62,10 @@ export class TagsComponent implements OnInit, OnDestroy {
         this.subs.push(this.tagService.deleteTag(tag.id).subscribe(() => this.updateGrid()));
       }
     });
+  }
+
+  private activateListeningToQueryParams() {
+    this.subs.push(this.route.queryParams.subscribe(params => (this.search = params.search)));
   }
 
   private setBreadcrumb() {

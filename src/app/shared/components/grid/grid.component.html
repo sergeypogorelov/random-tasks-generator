@@ -1,6 +1,6 @@
 <div class="grid">
   <form class="grid-search form-inline flex-nowrap mb-3" *ngIf="searchField" (ngSubmit)="searchSubmitHandler()">
-    <input class="form-control flex-grow-1 mr-2" name="search" placeholder="Search" [(ngModel)]="searchValue" />
+    <input class="form-control flex-grow-1 mr-2" name="search" placeholder="Search" [(ngModel)]="searchControlValue" />
     <button class="btn btn-secondary">Search</button>
   </form>
   <table class="table table-bordered" *ngIf="columns">
