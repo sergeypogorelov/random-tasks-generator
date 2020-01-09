@@ -5,9 +5,12 @@
   </div>
   <rtg-grid
     searchField="name"
-    [searchValue]="search"
     [data]="tags"
+    [searchValue]="search"
+    [page]="page"
+    [itemsPerPage]="10"
     (searchValueChange)="gridSearchValueChangeHandler($event)"
+    (pageChange)="gridPageChangeHandler($event)"
   >
     <rtg-grid-column title="Name" field="name"></rtg-grid-column>
     <rtg-grid-column

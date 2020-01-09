@@ -11,6 +11,8 @@ export class GridComponent {
 
   dataFiltered: any[];
 
+  dataToDisplay: any[];
+
   get data(): any[] {
     return this.dataItems;
   }
@@ -19,7 +21,7 @@ export class GridComponent {
   set data(value: any[]) {
     this.dataItems = value;
 
-    this.applySearch();
+    this.apply();
   }
 
   get searchValue(): string {
@@ -31,14 +33,31 @@ export class GridComponent {
     this.searchValueByDefault = value;
     this.searchControlValue = value;
 
-    this.applySearch();
+    this.apply();
+  }
+
+  get page(): number {
+    return this.pageNumber;
+  }
+
+  @Input()
+  set page(value: number) {
+    this.pageNumber = value || 1;
+
+    this.apply();
   }
 
   @Input()
   searchField: string;
 
+  @Input()
+  itemsPerPage: string;
+
   @Output()
   searchValueChange = new EventEmitter<string>();
+
+  @Output()
+  pageChange = new EventEmitter<number>();
 
   @ContentChildren(GridColumnComponent)
   columns: QueryList<GridColumnComponent>;
@@ -47,25 +66,60 @@ export class GridComponent {
 
   private searchValueByDefault: string;
 
+  private pageNumber: number;
+
+  totalItems: number;
+
+  totalPages: number;
+
+  pages: number[];
+
   searchSubmitHandler() {
     if (typeof this.searchValue === 'undefined') {
-      this.applySearch();
+      this.apply();
     }
 
     this.searchValueChange.emit(this.searchControlValue);
   }
 
-  private applySearch() {
+  pageClickHandler(ev: Event, page: number) {
+    ev.preventDefault();
+
+    this.pageChange.emit(page);
+  }
+
+  private apply() {
     if (!this.searchField || !this.searchControlValue) {
       this.dataFiltered = this.data;
-      return;
+    } else {
+      const searchValue = this.searchControlValue.toUpperCase();
+
+      this.dataFiltered = this.data.filter(dataItem => {
+        const dataItemValue = dataItem[this.searchField] as string;
+        return dataItemValue.toUpperCase().includes(searchValue);
+      });
     }
 
-    const searchValue = this.searchControlValue.toUpperCase();
+    if (this.pageNumber && this.itemsPerPage) {
+      this.totalItems = this.dataFiltered.length;
+      this.totalPages = Math.floor(this.dataFiltered.length / +this.itemsPerPage);
 
-    this.dataFiltered = this.data.filter(dataItem => {
-      const dataItemValue = dataItem[this.searchField] as string;
-      return dataItemValue.toUpperCase().includes(searchValue);
-    });
+      const skip = this.pageNumber * +this.itemsPerPage - +this.itemsPerPage;
+      this.dataToDisplay = this.dataFiltered.slice(skip, skip + +this.itemsPerPage);
+
+      this.pages = [];
+
+      if (this.pageNumber - 1 >= 1) {
+        this.pages.push(this.pageNumber - 1);
+      }
+
+      this.pages.push(this.pageNumber);
+
+      if (this.pageNumber + 1 <= this.totalPages) {
+        this.pages.push(this.pageNumber + 1);
+      }
+    } else {
+      this.dataToDisplay = this.dataFiltered;
+    }
   }
 }

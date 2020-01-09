@@ -20,6 +20,8 @@ import { idOfNewTag } from './tag-details/tag-details.component';
 export class TagsComponent implements OnInit, OnDestroy {
   search: string;
 
+  page: number;
+
   tags: Tag[] = [];
 
   private subs: Subscription[] = [];
@@ -43,8 +45,18 @@ export class TagsComponent implements OnInit, OnDestroy {
   }
 
   gridSearchValueChangeHandler(search: string) {
+    const page = 1;
+
     this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.tags], {
-      queryParams: { search }
+      queryParams: { search, page }
+    });
+  }
+
+  gridPageChangeHandler(page: number) {
+    const search = this.search;
+
+    this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.tags], {
+      queryParams: { search, page }
     });
   }
 
@@ -65,7 +77,12 @@ export class TagsComponent implements OnInit, OnDestroy {
   }
 
   private activateListeningToQueryParams() {
-    this.subs.push(this.route.queryParams.subscribe(params => (this.search = params.search)));
+    this.subs.push(
+      this.route.queryParams.subscribe(params => {
+        this.search = params.search;
+        this.page = +params.page;
+      })
+    );
   }
 
   private setBreadcrumb() {

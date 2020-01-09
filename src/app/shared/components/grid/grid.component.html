@@ -10,8 +10,8 @@
       </tr>
     </thead>
     <tbody>
-      <ng-container *ngIf="dataFiltered && dataFiltered.length > 0; else defaultTableBody">
-        <tr *ngFor="let dataItem of dataFiltered">
+      <ng-container *ngIf="dataToDisplay && dataToDisplay.length > 0; else defaultTableBody">
+        <tr *ngFor="let dataItem of dataToDisplay">
           <td *ngFor="let column of columns" [class]="column.classNames">
             <ng-container
               *ngIf="column.gridCellTemplate; else defaultCell"
@@ -31,4 +31,19 @@
       </ng-template>
     </tbody>
   </table>
+  <nav class="grid-pagination" *ngIf="pages && pages.length > 1">
+    <ul class="pagination">
+      <li class="page-item" *ngIf="page > 2">
+        <a class="page-link" href="#" (click)="pageClickHandler($event, 1)"><span>&laquo;</span></a>
+      </li>
+      <li class="page-item" *ngFor="let pageNumber of pages" [class.active]="pageNumber === page">
+        <a class="page-link" href="#" (click)="pageClickHandler($event, pageNumber)">
+          {{ pageNumber }}
+        </a>
+      </li>
+      <li class="page-item" *ngIf="totalPages > 2 && page !== totalPages">
+        <a class="page-link" href="#" (click)="pageClickHandler($event, totalPages)"><span>&raquo;</span></a>
+      </li>
+    </ul>
+  </nav>
 </div>
