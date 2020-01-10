@@ -25,6 +25,8 @@ import { idOfNewTask } from './task-details/task-details.component';
 export class TasksComponent implements OnInit, OnDestroy {
   search: string;
 
+  page: number;
+
   tags: Tag[];
 
   tasks: Task[];
@@ -56,8 +58,18 @@ export class TasksComponent implements OnInit, OnDestroy {
   }
 
   gridSearchValueChangeHandler(search: string) {
+    const page = 1;
+
     this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.tasks], {
-      queryParams: { search }
+      queryParams: { search, page }
+    });
+  }
+
+  gridPageChangeHandler(page: number) {
+    const search = this.search;
+
+    this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.tasks], {
+      queryParams: { search, page }
     });
   }
 
@@ -78,7 +90,12 @@ export class TasksComponent implements OnInit, OnDestroy {
   }
 
   private activateListeningToQueryParams() {
-    this.subs.push(this.route.queryParams.subscribe(params => (this.search = params.search)));
+    this.subs.push(
+      this.route.queryParams.subscribe(params => {
+        this.search = params.search || '';
+        this.page = +params.page || 1;
+      })
+    );
   }
 
   private setBreadcrumb() {

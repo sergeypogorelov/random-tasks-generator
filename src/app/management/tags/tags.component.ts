@@ -79,8 +79,8 @@ export class TagsComponent implements OnInit, OnDestroy {
   private activateListeningToQueryParams() {
     this.subs.push(
       this.route.queryParams.subscribe(params => {
-        this.search = params.search;
-        this.page = +params.page;
+        this.search = params.search || '';
+        this.page = +params.page || 1;
       })
     );
   }

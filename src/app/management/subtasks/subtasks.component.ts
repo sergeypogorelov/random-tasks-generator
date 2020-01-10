@@ -22,6 +22,8 @@ import { idOfNewSubtask } from './subtask-details/subtask-details.component';
 export class SubtasksComponent implements OnInit, OnDestroy {
   search: string;
 
+  page: number;
+
   subtaskModels: SubtaskGridModel[] = [];
 
   private subs: Subscription[] = [];
@@ -48,8 +50,18 @@ export class SubtasksComponent implements OnInit, OnDestroy {
   }
 
   gridSearchValueChangeHandler(search: string) {
+    const page = 1;
+
     this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.subtasks], {
-      queryParams: { search }
+      queryParams: { search, page }
+    });
+  }
+
+  gridPageChangeHandler(page: number) {
+    const search = this.search;
+
+    this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.subtasks], {
+      queryParams: { search, page }
     });
   }
 
@@ -70,7 +82,12 @@ export class SubtasksComponent implements OnInit, OnDestroy {
   }
 
   private activateListeningToQueryParams() {
-    this.subs.push(this.route.queryParams.subscribe(params => (this.search = params.search)));
+    this.subs.push(
+      this.route.queryParams.subscribe(params => {
+        this.search = params.search || '';
+        this.page = +params.page || 1;
+      })
+    );
   }
 
   private setBreadcrumb() {

@@ -1,13 +1,16 @@
 <rtg-breadcrumb></rtg-breadcrumb>
 <div class="container p-2">
-  <div class="mb-2 text-right">
-    <a class="btn btn-primary" [routerLink]="getRouterLinkToAdd()">New</a>
+  <div class="mb-2">
+    <a class="btn btn-primary" [routerLink]="getRouterLinkToAdd()">New Subtask</a>
   </div>
   <rtg-grid
     searchField="name"
     [searchValue]="search"
+    [page]="page"
+    [itemsPerPage]="10"
     [data]="subtaskModels"
     (searchValueChange)="gridSearchValueChangeHandler($event)"
+    (pageChange)="gridPageChangeHandler($event)"
   >
     <rtg-grid-column
       title="Thumbnail"
