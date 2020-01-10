@@ -102,7 +102,7 @@ export class GridComponent {
 
     if (this.pageNumber && this.itemsPerPage) {
       this.totalItems = this.dataFiltered.length;
-      this.totalPages = Math.floor(this.dataFiltered.length / +this.itemsPerPage);
+      this.totalPages = Math.round(this.dataFiltered.length / +this.itemsPerPage);
 
       const skip = this.pageNumber * +this.itemsPerPage - +this.itemsPerPage;
       this.dataToDisplay = this.dataFiltered.slice(skip, skip + +this.itemsPerPage);
