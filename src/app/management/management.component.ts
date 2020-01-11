@@ -5,8 +5,6 @@ import { urlFragments } from '../core/constants/url-fragments';
 
 import { LinkItem } from '../shared/components/link/link-item.interface';
 import { BreadcrumbService } from '../core/services/breadcrumb/breadcrumb.service';
-import { IdbService } from '../idb/services/idb/idb.service';
-import { mergeMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'rtg-management',
@@ -33,13 +31,7 @@ export class ManagementComponent implements OnInit {
     routerLink: [`/${urlFragments.management}`, urlFragments.managementChilds.tags]
   };
 
-  constructor(private breadcrumbService: BreadcrumbService, private idbService: IdbService) {
-    // this.idbService
-    //   .openDB()
-    //   .pipe(tap(db => db.put('store', { name: 'value1' })))
-    //   .pipe(tap(db => db.put('store', { name: 'value2' })))
-    //   .subscribe(i => console.log(i));
-  }
+  constructor(private breadcrumbService: BreadcrumbService) {}
 
   ngOnInit() {
     this.breadcrumbService.setItems([

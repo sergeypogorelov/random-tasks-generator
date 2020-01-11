@@ -1,24 +1,30 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { ActivatedRoute, Params } from '@angular/router';
 import { FormGroup, AbstractControl } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 import { linkLabels } from '../../../core/constants/link-labels';
 import { urlFragments } from '../../../core/constants/url-fragments';
 
 import { Subtask } from '../../../core/interfaces/subtask/subtask.interface';
-
-import { BreadcrumbService } from '../../../core/services/breadcrumb/breadcrumb.service';
-import { Tag } from 'src/app/core/interfaces/tag/tag.interface';
-import { SubtaskService } from 'src/app/core/services/subtask/subtask.service';
-import { SubtaskDetailsPageService } from './subtask-details-page.service';
-import { TagService } from 'src/app/core/services/tag/tag.service';
+import { Tag } from '../../../core/interfaces/tag/tag.interface';
 import { SubtaskModel } from './subtask-model.interface';
-import { tap } from 'rxjs/operators';
+
+import { TagService } from '../../../core/services/tag/tag.service';
+import { SubtaskService } from '../../../core/services/subtask/subtask.service';
+import { BreadcrumbService } from '../../../core/services/breadcrumb/breadcrumb.service';
+import { ModalAlertService } from '../../../core/services/modal-alert/modal-alert.service';
+import { SubtaskDetailsPageService } from './subtask-details-page.service';
 
 export const idOfNewSubtask = 'new-subtask';
 
 export const labelOfNewSubtask = 'New Subtask';
+
+export const ALERT_TAG = 'subtask-details';
+
+export const ALERT_MESSAGE = 'The subtask has been saved successfully.';
 
 @Component({
   selector: 'rtg-subtask-details',
@@ -58,11 +64,12 @@ export class SubtaskDetailsComponent implements OnInit, OnDestroy {
   private subs: Subscription[] = [];
 
   constructor(
-    private router: Router,
+    private location: Location,
     private activatedRoute: ActivatedRoute,
     private tagService: TagService,
     private subtaskService: SubtaskService,
     private breadcrumbService: BreadcrumbService,
+    private modalAlertService: ModalAlertService,
     private subtaskDetailsService: SubtaskDetailsPageService
   ) {}
 
@@ -107,9 +114,15 @@ export class SubtaskDetailsComponent implements OnInit, OnDestroy {
       }
 
       this.subs.push(
-        action.subscribe(() =>
-          this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.subtasks])
-        )
+        action.subscribe(() => {
+          const callbacks = {
+            close: () => {
+              this.location.back();
+            }
+          };
+
+          this.modalAlertService.createAndShowAlertModal(ALERT_TAG, ALERT_MESSAGE, callbacks);
+        })
       );
     }
   }

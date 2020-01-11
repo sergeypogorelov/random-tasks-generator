@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { ActivatedRoute, Params } from '@angular/router';
 import { FormGroup, AbstractControl } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -14,11 +15,16 @@ import { TaskModel } from './task-model.interface';
 import { TagService } from '../../../core/services/tag/tag.service';
 import { TaskService } from '../../../core/services/task/task.service';
 import { BreadcrumbService } from '../../../core/services/breadcrumb/breadcrumb.service';
+import { ModalAlertService } from '../../../core/services/modal-alert/modal-alert.service';
 import { TaskDetailsPageService } from './task-details-page.service';
 
 export const idOfNewTask = 'new-task';
 
 export const labelOfNewTask = 'New Task';
+
+export const ALERT_TAG = 'task-details';
+
+export const ALERT_MESSAGE = 'The task has been saved successfully.';
 
 @Component({
   selector: 'rtg-task-details',
@@ -54,11 +60,12 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
   private subs: Subscription[] = [];
 
   constructor(
-    private router: Router,
+    private location: Location,
     private activatedRoute: ActivatedRoute,
     private tagService: TagService,
     private taskService: TaskService,
     private breadcrumbService: BreadcrumbService,
+    private modalAlertService: ModalAlertService,
     private taskDetailsService: TaskDetailsPageService
   ) {}
 
@@ -103,9 +110,15 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
       }
 
       this.subs.push(
-        action.subscribe(() =>
-          this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.tasks])
-        )
+        action.subscribe(() => {
+          const callbacks = {
+            close: () => {
+              this.location.back();
+            }
+          };
+
+          this.modalAlertService.createAndShowAlertModal(ALERT_TAG, ALERT_MESSAGE, callbacks);
+        })
       );
     }
   }

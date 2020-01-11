@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Location } from '@angular/common';
 import { AbstractControl, FormGroup, FormArray } from '@angular/forms';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { Subscription, Observable, forkJoin } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { IDatePickerConfig } from 'ng2-date-picker';
@@ -22,11 +23,16 @@ import { TagService } from '../../../core/services/tag/tag.service';
 import { TaskService } from '../../../core/services/task/task.service';
 import { PersonService } from '../../../core/services/person/person.service';
 import { BreadcrumbService } from '../../../core/services/breadcrumb/breadcrumb.service';
+import { ModalAlertService } from '../../../core/services/modal-alert/modal-alert.service';
 import { PersonDetailsPageService } from './person-details-page.service';
 
 export const idOfNewPerson = 'new-person';
 
 export const labelOfNewPerson = 'New Person';
+
+export const ALERT_TAG = 'person-details';
+
+export const ALERT_MESSAGE = 'The person has been saved successfully.';
 
 @Component({
   selector: 'rtg-person-details',
@@ -70,12 +76,13 @@ export class PersonDetailsComponent implements OnInit, OnDestroy {
   private subs: Subscription[] = [];
 
   constructor(
-    private router: Router,
+    private location: Location,
     private activatedRoute: ActivatedRoute,
     private tagService: TagService,
     private taskService: TaskService,
     private personService: PersonService,
     private breadcrumbService: BreadcrumbService,
+    private modalAlertService: ModalAlertService,
     private personDetailsService: PersonDetailsPageService
   ) {
     this.probabilityRangeItems = Utils.enumAsValueAndLabel(ProbabilityRange);
@@ -135,9 +142,15 @@ export class PersonDetailsComponent implements OnInit, OnDestroy {
       }
 
       this.subs.push(
-        action.subscribe(() =>
-          this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.persons])
-        )
+        action.subscribe(() => {
+          const callbacks = {
+            close: () => {
+              this.location.back();
+            }
+          };
+
+          this.modalAlertService.createAndShowAlertModal(ALERT_TAG, ALERT_MESSAGE, callbacks);
+        })
       );
     } else {
       this.form.markAllAsTouched();

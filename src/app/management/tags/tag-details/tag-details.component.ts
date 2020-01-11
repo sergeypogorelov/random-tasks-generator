@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { ActivatedRoute, Params } from '@angular/router';
 import { FormGroup, AbstractControl } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
 
@@ -11,11 +12,16 @@ import { TagModel } from './tag-model.interface';
 
 import { TagService } from '../../../core/services/tag/tag.service';
 import { BreadcrumbService } from '../../../core/services/breadcrumb/breadcrumb.service';
+import { ModalAlertService } from '../../../core/services/modal-alert/modal-alert.service';
 import { TagDetailsPageService } from './tag-details-page.service';
 
-export const idOfNewTag = 'new';
+export const idOfNewTag = 'new-tag';
 
-export const labelOfNewTag = 'New';
+export const labelOfNewTag = 'New Tag';
+
+export const ALERT_TAG = 'tag-details';
+
+export const ALERT_MESSAGE = 'The tag has been saved successfully.';
 
 @Component({
   selector: 'rtg-tag-details',
@@ -37,9 +43,10 @@ export class TagDetailsComponent implements OnInit, OnDestroy {
   private subs: Subscription[] = [];
 
   constructor(
-    private router: Router,
+    private location: Location,
     private activatedRoute: ActivatedRoute,
     private tagService: TagService,
+    private modalAlertService: ModalAlertService,
     private breadcrumbService: BreadcrumbService,
     private tagDetailsService: TagDetailsPageService
   ) {}
@@ -85,9 +92,15 @@ export class TagDetailsComponent implements OnInit, OnDestroy {
       }
 
       this.subs.push(
-        action.subscribe(() =>
-          this.router.navigate([`/${urlFragments.management}`, urlFragments.managementChilds.tags])
-        )
+        action.subscribe(() => {
+          const callbacks = {
+            close: () => {
+              this.location.back();
+            }
+          };
+
+          this.modalAlertService.createAndShowAlertModal(ALERT_TAG, ALERT_MESSAGE, callbacks);
+        })
       );
     }
   }

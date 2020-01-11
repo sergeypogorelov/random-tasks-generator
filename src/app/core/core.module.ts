@@ -12,6 +12,7 @@ import { GameResultService } from './services/game-result/game-result.service';
 
 import { ModalService } from './services/modal/modal.service';
 import { ModalConfirmService } from './services/modal-confirm/modal-confirm.service';
+import { ModalAlertService } from './services/modal-alert/modal-alert.service';
 import { ModalSubtaskInfoService } from './services/modal-subtask-info/modal-subtask-info.service';
 
 import { ObjectUrlService } from './services/object-url/object-url.service';
@@ -22,7 +23,7 @@ const dbServices = [TagService, SubtaskService, TaskService, PersonService, Game
 
 const helpers = [ObjectUrlService];
 
-const modalServices = [ModalService, ModalConfirmService, ModalSubtaskInfoService];
+const modalServices = [ModalService, ModalConfirmService, ModalAlertService, ModalSubtaskInfoService];
 
 const componentServices = [BreadcrumbService];
 

@@ -19,11 +19,12 @@ import { GridComponent } from './components/grid/grid.component';
 import { ImageUploaderComponent } from './components/image-uploader/image-uploader.component';
 
 import { ModalConfirmComponent } from './components/modal-confirm/modal-confirm.component';
+import { ModalAlertComponent } from './components/modal-alert/modal-alert.component';
+import { ModalSubtaskInfoComponent } from './components/modal-subtask-info/modal-subtask-info.component';
 
 import { ClickOutsideDirective } from './directives/click-outside/click-outside.directive';
 import { ModalGeneratorHostDirective } from './components/modal-generator/modal-generator-host.directive';
 import { GridCellTemplateDirective } from './components/grid/grid-column/grid-cell-template.directive';
-import { ModalSubtaskInfoComponent } from './components/modal-subtask-info/modal-subtask-info.component';
 
 const angularModules = [CommonModule, FormsModule, ReactiveFormsModule, RouterModule];
 
@@ -47,7 +48,7 @@ const declarationsAndExports = [
   GridCellTemplateDirective
 ];
 
-const entryComponents = [ModalConfirmComponent, ModalSubtaskInfoComponent];
+const entryComponents = [ModalConfirmComponent, ModalAlertComponent, ModalSubtaskInfoComponent];
 
 @NgModule({
   imports: [...angularModules, ...communityModules],
