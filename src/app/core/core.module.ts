@@ -18,6 +18,7 @@ import { ModalSubtaskInfoService } from './services/modal-subtask-info/modal-sub
 import { ObjectUrlService } from './services/object-url/object-url.service';
 
 import { BreadcrumbService } from './services/breadcrumb/breadcrumb.service';
+import { LoadingSpinnerService } from './services/loading-spinner/loading-spinner.service';
 
 const dbServices = [TagService, SubtaskService, TaskService, PersonService, GameResultService];
 
@@ -25,7 +26,7 @@ const helpers = [ObjectUrlService];
 
 const modalServices = [ModalService, ModalConfirmService, ModalAlertService, ModalSubtaskInfoService];
 
-const componentServices = [BreadcrumbService];
+const componentServices = [BreadcrumbService, LoadingSpinnerService];
 
 @NgModule({
   imports: [IdbModule.forRoot(dbConfig)],

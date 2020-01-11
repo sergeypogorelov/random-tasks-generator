@@ -10,6 +10,7 @@ import { FooterComponent } from './layout/footer/footer.component';
 import { PageComponent } from './layout/page.component';
 
 import { ModalGeneratorComponent } from './components/modal-generator/modal-generator.component';
+import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { MenuButtonComponent } from './components/menu-button/menu-button.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { LinkComponent } from './components/link/link.component';
@@ -36,6 +37,7 @@ const declarationsAndExports = [
   FooterComponent,
   PageComponent,
   ModalGeneratorComponent,
+  LoadingSpinnerComponent,
   MenuButtonComponent,
   BreadcrumbComponent,
   LinkComponent,

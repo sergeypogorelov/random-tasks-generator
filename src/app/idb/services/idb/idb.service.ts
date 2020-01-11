@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
-import { Observable, of, from } from 'rxjs';
-import { share, tap } from 'rxjs/operators';
+import { Observable, of, from, Subject } from 'rxjs';
+import { share, tap, finalize } from 'rxjs/operators';
 import { IDBPDatabase, openDB, OpenDBCallbacks } from 'idb';
 
 import { IdbCfg } from '../../idb-cfg.interface';
@@ -8,6 +8,18 @@ import { idbCfgToken } from './idb-cfg-token';
 
 @Injectable()
 export class IdbService {
+  get requestStarts(): Observable<any> {
+    return this.requestStartSubject.asObservable();
+  }
+
+  get requestEnds(): Observable<any> {
+    return this.requestEndSubject.asObservable();
+  }
+
+  private requestStartSubject = new Subject<any>();
+
+  private requestEndSubject = new Subject<any>();
+
   private db: IDBPDatabase<any>;
 
   private dbObservable: Observable<IDBPDatabase<any>>;
@@ -15,8 +27,10 @@ export class IdbService {
   constructor(@Inject(idbCfgToken) private idbCfg: IdbCfg) {}
 
   openDB<T>(): Observable<IDBPDatabase<T>> {
+    this.requestStartSubject.next();
+
     if (this.db) {
-      return of(this.db);
+      return this.extendDbObservable(of(this.db));
     }
 
     if (this.dbObservable) {
@@ -26,6 +40,8 @@ export class IdbService {
     this.dbObservable = from(openDB<T>(this.idbCfg.name, this.idbCfg.version, this.getOpenDBCallbacks()))
       .pipe(share())
       .pipe(tap(db => (this.db = db)));
+
+    this.dbObservable = this.extendDbObservable(this.dbObservable);
 
     return this.dbObservable;
   }
@@ -52,5 +68,13 @@ export class IdbService {
         }
       }
     };
+  }
+
+  private extendDbObservable(dbObservable: Observable<IDBPDatabase<any>>): Observable<IDBPDatabase<any>> {
+    if (!dbObservable) {
+      throw new Error('Database observable is not specified.');
+    }
+
+    return dbObservable.pipe(finalize(() => this.requestEndSubject.next()));
   }
 }
