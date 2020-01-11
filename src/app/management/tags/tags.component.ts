@@ -5,13 +5,16 @@ import { Subscription } from 'rxjs';
 import { linkLabels } from '../../core/constants/link-labels';
 import { urlFragments } from '../../core/constants/url-fragments';
 
-import { Tag } from 'src/app/core/interfaces/tag/tag.interface';
+import { Tag } from '../../core/interfaces/tag/tag.interface';
 
-import { TagService } from 'src/app/core/services/tag/tag.service';
+import { TagService } from '../../core/services/tag/tag.service';
 import { BreadcrumbService } from '../../core/services/breadcrumb/breadcrumb.service';
-import { ModalConfirmService } from 'src/app/core/services/modal-confirm/modal-confirm.service';
+import { ModalAlertService } from '../../core/services/modal-alert/modal-alert.service';
+import { ModalConfirmService } from '../../core/services/modal-confirm/modal-confirm.service';
 
 import { idOfNewTag } from './tag-details/tag-details.component';
+
+const CANNOT_DELETE_MESSAGE = 'The tag cannot be deleted as it is already in use.';
 
 @Component({
   selector: 'rtg-tags',
@@ -31,6 +34,7 @@ export class TagsComponent implements OnInit, OnDestroy {
     private router: Router,
     private tagService: TagService,
     private breadcrumbService: BreadcrumbService,
+    private modalAlertService: ModalAlertService,
     private modalConfirmService: ModalConfirmService
   ) {}
 
@@ -63,7 +67,15 @@ export class TagsComponent implements OnInit, OnDestroy {
   removeButtonClickHandler(tag: Tag) {
     this.modalConfirmService.createAndShowConfirmModal('remove-tag', {
       confirm: () => {
-        this.subs.push(this.tagService.deleteTag(tag.id).subscribe(() => this.updateGrid()));
+        this.subs.push(
+          this.tagService.checkIfTagIdsUnused([tag.id]).subscribe(unused => {
+            if (unused) {
+              this.subs.push(this.tagService.deleteTag(tag.id).subscribe(() => this.updateGrid()));
+            } else {
+              this.modalAlertService.createAndShowAlertModal('remove-tag-fail', CANNOT_DELETE_MESSAGE);
+            }
+          })
+        );
       }
     });
   }

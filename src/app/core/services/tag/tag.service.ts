@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 
 import { RtgDbSchema } from '../../interfaces/rtg-db-schema.interface';
@@ -7,10 +7,16 @@ import { Tag } from '../../interfaces/tag/tag.interface';
 import { NameUnusedService } from '../../validators/name-unused/name-unused-service.interface';
 
 import { IdbService } from '../../../idb/services/idb/idb.service';
+import { TaskService } from '../task/task.service';
+import { SubtaskService } from '../subtask/subtask.service';
 
 @Injectable()
 export class TagService implements NameUnusedService {
-  constructor(private idbService: IdbService) {}
+  constructor(
+    private idbService: IdbService,
+    private taskService: TaskService,
+    private subtaskService: SubtaskService
+  ) {}
 
   checkIfNameUnused(name: string, originName: string = null): Observable<boolean> {
     if (!name) {
@@ -18,6 +24,12 @@ export class TagService implements NameUnusedService {
     }
 
     return this.getTagByName(name).pipe(map(tag => (tag ? tag.name === originName : true)));
+  }
+
+  checkIfTagIdsUnused(tagIds: number[]): Observable<boolean> {
+    return forkJoin(this.taskService.getIdsByTagIds(tagIds), this.subtaskService.getIdsByTagIds(tagIds)).pipe(
+      map(results => results[0].length === 0 && results[1].length === 0)
+    );
   }
 
   getTagById(id: number): Observable<Tag> {

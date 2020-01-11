@@ -19,6 +19,16 @@ export class GameResultService {
     return this.idbService.openDB<RtgDbSchema>().pipe(mergeMap(db => db.get('game-result', id)));
   }
 
+  getAllByPersonId(personId: number): Observable<GameResult[]> {
+    if (!personId) {
+      throw new Error('Id is not specified.');
+    }
+
+    return this.idbService
+      .openDB<RtgDbSchema>()
+      .pipe(mergeMap(db => db.getAllFromIndex('game-result', 'personIdIdx', personId)));
+  }
+
   insert(gameResult: GameResult): Observable<GameResult> {
     if (!gameResult) {
       throw new Error('Game result is not specified.');

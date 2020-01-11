@@ -10,10 +10,13 @@ import { SubtaskGridModel } from './subtask-grid-model.interface';
 
 import { SubtaskService } from '../../core/services/subtask/subtask.service';
 import { BreadcrumbService } from '../../core/services/breadcrumb/breadcrumb.service';
+import { ModalAlertService } from '../../core/services/modal-alert/modal-alert.service';
 import { ModalConfirmService } from '../../core/services/modal-confirm/modal-confirm.service';
 import { SubtasksPageService } from './subtasks-page.service';
 
 import { idOfNewSubtask } from './subtask-details/subtask-details.component';
+
+const CANNOT_DELETE_MESSAGE = 'The subtask cannot be deleted as it is already in use.';
 
 @Component({
   selector: 'rtg-subtasks',
@@ -33,6 +36,7 @@ export class SubtasksComponent implements OnInit, OnDestroy {
     private router: Router,
     private subtaskService: SubtaskService,
     private breadcrumbService: BreadcrumbService,
+    private modalAlertService: ModalAlertService,
     private modalConfirmService: ModalConfirmService,
     private subtasksPageService: SubtasksPageService
   ) {}
@@ -68,7 +72,15 @@ export class SubtasksComponent implements OnInit, OnDestroy {
   removeButtonClickHandler(subtask: SubtaskGridModel) {
     this.modalConfirmService.createAndShowConfirmModal('remove-subtask', {
       confirm: () => {
-        this.subs.push(this.subtaskService.deleteSubtask(subtask.id).subscribe(() => this.updateGrid()));
+        this.subs.push(
+          this.subtaskService.checkIfIdUnused(subtask.id).subscribe(unused => {
+            if (unused) {
+              this.subs.push(this.subtaskService.deleteSubtask(subtask.id).subscribe(() => this.updateGrid()));
+            } else {
+              this.modalAlertService.createAndShowAlertModal('remove-subtask-fail', CANNOT_DELETE_MESSAGE);
+            }
+          })
+        );
       }
     });
   }

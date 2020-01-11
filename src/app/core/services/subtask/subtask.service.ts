@@ -23,6 +23,14 @@ export class SubtaskService implements NameUnusedService {
     return this.getSubtaskByName(name).pipe(map(subtask => (subtask ? subtask.name === originName : true)));
   }
 
+  checkIfIdUnused(id: number): Observable<boolean> {
+    if (!id) {
+      throw new Error('Id is not specified.');
+    }
+
+    return this.idbService.openDB<RtgDbSchema>().pipe(mergeMap(db => this.checkIfSubtaskIdUnused(db, id)));
+  }
+
   getSubtaskById(id: number): Observable<Subtask> {
     if (!id) {
       throw new Error('Id is not specified.');
@@ -87,6 +95,31 @@ export class SubtaskService implements NameUnusedService {
     }
 
     return this.idbService.openDB<RtgDbSchema>().pipe(mergeMap(db => db.delete('subtask', id)));
+  }
+
+  private async checkIfSubtaskIdUnused(db: IDBPDatabase<RtgDbSchema>, id: number): Promise<boolean> {
+    if (!db) {
+      throw new Error('IDBPDatabase instance is not specified.');
+    }
+
+    if (!id) {
+      throw new Error('Id is not specified.');
+    }
+
+    let result = true;
+    let cursor = await db.transaction('game-result').store.openCursor();
+
+    while (cursor) {
+      const foundIndex = cursor.value.subtasks.findIndex(i => i.subtaskId === id);
+      if (foundIndex !== -1) {
+        result = false;
+        break;
+      }
+
+      cursor = await cursor.continue();
+    }
+
+    return result;
   }
 
   private async getAllByIds(db: IDBPDatabase<RtgDbSchema>, ids: number[]): Promise<Subtask[]> {

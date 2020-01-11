@@ -7,10 +7,11 @@ import { RtgDbSchema } from '../../interfaces/rtg-db-schema.interface';
 import { Person } from '../../interfaces/person/person.interface';
 
 import { IdbService } from '../../../idb/services/idb/idb.service';
+import { GameResultService } from '../game-result/game-result.service';
 
 @Injectable()
 export class PersonService implements NameUnusedService {
-  constructor(private idbService: IdbService) {}
+  constructor(private idbService: IdbService, private gameResultService: GameResultService) {}
 
   checkIfNameUnused(name: string, originName: string = null): Observable<boolean> {
     if (!name) {
@@ -18,6 +19,14 @@ export class PersonService implements NameUnusedService {
     }
 
     return this.getByName(name).pipe(map(person => (person ? person.name === originName : true)));
+  }
+
+  checkIfIdUnused(id: number): Observable<boolean> {
+    if (!id) {
+      throw new Error('Id is not specified.');
+    }
+
+    return this.gameResultService.getAllByPersonId(id).pipe(map(gameResults => gameResults.length === 0));
   }
 
   getById(id: number): Observable<Person> {

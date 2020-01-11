@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
 import { Subscription, forkJoin, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
@@ -13,10 +12,13 @@ import { PersonsGridModel } from './persons-grid-model.interface';
 import { TaskService } from '../../core/services/task/task.service';
 import { PersonService } from '../../core/services/person/person.service';
 import { BreadcrumbService } from '../../core/services/breadcrumb/breadcrumb.service';
+import { ModalAlertService } from '../../core/services/modal-alert/modal-alert.service';
 import { ModalConfirmService } from '../../core/services/modal-confirm/modal-confirm.service';
 import { PersonsPageService } from './persons-page.service';
 
 import { idOfNewPerson } from './person-details/person-details.component';
+
+const CANNOT_DELETE_MESSAGE = 'The person cannot be deleted as it is already in use.';
 
 @Component({
   selector: 'rtg-persons',
@@ -32,10 +34,10 @@ export class PersonsComponent implements OnInit, OnDestroy {
   private subs: Subscription[] = [];
 
   constructor(
-    private router: Router,
     private taskService: TaskService,
     private personService: PersonService,
     private breadcrumbService: BreadcrumbService,
+    private modalAlertService: ModalAlertService,
     private modalConfirmService: ModalConfirmService,
     private personsPageService: PersonsPageService
   ) {}
@@ -54,7 +56,15 @@ export class PersonsComponent implements OnInit, OnDestroy {
   removeButtonClickHandler(item: PersonsGridModel) {
     this.modalConfirmService.createAndShowConfirmModal('remove-person', {
       confirm: () => {
-        this.subs.push(this.personService.delete(item.id).subscribe(() => this.updateGrid()));
+        this.subs.push(
+          this.personService.checkIfIdUnused(item.id).subscribe(unused => {
+            if (unused) {
+              this.subs.push(this.personService.delete(item.id).subscribe(() => this.updateGrid()));
+            } else {
+              this.modalAlertService.createAndShowAlertModal('remove-person-fail', CANNOT_DELETE_MESSAGE);
+            }
+          })
+        );
       }
     });
   }
