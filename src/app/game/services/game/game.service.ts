@@ -57,6 +57,9 @@ export class GameService {
     const currentTimestamp = new Date().getTime();
 
     const iterations = this.currentPerson.iterations;
+    if (!iterations || iterations.length === 0) {
+      return null;
+    }
 
     let timePassed = currentTimestamp - startDateTimestamp;
     if (timePassed < 0) {
@@ -97,6 +100,9 @@ export class GameService {
 
     const newGameTasks: GameTask[] = [];
     const personIteration = this.getCurrentPersonIteration();
+    if (!personIteration) {
+      return [];
+    }
 
     let i = 0;
     for (const personTask of personIteration.tasks) {

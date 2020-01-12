@@ -19,8 +19,15 @@ import { SubtaskService } from '../../../core/services/subtask/subtask.service';
 import { BreadcrumbService } from '../../../core/services/breadcrumb/breadcrumb.service';
 import { GameService } from '../../services/game/game.service';
 import { GetTasksPageService } from './get-tasks-page.service';
+import { ModalAlertService } from 'src/app/core/services/modal-alert/modal-alert.service';
 
 const TASK_INDEX_BY_DEFAULT = 0;
+
+const TAG = 'get-tasks-error';
+
+const MSG_NO_TASKS = 'There are not tasks found for this person. Please, select another one.';
+const MSG_NO_MORE_SUBTASKS =
+  'There are not subtasks to generate anymore. Go on the next step to complete tasks or select another person.';
 
 @Component({
   selector: 'rtg-get-tasks',
@@ -88,6 +95,7 @@ export class GetTasksComponent implements OnInit, OnDestroy {
     private taskService: TaskService,
     private subtaskService: SubtaskService,
     private breadcrumbService: BreadcrumbService,
+    private modalAlertService: ModalAlertService,
     private gameService: GameService,
     private getTasksPageService: GetTasksPageService
   ) {
@@ -105,7 +113,9 @@ export class GetTasksComponent implements OnInit, OnDestroy {
     this.setBreadcrumb();
     this.setGameTasks();
 
-    this.loadAndSetEntities().subscribe(() => this.updateModels());
+    if (this.checkGameTasks()) {
+      this.loadAndSetEntities().subscribe(() => this.updateModels());
+    }
   }
 
   ngOnDestroy() {
@@ -130,7 +140,7 @@ export class GetTasksComponent implements OnInit, OnDestroy {
     this.subs.push(
       this.gameService.generateSubtask(this.gameTaskIndex).subscribe(subtask => {
         if (!subtask) {
-          console.error('Cannot generate subtask.');
+          this.modalAlertService.createAndShowAlertModal(TAG, MSG_NO_MORE_SUBTASKS);
           return;
         }
 
@@ -145,6 +155,26 @@ export class GetTasksComponent implements OnInit, OnDestroy {
   finishButtonClickHandler() {
     this.gameService.setGameTasksToDo(this.gameTasks);
     this.router.navigate([`${urlFragments.game}`, urlFragments.gameChilds.completeTasks]);
+  }
+
+  private checkGameTasks(): boolean {
+    const result = this.gameTasks && this.gameTasks.length > 0;
+
+    if (!result) {
+      const callbacks = {
+        close: () => {
+          this.subs.push(
+            this.gameService
+              .clearCurrentPerson()
+              .subscribe(() => this.router.navigate([`${urlFragments.game}`, urlFragments.gameChilds.selectPerson]))
+          );
+        }
+      };
+
+      this.modalAlertService.createAndShowAlertModal(TAG, MSG_NO_TASKS, callbacks);
+    }
+
+    return result;
   }
 
   private setBreadcrumb() {
