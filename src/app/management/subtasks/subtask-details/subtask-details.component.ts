@@ -150,8 +150,6 @@ export class SubtaskDetailsComponent implements OnInit, OnDestroy {
     } else {
       this.form = this.subtaskDetailsService.generateFormGroup();
     }
-
-    this.form.valueChanges.subscribe(() => console.log(this.form));
   }
 
   private loadAndSetTags(): Observable<Tag[]> {

@@ -7,6 +7,7 @@ import { Tag } from '../../interfaces/tag/tag.interface';
 import { NameUnusedService } from '../../validators/name-unused/name-unused-service.interface';
 
 import { IdbService } from '../../../idb/services/idb/idb.service';
+import { PersonService } from '../person/person.service';
 import { TaskService } from '../task/task.service';
 import { SubtaskService } from '../subtask/subtask.service';
 
@@ -14,6 +15,7 @@ import { SubtaskService } from '../subtask/subtask.service';
 export class TagService implements NameUnusedService {
   constructor(
     private idbService: IdbService,
+    private personService: PersonService,
     private taskService: TaskService,
     private subtaskService: SubtaskService
   ) {}
@@ -27,9 +29,11 @@ export class TagService implements NameUnusedService {
   }
 
   checkIfTagIdsUnused(tagIds: number[]): Observable<boolean> {
-    return forkJoin(this.taskService.getIdsByTagIds(tagIds), this.subtaskService.getIdsByTagIds(tagIds)).pipe(
-      map(results => results[0].length === 0 && results[1].length === 0)
-    );
+    return forkJoin(
+      this.personService.getIdsByTagIds(tagIds),
+      this.taskService.getIdsByTagIds(tagIds),
+      this.subtaskService.getIdsByTagIds(tagIds)
+    ).pipe(map(results => results[0].length === 0 && results[1].length === 0 && results[2].length === 0));
   }
 
   getTagById(id: number): Observable<Tag> {

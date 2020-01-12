@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
+import { IDBPDatabase } from 'idb';
 
 import { NameUnusedService } from '../../../core/validators/name-unused/name-unused-service.interface';
 import { RtgDbSchema } from '../../interfaces/rtg-db-schema.interface';
 import { Person } from '../../interfaces/person/person.interface';
+
+import { Utils } from '../../helpers/utils.class';
 
 import { IdbService } from '../../../idb/services/idb/idb.service';
 import { GameResultService } from '../game-result/game-result.service';
@@ -49,6 +52,10 @@ export class PersonService implements NameUnusedService {
     return this.idbService.openDB<RtgDbSchema>().pipe(mergeMap(db => db.getAll('person')));
   }
 
+  getIdsByTagIds(tagIds: number[]): Observable<number[]> {
+    return this.idbService.openDB<RtgDbSchema>().pipe(mergeMap(db => this.getAllIdsByTagIds(db, tagIds)));
+  }
+
   add(person: Person): Observable<Person> {
     if (!person) {
       throw new Error('Person is not specified.');
@@ -77,5 +84,34 @@ export class PersonService implements NameUnusedService {
     }
 
     return this.idbService.openDB<RtgDbSchema>().pipe(mergeMap(db => db.delete('person', id)));
+  }
+
+  private async getAllIdsByTagIds(db: IDBPDatabase<RtgDbSchema>, ids: number[]): Promise<number[]> {
+    if (!db) {
+      throw new Error('IDBPDatabase instance is not specified.');
+    }
+
+    if (!ids) {
+      throw new Error('Ids are not specified.');
+    }
+
+    const result: number[] = [];
+
+    let cursor = await db.transaction('person').store.openCursor();
+    while (cursor) {
+      const tagIdsNotFlat = cursor.value.iterations.map(iteration =>
+        iteration.tasks.map(task => task.tags.map(tag => tag.tagId))
+      );
+
+      const tagIds = Utils.arrayFlat(Utils.arrayFlat(tagIdsNotFlat));
+
+      if (ids.some(id => tagIds.includes(id))) {
+        result.push(cursor.primaryKey);
+      }
+
+      cursor = await cursor.continue();
+    }
+
+    return result;
   }
 }
